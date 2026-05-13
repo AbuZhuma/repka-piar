@@ -1,0 +1,134 @@
+@use 'styles/abstracts' as *;
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(8);
+}
+
+.heading {
+  @include text-xl;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+  margin-bottom: spacing(3);
+}
+
+.bio {
+  @include text-base;
+  color: var(--color-text-primary);
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.toggle {
+  @include button-reset;
+  margin-top: spacing(2);
+  color: var(--color-primary);
+  font-weight: 500;
+  @include text-sm;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.entry {
+  padding: spacing(3) spacing(4);
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: spacing(2);
+}
+
+.entryMeta {
+  color: var(--color-text-secondary);
+}
+
+.entryYears {
+  margin-left: auto;
+  @include text-sm;
+  color: var(--color-text-tertiary);
+}
+
+.docs {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: spacing(3);
+
+  @include media-up('md') {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.doc {
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.docPreview {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.docPlaceholder {
+  width: 100%;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-hover);
+  color: var(--color-text-tertiary);
+}
+
+.docTitle {
+  display: block;
+  padding: spacing(2) spacing(3);
+  @include text-sm;
+  color: var(--color-text-primary);
+  @include truncate;
+}
+
+.verified {
+  padding: spacing(1) spacing(3);
+  @include text-xs;
+  color: var(--color-success);
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+}
+
+.tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(2);
+}
+
+.tag {
+  padding: spacing(1) spacing(3);
+  background: var(--color-bg-secondary);
+  border-radius: $radius-full;
+  @include text-sm;
+  color: var(--color-text-primary);
+}
+
+.level {
+  color: var(--color-text-tertiary);
+}

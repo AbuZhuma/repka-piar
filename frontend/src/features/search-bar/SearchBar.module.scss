@@ -1,0 +1,33 @@
+@use 'styles/abstracts' as *;
+
+.bar {
+  display: grid;
+  gap: spacing(3);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(3);
+  box-shadow: var(--shadow-md);
+  grid-template-columns: 1fr;
+
+  @include media-up('md') {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+    align-items: end;
+    padding: spacing(4);
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+  min-width: 0;
+}
+
+.label {
+  @include text-xs;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

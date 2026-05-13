@@ -1,0 +1,74 @@
+@use 'styles/abstracts' as *;
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(6);
+  max-width: 1280px;
+
+  @include media-up('lg') {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+
+  @include media-up('xl') {
+    grid-template-columns: 200px minmax(0, 1fr) 320px;
+    gap: spacing(8);
+  }
+}
+
+.tocAside {
+  display: none;
+
+  @include media-up('lg') {
+    display: block;
+    position: sticky;
+    top: 88px;
+    align-self: start;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    z-index: 1;
+    padding: spacing(2);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-primary);
+    border-radius: $radius-md;
+  }
+}
+
+.toc {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+}
+
+.tocItem {
+  padding: spacing(2) spacing(3);
+  @include text-sm;
+  color: var(--color-text-secondary);
+  border-radius: $radius-md;
+
+  &:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+  }
+}
+
+.editorColumn {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  min-width: 0;
+  scroll-margin-top: 96px;
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 700;
+  margin-bottom: spacing(2);
+}
+
+.error {
+  padding: spacing(4);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--color-danger);
+  border-radius: $radius-md;
+}

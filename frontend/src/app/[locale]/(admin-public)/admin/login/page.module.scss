@@ -1,0 +1,55 @@
+@use 'styles/abstracts' as *;
+
+.wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: spacing(6);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-bg-primary);
+  border-radius: $radius-lg;
+  padding: spacing(8);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  box-shadow: var(--shadow-lg);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+  align-self: flex-start;
+  padding: spacing(2) spacing(3);
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 800;
+  margin: 0;
+}
+
+.subtitle {
+  @include text-sm;
+  color: var(--color-text-secondary);
+  margin: 0 0 spacing(2);
+}
+
+.error {
+  @include text-sm;
+  color: var(--color-danger, #dc2626);
+  margin: 0;
+  padding: spacing(2) spacing(3);
+  background: rgba(220, 38, 38, 0.1);
+  border-radius: $radius-md;
+}

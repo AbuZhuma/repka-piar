@@ -1,0 +1,52 @@
+@use 'styles/abstracts' as *;
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+  padding-block: spacing(1);
+  cursor: pointer;
+  user-select: none;
+
+  &:hover .box {
+    border-color: var(--color-text-tertiary);
+  }
+}
+
+.box {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color $transition-fast,
+    border-color $transition-fast;
+  @include focus-ring;
+
+  &[data-state='checked'] {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-text-inverse);
+  }
+}
+
+.indicator {
+  display: inline-flex;
+  color: var(--color-text-inverse);
+}
+
+.label {
+  @include text-sm;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.count {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+}

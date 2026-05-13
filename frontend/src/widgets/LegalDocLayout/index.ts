@@ -1,0 +1,1 @@
+export { LegalDocLayout } from './LegalDocLayout';

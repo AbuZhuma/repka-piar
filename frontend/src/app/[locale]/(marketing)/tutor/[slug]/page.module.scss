@@ -1,0 +1,33 @@
+@use 'styles/abstracts' as *;
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(8);
+  margin-bottom: spacing(8);
+  padding-bottom: 96px; // место под mobile bar
+
+  @include media-up('lg') {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: spacing(10);
+    padding-bottom: 0;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(8);
+  min-width: 0;
+}
+
+.sidebar {
+  display: none;
+
+  @include media-up('lg') {
+    display: block;
+    position: sticky;
+    top: 96px;
+    align-self: start;
+  }
+}

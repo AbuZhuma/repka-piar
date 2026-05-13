@@ -1,0 +1,478 @@
+@use 'styles/abstracts' as *;
+
+.page {
+  background: var(--color-bg-secondary);
+}
+
+.hero {
+  padding-block: spacing(12) spacing(8);
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.heroEyebrow {
+  display: inline-block;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  padding: 6px 12px;
+  border-radius: $radius-full;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: spacing(4);
+}
+
+.heroTitle {
+  font-size: clamp(1.85rem, 3.2vw, 2.6rem);
+  font-weight: 800;
+  margin: 0 auto spacing(3);
+  max-width: 720px;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+.heroSubtitle {
+  @include text-base;
+  color: var(--color-text-secondary);
+  margin: 0 auto spacing(6);
+  max-width: 600px;
+  line-height: 1.55;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  max-width: 620px;
+  margin: 0 auto;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-full;
+  padding: spacing(2) spacing(4);
+  gap: spacing(2);
+  transition: border-color $transition-base, box-shadow $transition-base;
+
+  &:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(238, 124, 78, 0.12);
+  }
+}
+
+.searchIcon {
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  padding: spacing(2) 0;
+  font-size: 1rem;
+  color: var(--color-text-primary);
+  outline: 0;
+
+  &::placeholder {
+    color: var(--color-text-tertiary);
+  }
+}
+
+.searchClear {
+  border: 0;
+  background: transparent;
+  color: var(--color-text-tertiary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.searchHint {
+  text-align: center;
+  margin: spacing(3) 0 0;
+  @include text-sm;
+  color: var(--color-text-secondary);
+}
+
+/* Contact cards row */
+.contactsRow {
+  padding-block: spacing(8);
+  background: var(--color-bg-secondary);
+}
+
+.contactsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(3);
+
+  @include media-up('md') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.contactCard {
+  display: flex;
+  gap: spacing(3);
+  align-items: flex-start;
+  padding: spacing(4);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: border-color $transition-base, transform $transition-base;
+
+  &:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    color: var(--color-text-primary);
+  }
+}
+
+.contactIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: $radius-md;
+  flex-shrink: 0;
+}
+
+.contactLabel {
+  display: block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-tertiary);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.contactValue {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.contactHint {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+  display: block;
+  line-height: 1.4;
+}
+
+/* FAQ layout */
+.faqSection {
+  padding-block: spacing(10) spacing(14);
+}
+
+.faqLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(8);
+
+  @include media-up('lg') {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: spacing(10);
+    align-items: start;
+  }
+}
+
+.faqNav {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+
+  @include media-up('lg') {
+    position: sticky;
+    top: 100px;
+  }
+}
+
+.faqNavTitle {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-tertiary);
+  padding: 0 spacing(3);
+  margin-bottom: spacing(1);
+}
+
+.faqNavList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.faqNavBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+  padding: spacing(2) spacing(3);
+  border-radius: $radius-md;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: all $transition-base;
+
+  &:hover:not(:disabled) {
+    background: var(--color-bg-primary);
+    color: var(--color-primary);
+  }
+}
+
+.faqNavBtnActive {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.faqNavBtnDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.faqNavIcon {
+  display: inline-flex;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.faqNavLabel {
+  flex: 1;
+}
+
+.faqNavCount {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-tertiary);
+  border-radius: $radius-full;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+.faqNavBtnActive .faqNavCount {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.faqContent {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(10);
+}
+
+.faqCategory {
+  scroll-margin-top: 100px;
+}
+
+.faqCatHead {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing(3);
+  margin-bottom: spacing(4);
+}
+
+.faqCatIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: $radius-md;
+  flex-shrink: 0;
+}
+
+.faqCatTitle {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--color-text-primary);
+}
+
+.faqCatDesc {
+  @include text-sm;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.faqItem {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-md;
+  padding: spacing(3) spacing(4);
+  transition: border-color $transition-base;
+
+  &[open] {
+    border-color: var(--color-primary);
+  }
+
+  summary {
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: spacing(3);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    span {
+      flex: 1;
+    }
+  }
+
+  &[open] .faqChevron {
+    transform: rotate(180deg);
+  }
+
+  .faqChevron {
+    color: var(--color-text-tertiary);
+    transition: transform $transition-base;
+    flex-shrink: 0;
+  }
+
+  p {
+    @include text-sm;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: spacing(2) 0 0;
+  }
+}
+
+.faqEmpty {
+  background: var(--color-bg-primary);
+  border: 1px dashed var(--color-border);
+  border-radius: $radius-lg;
+  padding: spacing(10) spacing(6);
+  text-align: center;
+  color: var(--color-text-secondary);
+
+  svg {
+    color: var(--color-text-tertiary);
+    margin-bottom: spacing(3);
+  }
+
+  h3 {
+    font-weight: 700;
+    margin: 0 0 spacing(2);
+    color: var(--color-text-primary);
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+}
+
+/* CTA */
+.ctaBlock {
+  padding-block: spacing(12);
+  background: linear-gradient(
+    135deg,
+    rgba(238, 124, 78, 0.12),
+    rgba(238, 124, 78, 0.04)
+  );
+}
+
+.ctaInner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ctaTitle {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 800;
+  margin: 0 0 spacing(3);
+  color: var(--color-text-primary);
+}
+
+.ctaText {
+  @include text-base;
+  color: var(--color-text-secondary);
+  margin: 0 0 spacing(6);
+  line-height: 1.6;
+}
+
+.ctaButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: spacing(3);
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: spacing(3) spacing(6);
+  border-radius: $radius-full;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: var(--color-text-inverse);
+    filter: brightness(0.95);
+  }
+}
+
+.btnOutline {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+  padding: spacing(3) spacing(6);
+  border-radius: $radius-full;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+
+  &:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+}

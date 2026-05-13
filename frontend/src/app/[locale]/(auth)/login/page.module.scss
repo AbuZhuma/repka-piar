@@ -1,0 +1,51 @@
+@use 'styles/abstracts' as *;
+
+.card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(8);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(5);
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  @include text-base;
+  margin-top: -#{spacing(3)};
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.error {
+  @include text-sm;
+  color: var(--color-danger);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+  align-items: center;
+  text-align: center;
+}
+
+.link {
+  @include text-sm;
+  color: var(--color-text-secondary);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}

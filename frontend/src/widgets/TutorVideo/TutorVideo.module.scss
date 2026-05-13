@@ -1,0 +1,71 @@
+@use 'styles/abstracts' as *;
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.heading {
+  @include text-xl;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.thumb {
+  @include button-reset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--color-bg-secondary);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  color: white;
+  transition: filter $transition-fast;
+
+  &:hover {
+    filter: brightness(0.92);
+  }
+}
+
+.poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playOverlay {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  border-radius: $radius-full;
+}
+
+.label {
+  position: absolute;
+  bottom: spacing(3);
+  left: spacing(3);
+  padding: spacing(1) spacing(3);
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  border-radius: $radius-full;
+  @include text-sm;
+  font-weight: 500;
+}
+
+.video {
+  width: 100%;
+  max-height: 70vh;
+  background: black;
+}

@@ -1,0 +1,146 @@
+@use 'styles/abstracts' as *;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  max-width: 800px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 700;
+
+  @include media-up('md') {
+    @include text-3xl;
+  }
+}
+
+.subtitle {
+  @include text-base;
+  color: var(--color-text-secondary);
+}
+
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(5);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.sectionTitle {
+  @include text-md;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.faqItem {
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.faqTrigger {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: spacing(3) spacing(4);
+  text-align: left;
+  @include text-base;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &[data-state='open'] .faqChevron {
+    transform: rotate(180deg);
+  }
+}
+
+.faqChevron {
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+  transition: transform $transition-fast;
+}
+
+.faqContent {
+  padding: 0 spacing(4) spacing(3);
+  @include text-base;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.contacts {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(2);
+
+  @include media-up('md') {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  padding: spacing(3);
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+}
+
+.contactIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-full;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.contactBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.contactLabel {
+  @include text-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+}
+
+.contactValue {
+  @include text-base;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  @include truncate;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}

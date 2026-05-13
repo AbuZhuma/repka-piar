@@ -1,0 +1,25 @@
+@use 'styles/abstracts' as *;
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(2);
+}
+
+.chip {
+  @include button-reset;
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+  padding: spacing(1) spacing(2);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: $radius-full;
+  @include text-sm;
+  font-weight: 500;
+  transition: filter $transition-fast;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+}

@@ -1,0 +1,144 @@
+@use 'styles/abstracts' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border-primary);
+  backdrop-filter: saturate(150%) blur(8px);
+}
+
+.inner {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing(4);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: spacing(4);
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+.cityWrap {
+  display: none;
+
+  @include media-up('md') {
+    display: inline-flex;
+  }
+}
+
+.nav {
+  display: none;
+  align-items: center;
+  gap: spacing(6);
+
+  @include media-up('lg') {
+    display: flex;
+  }
+}
+
+.navItem {
+  @include text-base;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: color $transition-fast;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+}
+
+.langDesktop {
+  display: none;
+
+  @include media-up('lg') {
+    display: inline-flex;
+  }
+}
+
+.ctaDesktop {
+  display: none;
+
+  @include media-up('md') {
+    display: inline-flex;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+}
+
+.burger {
+  @include button-reset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-md;
+
+  &:hover {
+    background: var(--color-bg-secondary);
+  }
+
+  @include media-up('lg') {
+    display: none;
+  }
+}
+
+.mobileMenu {
+  position: absolute;
+  inset: 64px 0 auto 0;
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border-primary);
+  padding-block: spacing(4);
+  box-shadow: var(--shadow-md);
+
+  @include media-up('lg') {
+    display: none;
+  }
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+}
+
+.mobileItem {
+  display: block;
+  padding: spacing(3) 0;
+  @include text-md;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border-secondary);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.mobileBottom {
+  padding-top: spacing(4);
+  display: flex;
+  justify-content: flex-start;
+}

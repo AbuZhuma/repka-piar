@@ -1,0 +1,110 @@
+@use 'styles/abstracts' as *;
+
+.loading {
+  padding: spacing(10);
+  text-align: center;
+  color: var(--color-text-tertiary);
+}
+
+.header {
+  margin-bottom: spacing(6);
+}
+
+.title {
+  @include text-3xl;
+  font-weight: 800;
+  margin: 0 0 spacing(1);
+}
+
+.subtitle {
+  @include text-sm;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.section {
+  margin-bottom: spacing(8);
+}
+
+.sectionTitle {
+  @include text-xl;
+  font-weight: 700;
+  margin: 0 0 spacing(4);
+  color: var(--color-text-primary);
+}
+
+.grid {
+  display: grid;
+  gap: spacing(3);
+  grid-template-columns: 1fr;
+
+  @include media-up('lg') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.field {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  padding: spacing(4) spacing(5);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.fieldHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: spacing(2);
+  flex-wrap: wrap;
+}
+
+.fieldLabel {
+  @include text-base;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.fieldKey {
+  @include text-xs;
+  background: var(--color-bg-secondary);
+  padding: 2px 8px;
+  border-radius: $radius-sm;
+  color: var(--color-text-tertiary);
+  font-family: monospace;
+}
+
+.fieldFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing(3);
+  min-height: 32px;
+  flex-wrap: wrap;
+}
+
+.hint {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+  flex: 1;
+  min-width: 0;
+}
+
+.msgOk {
+  @include text-xs;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.msgErr {
+  @include text-xs;
+  color: var(--color-danger, #dc2626);
+  font-weight: 600;
+}
+
+.mono {
+  font-family: 'SF Mono', Monaco, Consolas, monospace;
+  font-size: 13px;
+}

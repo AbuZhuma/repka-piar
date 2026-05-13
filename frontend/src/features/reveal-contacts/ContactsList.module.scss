@@ -1,0 +1,7 @@
+@use 'styles/abstracts' as *;
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}

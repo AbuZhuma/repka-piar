@@ -1,0 +1,344 @@
+@use 'styles/abstracts' as *;
+
+.article {
+  padding-block: spacing(6) spacing(16);
+}
+
+// Single centered column by default. With TOC: content stays centered, TOC sits to the right.
+.shell {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.shellWithToc {
+  @include media-up('xl') {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 760px) 240px;
+    column-gap: spacing(10);
+    justify-content: center;
+    align-items: start;
+  }
+}
+
+.main {
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  margin-bottom: spacing(8);
+}
+
+.category {
+  display: inline-block;
+  align-self: flex-start;
+  @include text-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+  text-decoration: none;
+  padding: 4px 10px;
+  background: var(--color-primary-light);
+  border-radius: $radius-full;
+}
+
+.title {
+  @include text-3xl;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.15;
+
+  @include media-up('md') {
+    font-size: 2.5rem;
+  }
+}
+
+.lede {
+  @include text-lg;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.translationNotice {
+  @include text-sm;
+  color: var(--color-warning, #b45309);
+  background: rgba(234, 179, 8, 0.1);
+  padding: spacing(2) spacing(3);
+  border-radius: $radius-md;
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: spacing(2);
+  @include text-sm;
+  color: var(--color-text-secondary);
+}
+
+.metaSep {
+  color: var(--color-text-tertiary);
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+}
+
+.authorAvatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.authorAvatarLg {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.authorName {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.authorRole {
+  margin: 0;
+  @include text-xs;
+  color: var(--color-text-tertiary);
+}
+
+.cover {
+  margin: 0 0 spacing(10);
+  border-radius: $radius-lg;
+  overflow: hidden;
+}
+
+.coverImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.content {
+  min-width: 0;
+}
+
+.tocAside {
+  display: none;
+
+  @include media-up('xl') {
+    display: block;
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+}
+
+.toc {
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+  padding: spacing(4);
+}
+
+.tocTitle {
+  @include text-sm;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-tertiary);
+  margin: 0 0 spacing(3);
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.tocItem {
+  @include text-sm;
+  border-left: 2px solid transparent;
+  padding-left: spacing(2);
+
+  a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color $transition-base;
+    display: block;
+    line-height: 1.4;
+
+    &:hover {
+      color: var(--color-text-primary);
+    }
+  }
+}
+
+.tocActive {
+  border-left-color: var(--color-primary);
+
+  a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+}
+
+.tocIndent {
+  padding-left: spacing(4);
+  font-size: 0.85rem;
+}
+
+.tocIndent2 {
+  padding-left: spacing(6);
+  font-size: 0.8rem;
+}
+
+.footer {
+  margin-top: spacing(12);
+  padding-top: spacing(8);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(6);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(2);
+}
+
+.tag {
+  @include text-sm;
+  padding: 4px 12px;
+  border-radius: $radius-full;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: spacing(4);
+}
+
+.like {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+  background: var(--color-bg-secondary);
+  border: 0;
+  padding: spacing(2) spacing(4);
+  border-radius: $radius-full;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  @include text-sm;
+
+  &:hover {
+    color: var(--color-primary);
+    background: var(--color-bg-tertiary);
+  }
+}
+
+.likeActive {
+  color: var(--color-primary);
+}
+
+.share {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+}
+
+.shareLabel {
+  @include text-sm;
+  color: var(--color-text-tertiary);
+  margin-right: spacing(1);
+}
+
+.shareBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-full;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all $transition-base;
+
+  &:hover {
+    color: var(--color-primary);
+    background: var(--color-bg-tertiary);
+  }
+}
+
+.aboutAuthor {
+  display: flex;
+  gap: spacing(4);
+  padding: spacing(5);
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+}
+
+.aboutAuthorName {
+  margin: 0 0 spacing(1);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.aboutAuthorBio {
+  margin: 0;
+  @include text-sm;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.relatedSection {
+  margin-top: spacing(16);
+  padding-top: spacing(12);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  padding-bottom: spacing(16);
+}
+
+.relatedTitle {
+  @include text-2xl;
+  font-weight: 800;
+  margin: 0 0 spacing(8);
+  color: var(--color-text-primary);
+}
+
+.relatedGrid {
+  display: grid;
+  gap: spacing(5);
+  grid-template-columns: 1fr;
+
+  @include media-up('md') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-up('lg') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

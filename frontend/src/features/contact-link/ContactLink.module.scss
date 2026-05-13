@@ -1,0 +1,95 @@
+@use 'styles/abstracts' as *;
+
+.link {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  width: 100%;
+  padding: spacing(3) spacing(4);
+  border-radius: $radius-md;
+  text-align: left;
+  transition:
+    transform $transition-fast,
+    filter $transition-fast;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.95);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @include focus-ring;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.label {
+  @include text-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.value {
+  @include text-base;
+  font-weight: 600;
+  @include truncate;
+}
+
+.variant_primary {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.variant_whatsapp {
+  background: #25d366;
+  color: white;
+}
+
+.variant_telegram {
+  background: #0088cc;
+  color: white;
+}
+
+.variant_email {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+
+  .icon {
+    background: var(--color-bg-hover);
+  }
+  .label {
+    color: var(--color-text-tertiary);
+  }
+}
+
+.variant_instagram {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: white;
+}

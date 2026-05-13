@@ -1,0 +1,102 @@
+@use 'styles/abstracts' as *;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  max-width: 720px;
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 700;
+
+  @include media-up('md') {
+    @include text-3xl;
+  }
+}
+
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(5);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.sectionTitle {
+  @include text-md;
+  font-weight: 700;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.error {
+  @include text-sm;
+  color: var(--color-danger);
+}
+
+.success {
+  @include text-sm;
+  color: var(--color-success);
+}
+
+.note {
+  @include text-sm;
+  color: var(--color-text-tertiary);
+}
+
+.info {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) 1fr;
+  gap: spacing(2) spacing(4);
+
+  dt {
+    @include text-sm;
+    color: var(--color-text-tertiary);
+  }
+
+  dd {
+    @include text-sm;
+    color: var(--color-text-primary);
+    word-break: break-all;
+  }
+}
+
+.statusCard {
+  border-radius: $radius-lg;
+  padding: spacing(4) spacing(5);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+
+  strong {
+    @include text-md;
+    font-weight: 700;
+  }
+
+  p {
+    @include text-sm;
+  }
+}
+
+.statusOk {
+  background: rgba(34, 197, 94, 0.08);
+  color: var(--color-success);
+}
+
+.statusPending {
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--color-warning);
+}
+
+.statusError {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--color-danger);
+}

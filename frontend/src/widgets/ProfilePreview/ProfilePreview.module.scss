@@ -1,0 +1,130 @@
+@use 'styles/abstracts' as *;
+
+.preview {
+  display: none;
+
+  @include media-up('xl') {
+    display: block;
+    position: sticky;
+    top: 96px;
+    align-self: start;
+  }
+}
+
+.title {
+  @include text-sm;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+  margin-bottom: spacing(3);
+}
+
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(4);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+  box-shadow: var(--shadow-sm);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+}
+
+.photo,
+.photoFallback {
+  width: 56px;
+  height: 56px;
+  border-radius: $radius-full;
+  object-fit: cover;
+}
+
+.photoFallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.headInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    @include text-md;
+    color: var(--color-text-primary);
+  }
+}
+
+.muted {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+  @include text-xs;
+  color: var(--color-text-tertiary);
+}
+
+.short {
+  @include text-sm;
+  color: var(--color-text-secondary);
+  @include line-clamp(3);
+}
+
+.tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(1);
+}
+
+.tag {
+  padding: 2px 8px;
+  background: var(--color-bg-secondary);
+  border-radius: $radius-full;
+  @include text-xs;
+  color: var(--color-text-primary);
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: spacing(2);
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+  @include text-sm;
+}
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+}
+
+.contact {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+  @include text-sm;
+  color: var(--color-text-primary);
+}
+
+.openFull {
+  @include text-sm;
+  color: var(--color-primary);
+  font-weight: 500;
+  margin-top: spacing(1);
+  text-align: center;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

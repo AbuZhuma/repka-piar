@@ -1,0 +1,13 @@
+export { ProgressBar } from './ProgressBar';
+export { StepShell } from './StepShell';
+export { TOTAL_STEPS, useRegistrationStore } from './useRegistrationStore';
+export { Step1Contacts } from './steps/Step1Contacts';
+export { Step2About } from './steps/Step2About';
+export { Step3Education } from './steps/Step3Education';
+export { Step4Subjects } from './steps/Step4Subjects';
+export { Step5Certificates } from './steps/Step5Certificates';
+export { Step6Video } from './steps/Step6Video';
+export { Step7Prices } from './steps/Step7Prices';
+export { Step8Contacts } from './steps/Step8Contacts';
+export { Step9Schedule } from './steps/Step9Schedule';
+export { Step10Confirmation } from './steps/Step10Confirmation';

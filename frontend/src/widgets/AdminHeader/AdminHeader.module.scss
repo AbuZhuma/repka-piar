@@ -1,0 +1,80 @@
+@use 'styles/abstracts' as *;
+
+.header {
+  height: 56px;
+  padding: 0 spacing(5);
+  background: #1f2937;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  @include text-sm;
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  @include text-sm;
+  padding: spacing(1) spacing(2);
+  border-radius: $radius-md;
+  transition: background $transition-base;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+}
+
+.userName {
+  @include text-sm;
+  font-weight: 600;
+}
+
+.userEmail {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.logoutBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0;
+  color: #fff;
+  border-radius: $radius-md;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}

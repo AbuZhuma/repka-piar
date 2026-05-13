@@ -1,0 +1,41 @@
+@use 'styles/abstracts' as *;
+
+.tabs {
+  display: flex;
+  gap: spacing(1);
+  border-bottom: 1px solid var(--color-border-primary);
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tab {
+  padding: spacing(3) spacing(4);
+  @include text-base;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  position: relative;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 -1px 0;
+    height: 2px;
+    background: transparent;
+    border-radius: 2px;
+    transition: background $transition-fast;
+  }
+
+  &:hover::after {
+    background: var(--color-primary-light);
+  }
+}

@@ -1,0 +1,249 @@
+@use 'styles/abstracts' as *;
+
+.loading,
+.error {
+  padding: spacing(10);
+  text-align: center;
+  color: var(--color-text-tertiary);
+}
+
+.header {
+  margin-bottom: spacing(6);
+}
+
+.title {
+  @include text-3xl;
+  font-weight: 800;
+  margin: 0 0 spacing(1);
+}
+
+.subtitle {
+  @include text-sm;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: spacing(3);
+  margin-bottom: spacing(6);
+}
+
+.stat {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  padding: spacing(4) spacing(5);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statLabel {
+  @include text-sm;
+  color: var(--color-text-secondary);
+}
+
+.statValue {
+  @include text-2xl;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.statSub {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(3);
+  margin-bottom: spacing(6);
+
+  @include media-up('lg') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  padding: spacing(4) spacing(5);
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: spacing(3);
+}
+
+.sectionTitle {
+  @include text-base;
+  font-weight: 700;
+  margin: 0 0 spacing(3);
+  color: var(--color-text-primary);
+}
+
+.muted {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+}
+
+.empty {
+  text-align: center;
+  padding: spacing(4);
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 100px;
+  padding: spacing(2) 0 0;
+}
+
+.bar {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+
+.barFill {
+  width: 100%;
+  background: var(--color-primary);
+  border-radius: 2px 2px 0 0;
+  min-height: 1px;
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(3);
+  margin-bottom: spacing(6);
+
+  @include media-up('lg') {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.topList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+  counter-reset: rank;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: spacing(2);
+    padding: spacing(2);
+    background: var(--color-bg-secondary);
+    border-radius: $radius-md;
+    counter-increment: rank;
+
+    &::before {
+      content: counter(rank);
+      @include text-xs;
+      font-weight: 700;
+      color: var(--color-text-tertiary);
+      background: var(--color-bg-primary);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarFallback {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-bg-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  @include text-xs;
+  color: var(--color-text-secondary);
+}
+
+.topName {
+  @include text-sm;
+  flex: 1;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-weight: 600;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.distribution {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+
+  li {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: spacing(2);
+    align-items: center;
+  }
+}
+
+.distName {
+  @include text-sm;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.distBar {
+  position: relative;
+  height: 8px;
+  background: var(--color-bg-secondary);
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.distFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--color-primary);
+  border-radius: $radius-full;
+}
+
+.distCount {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}

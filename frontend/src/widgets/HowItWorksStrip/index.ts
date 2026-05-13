@@ -1,0 +1,1 @@
+export { HowItWorksStrip } from './HowItWorksStrip';

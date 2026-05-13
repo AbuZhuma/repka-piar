@@ -1,0 +1,25 @@
+@use 'styles/abstracts' as *;
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-secondary);
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: spacing(6) spacing(4);
+
+  @include media-up('md') {
+    padding: spacing(8) spacing(6);
+  }
+}

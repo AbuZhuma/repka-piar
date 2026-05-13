@@ -1,0 +1,124 @@
+@use 'styles/abstracts' as *;
+
+.section {
+  padding-block: spacing(12) spacing(16);
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.code {
+  @include text-3xl;
+  font-weight: 900;
+  color: var(--color-primary);
+  font-size: 6rem;
+  line-height: 1;
+  margin-bottom: spacing(4);
+
+  @include media-up('md') {
+    font-size: 8rem;
+  }
+}
+
+.title {
+  @include text-3xl;
+  font-weight: 800;
+  margin: 0 0 spacing(3);
+  color: var(--color-text-primary);
+}
+
+.text {
+  @include text-base;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 spacing(6);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: spacing(2);
+  margin-bottom: spacing(10);
+}
+
+.btnPrimary,
+.btnSecondary,
+.btnGhost {
+  display: inline-block;
+  padding: spacing(2) spacing(5);
+  border-radius: $radius-full;
+  text-decoration: none;
+  font-weight: 600;
+  @include text-sm;
+}
+
+.btnPrimary {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+
+  &:hover,
+  &:focus {
+    color: var(--color-text-inverse);
+    filter: brightness(0.95);
+  }
+}
+
+.btnSecondary {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+
+  &:hover,
+  &:focus {
+    color: var(--color-text-primary);
+    background: var(--color-bg-tertiary);
+  }
+}
+
+.btnGhost {
+  color: var(--color-text-secondary);
+
+  &:hover,
+  &:focus {
+    color: var(--color-primary);
+  }
+}
+
+.popular {
+  margin-top: spacing(8);
+  padding-top: spacing(6);
+  border-top: 1px solid var(--color-border);
+}
+
+.popularTitle {
+  @include text-sm;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-tertiary);
+  margin: 0 0 spacing(3);
+}
+
+.popularList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: spacing(2) spacing(4);
+
+  a {
+    @include text-sm;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+}

@@ -1,0 +1,57 @@
+@use 'styles/abstracts' as *;
+
+.section {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(5);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+  border-left: 3px solid var(--color-danger);
+}
+
+.title {
+  @include text-md;
+  font-weight: 700;
+  color: var(--color-danger);
+}
+
+.note {
+  @include text-sm;
+  color: var(--color-text-secondary);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.warning {
+  padding: spacing(3);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--color-danger);
+  border-radius: $radius-md;
+  @include text-sm;
+}
+
+.error {
+  @include text-sm;
+  color: var(--color-danger);
+}
+
+.success {
+  @include text-base;
+  color: var(--color-success);
+  text-align: center;
+  padding: spacing(4);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: spacing(2);
+  margin-top: spacing(2);
+}

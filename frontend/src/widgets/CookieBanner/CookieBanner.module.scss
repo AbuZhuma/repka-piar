@@ -1,0 +1,77 @@
+@use 'styles/abstracts' as *;
+
+.banner {
+  position: fixed;
+  bottom: spacing(4);
+  left: spacing(4);
+  right: spacing(4);
+  z-index: 100;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  box-shadow: var(--shadow-lg);
+  padding: spacing(4) spacing(5);
+
+  @include media-up('md') {
+    left: auto;
+    max-width: 480px;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.text {
+  @include text-sm;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.link {
+  color: var(--color-primary);
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(2);
+}
+
+.btnPrimary,
+.btnSecondary {
+  flex: 1;
+  border: 0;
+  cursor: pointer;
+  padding: spacing(2) spacing(4);
+  border-radius: $radius-full;
+  @include text-sm;
+  font-weight: 600;
+  transition: filter $transition-base;
+}
+
+.btnPrimary {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+}
+
+.btnSecondary {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+
+  &:hover {
+    background: var(--color-bg-tertiary);
+  }
+}

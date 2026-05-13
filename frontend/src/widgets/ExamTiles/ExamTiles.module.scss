@@ -1,0 +1,82 @@
+@use 'styles/abstracts' as *;
+
+.section {
+  padding-block: spacing(12);
+  background: var(--color-bg-tertiary);
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: spacing(5);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: spacing(3);
+
+  @include media-up('lg') {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: spacing(4);
+  }
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  padding: spacing(5);
+  border-radius: $radius-lg;
+  color: white;
+  transition:
+    transform $transition-base,
+    box-shadow $transition-base;
+  min-height: 120px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white;
+  }
+}
+
+.emoji {
+  font-size: 36px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tileBody {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+  min-width: 0;
+}
+
+.tileTitle {
+  @include text-lg;
+  font-weight: 700;
+}
+
+.tileSubtitle {
+  @include text-sm;
+  opacity: 0.85;
+}
+
+.tone_green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.tone_blue {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.tone_purple {
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+}
+
+.tone_orange {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+}

@@ -1,0 +1,1 @@
+export { CatalogLayout } from './CatalogLayout';

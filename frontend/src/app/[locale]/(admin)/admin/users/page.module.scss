@@ -1,0 +1,152 @@
+@use 'styles/abstracts' as *;
+
+.title {
+  @include text-3xl;
+  font-weight: 800;
+  margin: 0 0 spacing(5);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(3);
+  margin-bottom: spacing(4);
+  align-items: center;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(1);
+  background: var(--color-bg-primary);
+  padding: 4px;
+  border-radius: $radius-md;
+  border: 1px solid var(--color-border);
+}
+
+.tab {
+  border: 0;
+  background: transparent;
+  padding: spacing(1) spacing(3);
+  border-radius: $radius-sm;
+  cursor: pointer;
+  @include text-sm;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.tabActive {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.search {
+  flex: 1;
+  min-width: 240px;
+  padding: spacing(2) spacing(3);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
+  border-radius: $radius-md;
+  @include text-sm;
+}
+
+.card {
+  background: var(--color-bg-primary);
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+
+.empty {
+  padding: spacing(10);
+  text-align: center;
+  color: var(--color-text-tertiary);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  @include text-sm;
+
+  th {
+    text-align: left;
+    padding: spacing(3) spacing(4);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  td {
+    padding: spacing(3) spacing(4);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+
+    small {
+      color: var(--color-text-tertiary);
+    }
+  }
+}
+
+.role {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--color-bg-secondary);
+  border-radius: $radius-full;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: $radius-full;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.statusActive {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+}
+
+.statusBlocked {
+  background: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
+
+.rowActions {
+  display: flex;
+  gap: spacing(2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.deleteBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.4);
+    color: #dc2626;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,84 @@
+@use 'styles/abstracts' as *;
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  padding: spacing(3);
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+}
+
+.rowActive {
+  background: var(--color-primary-light);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  background: var(--color-bg-primary);
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.rowActive .icon {
+  background: var(--color-bg-primary);
+  color: var(--color-primary);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.label {
+  @include text-base;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.meta {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+}
+
+.currentBadge {
+  padding: 2px 8px;
+  border-radius: $radius-full;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  @include text-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.note {
+  @include text-sm;
+  color: var(--color-text-tertiary);
+}
+
+.error {
+  @include text-sm;
+  color: var(--color-danger);
+}

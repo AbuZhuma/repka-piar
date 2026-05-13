@@ -1,0 +1,162 @@
+@use 'styles/abstracts' as *;
+
+.wrap {
+  padding-block: spacing(6) spacing(16);
+}
+
+.inner {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.header {
+  margin: spacing(4) 0 spacing(8);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.title {
+  @include text-3xl;
+  font-weight: 800;
+  margin: 0;
+  color: var(--color-text-primary);
+
+  @include media-up('md') {
+    font-size: 2.25rem;
+  }
+}
+
+.date {
+  @include text-sm;
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(6);
+
+  @include media-up('lg') {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: spacing(8);
+    align-items: start;
+  }
+}
+
+.toc {
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+  padding: spacing(4);
+
+  @include media-up('lg') {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
+}
+
+.tocTitle {
+  @include text-sm;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-tertiary);
+  margin: 0 0 spacing(3);
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+
+  a {
+    @include text-sm;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    line-height: 1.4;
+    display: block;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+}
+
+.content {
+  min-width: 0;
+
+  h2 {
+    @include text-xl;
+    font-weight: 800;
+    margin: spacing(8) 0 spacing(3);
+    color: var(--color-text-primary);
+    scroll-margin-top: 100px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h3 {
+    @include text-lg;
+    font-weight: 700;
+    margin: spacing(5) 0 spacing(2);
+    color: var(--color-text-primary);
+  }
+
+  p {
+    @include text-base;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    margin: 0 0 spacing(3);
+  }
+
+  ul,
+  ol {
+    margin: spacing(2) 0 spacing(4);
+    padding-left: spacing(6);
+
+    li {
+      @include text-base;
+      line-height: 1.7;
+      color: var(--color-text-primary);
+      margin-bottom: spacing(1);
+    }
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  strong {
+    font-weight: 700;
+  }
+}
+
+.legalFooter {
+  margin-top: spacing(12);
+  padding-top: spacing(6);
+  border-top: 1px solid var(--color-border);
+}
+
+.legalNote {
+  @include text-sm;
+  color: var(--color-text-tertiary);
+  line-height: 1.6;
+  margin: 0;
+
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+}

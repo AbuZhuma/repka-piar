@@ -1,0 +1,21 @@
+// Тёмная тема — заглушка для MVP. Активируется через [data-theme="dark"].
+[data-theme='dark'] {
+  --color-primary: #ff7a52;
+  --color-primary-hover: #ff8d6a;
+  --color-primary-light: #3a1d12;
+
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #b3b3b3;
+  --color-text-tertiary: #888888;
+  --color-text-inverse: #1a1a1a;
+
+  --color-bg-primary: #121212;
+  --color-bg-secondary: #1c1c1c;
+  --color-bg-tertiary: #232323;
+  --color-bg-card: #1c1c1c;
+  --color-bg-hover: #2a2a2a;
+
+  --color-border-primary: #2c2c2c;
+  --color-border-secondary: #353535;
+  --color-border-focus: #ff7a52;
+}

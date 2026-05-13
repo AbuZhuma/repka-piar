@@ -1,0 +1,55 @@
+@use 'styles/abstracts' as *;
+
+.group {
+  display: flex;
+  gap: spacing(3);
+}
+
+.layout_row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.layout_column {
+  flex-direction: column;
+}
+
+.row {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.item {
+  width: 18px;
+  height: 18px;
+  border-radius: $radius-full;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    background-color $transition-fast,
+    border-color $transition-fast;
+  @include focus-ring;
+
+  &[data-state='checked'] {
+    border-color: var(--color-primary);
+  }
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: $radius-full;
+  background: var(--color-primary);
+}
+
+.label {
+  @include text-base;
+  color: var(--color-text-primary);
+}

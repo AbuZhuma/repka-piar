@@ -1,0 +1,128 @@
+@use 'styles/abstracts' as *;
+
+.form {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  padding: spacing(6);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 800;
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.subtitle {
+  @include text-sm;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(3);
+
+  @include media-up('md') {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+}
+
+.label {
+  @include text-sm;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.select {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
+  border-radius: $radius-md;
+  padding: spacing(2) spacing(3);
+  font-family: inherit;
+  @include text-base;
+  color: var(--color-text-primary);
+  height: 44px;
+
+  &:focus {
+    outline: 0;
+    border-color: var(--color-primary);
+  }
+}
+
+.counter {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+  align-self: flex-end;
+}
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: spacing(2);
+  @include text-sm;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  line-height: 1.5;
+
+  input {
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+}
+
+.error {
+  @include text-sm;
+  color: var(--color-danger, #dc2626);
+  background: rgba(220, 38, 38, 0.08);
+  padding: spacing(2) spacing(3);
+  border-radius: $radius-md;
+  margin: 0;
+}
+
+.success {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  padding: spacing(8);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing(3);
+}
+
+.successIcon {
+  color: #16a34a;
+}
+
+.successTitle {
+  @include text-2xl;
+  font-weight: 800;
+  margin: 0;
+}
+
+.successText {
+  @include text-base;
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 380px;
+  line-height: 1.5;
+}

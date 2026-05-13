@@ -1,0 +1,69 @@
+@use 'styles/abstracts' as *;
+
+.section {
+  padding-block: spacing(8) spacing(12);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing(2);
+  margin-bottom: spacing(5);
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.allLink {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+  @include text-sm;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.grid {
+  display: grid;
+  gap: spacing(4);
+}
+
+.variant_home {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: spacing(3);
+
+  @include media-up('md') {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: spacing(4);
+  }
+
+  @include media-up('xl') {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.variant_catalog {
+  grid-template-columns: 1fr;
+
+  @include media-up('sm') {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include media-up('xl') {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.empty {
+  padding: spacing(8) 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+}

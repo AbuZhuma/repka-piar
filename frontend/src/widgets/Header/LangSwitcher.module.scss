@@ -1,0 +1,41 @@
+@use 'styles/abstracts' as *;
+
+.switcher {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-bg-secondary);
+  border-radius: $radius-full;
+  padding: 2px;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+  padding: spacing(1) spacing(2);
+  border-radius: $radius-full;
+  color: var(--color-text-secondary);
+  @include text-sm;
+  font-weight: 600;
+  transition:
+    background-color $transition-fast,
+    color $transition-fast;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.active {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.label {
+  display: none;
+}

@@ -1,0 +1,31 @@
+@use 'styles/abstracts' as *;
+
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-secondary);
+}
+
+.header {
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border-primary);
+}
+
+.headerInner {
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: spacing(8);
+}
+
+.main_inner {
+  max-width: 420px;
+}

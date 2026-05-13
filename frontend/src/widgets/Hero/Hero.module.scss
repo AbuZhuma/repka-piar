@@ -1,0 +1,102 @@
+@use 'styles/abstracts' as *;
+
+.hero {
+  background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-bg-primary) 100%);
+  padding-block: spacing(10) spacing(16);
+
+  @include media-up('md') {
+    padding-block: spacing(16) spacing(20);
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(8);
+}
+
+.intro {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.heading {
+  @include text-3xl;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+
+  @include media-up('md') {
+    @include text-4xl;
+  }
+}
+
+.subtitle {
+  @include text-md;
+  color: var(--color-text-secondary);
+}
+
+.quick {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+}
+
+.quickLabel {
+  @include text-sm;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.quickList {
+  display: flex;
+  gap: spacing(2);
+  overflow-x: auto;
+  padding-block: spacing(1);
+  scrollbar-width: none;
+  justify-content: flex-start;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include media-up('md') {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: visible;
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: spacing(2) spacing(3);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-full;
+  @include text-sm;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition:
+    background-color $transition-fast,
+    border-color $transition-fast,
+    color $transition-fast;
+
+  &:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-text-inverse);
+  }
+}
+
+.trust {
+  text-align: center;
+  @include text-sm;
+  color: var(--color-text-secondary);
+}

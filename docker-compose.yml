@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: repka
+      POSTGRES_PASSWORD: repka_dev
+      POSTGRES_DB: repka
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U repka"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql://repka:repka_dev@postgres:5432/repka
+      JWT_SECRET: dev_secret_change_in_production
+      RUST_LOG: info,backend=debug
+      CORS_ORIGIN: http://localhost:3001,http://localhost:3002,http://localhost:3003,http://localhost:3005,http://localhost:3005
+      UPLOAD_DIR: /app/uploads
+      IP_HASH_SALT: repka_dev_change_in_production
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3005:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+      INTERNAL_API_URL: http://backend:8080
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  uploads_data:

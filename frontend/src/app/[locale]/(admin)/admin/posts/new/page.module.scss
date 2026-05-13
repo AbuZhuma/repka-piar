@@ -1,0 +1,31 @@
+@use 'styles/abstracts' as *;
+
+.wrap {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.title {
+  @include text-2xl;
+  font-weight: 800;
+  margin: 0 0 spacing(5);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  background: var(--color-bg-primary);
+  padding: spacing(6);
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+}
+
+.error {
+  color: var(--color-danger, #dc2626);
+  background: rgba(220, 38, 38, 0.08);
+  padding: spacing(2) spacing(3);
+  border-radius: $radius-md;
+  margin: 0;
+  @include text-sm;
+}

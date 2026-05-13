@@ -1,0 +1,37 @@
+@use 'styles/abstracts' as *;
+
+.crumbs {
+  margin-block: spacing(4);
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: spacing(1);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.link {
+  @include text-sm;
+  color: var(--color-text-secondary);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.current {
+  @include text-sm;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.sep {
+  color: var(--color-text-tertiary);
+}

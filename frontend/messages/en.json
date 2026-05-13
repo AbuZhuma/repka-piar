@@ -1,0 +1,701 @@
+{
+  "common": {
+    "search": "Search",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "back": "Back",
+    "next": "Next",
+    "show_more": "Show more",
+    "show_less": "Show less",
+    "city": "City",
+    "all_cities": "All cities",
+    "all_filters": "All filters",
+    "filters": "Filters",
+    "reset_all": "Reset all",
+    "apply": "Apply",
+    "found_count": "Found: {count}",
+    "no_results": "Nothing found",
+    "try_reset": "Try resetting some of the filters",
+    "from": "From",
+    "to": "To",
+    "any": "Any",
+    "yes": "Yes"
+  },
+  "navigation": {
+    "catalog": "Catalog",
+    "blog": "Blog",
+    "about": "About",
+    "contacts": "Contacts",
+    "become_tutor": "Become a tutor",
+    "login": "Log in",
+    "register": "Sign up",
+    "cabinet": "Dashboard",
+    "logout": "Log out",
+    "for_students": "Students",
+    "for_tutors": "Tutors",
+    "support": "Help"
+  },
+  "homepage": {
+    "h1": "Tutors for school, exams, and admissions",
+    "subtitle": "Find a tutor, contact them directly, and learn — no commissions, no intermediaries.",
+    "search": {
+      "subject_placeholder": "Subject",
+      "goal_placeholder": "Goal",
+      "format_placeholder": "Format",
+      "price_placeholder": "Price up to",
+      "search_button": "Search"
+    },
+    "quick_filters_title": "Popular categories",
+    "subjects_title": "Subjects",
+    "all_subjects": "All subjects",
+    "tutors_title": "Top tutors",
+    "exams_title": "Exam prep",
+    "how_it_works_title": "How it works",
+    "trust_strip": "{tutors}+ tutors · {rating} average rating · Verified educators"
+  },
+  "catalog": {
+    "title": "All tutors",
+    "subject_title": "{subject} tutors",
+    "exam_title": "{exam} preparation",
+    "filters_title": "Filters",
+    "filters_count": "Active: {count}",
+    "no_results_title": "Nothing matched your filters",
+    "sort": {
+      "label": "Sort by",
+      "relevance": "Recommended",
+      "price_asc": "Cheaper first",
+      "price_desc": "More expensive first",
+      "experience": "Experience",
+      "new": "Newest"
+    },
+    "filter_groups": {
+      "subject": "Subject",
+      "goal": "Goal",
+      "format": "Format",
+      "price": "Price, KGS / hour",
+      "experience_min": "Experience from",
+      "age_group": "Student age",
+      "language": "Teaching language",
+      "is_native": "Native speakers only"
+    }
+  },
+  "auth": {
+    "login_title": "Log in",
+    "login_subtitle": "Sign in to your tutor dashboard",
+    "register_title": "Sign up",
+    "email_or_phone": "Email or phone",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "password_hint": "At least 8 characters",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot your password?",
+    "login_button": "Sign in",
+    "no_account": "No account? Become a tutor",
+    "alt_sms": "Sign in via SMS code",
+    "errors": {
+      "invalid_credentials": "Invalid email/phone or password",
+      "rate_limit": "Too many attempts. Try again in a minute.",
+      "generic": "Could not sign in. Please try again.",
+      "conflict": "Email or phone already registered. Sign in?",
+      "weak_password": "Password must be at least 8 characters",
+      "invalid_phone": "Use international format, e.g. +996...",
+      "invalid_email": "Invalid email",
+      "must_agree": "You must agree to continue"
+    },
+    "forgot": {
+      "title": "Reset password",
+      "subtitle": "Enter the email or phone associated with your account",
+      "submit": "Get link",
+      "sent_title": "Link sent",
+      "sent_text": "If an account exists, we've sent a reset link to your email or SMS.",
+      "back_to_login": "← Back to sign in"
+    },
+    "reset": {
+      "title": "New password",
+      "subtitle": "Choose a new password",
+      "new_password": "New password",
+      "submit": "Update password",
+      "missing_token": "Link is invalid or expired",
+      "success_title": "Password updated",
+      "success_text": "You can now sign in with your new password.",
+      "to_login": "Go to sign in"
+    }
+  },
+  "become_tutor": {
+    "hero": {
+      "h1": "Reach more students with Repka",
+      "subtitle": "The #1 tutor marketplace in Kyrgyzstan. No commission per lesson, no middlemen.",
+      "cta": "Become a tutor"
+    },
+    "stats": {
+      "tutors": "Tutors",
+      "views": "Profile views",
+      "subjects": "Subjects"
+    },
+    "benefits": {
+      "title": "Why Repka",
+      "items": {
+        "leads_title": "Steady leads",
+        "leads_desc": "Students find you by subject, goal, and format",
+        "free_title": "No commission",
+        "free_desc": "All lesson money stays with you. No subscriptions or commissions",
+        "trust_title": "Built-in trust",
+        "trust_desc": "Document verification and a unified rating system"
+      }
+    },
+    "how": {
+      "title": "How it works",
+      "step1_title": "Fill out the form",
+      "step1_desc": "10 simple steps — usually 15 minutes",
+      "step2_title": "Pass verification",
+      "step2_desc": "We check diplomas and chat for 30 minutes",
+      "step3_title": "Get leads",
+      "step3_desc": "Students contact you directly"
+    },
+    "perks": {
+      "title": "What you get",
+      "items": [
+        "Profile with photo, intro video and documents",
+        "Personal page at repka.kg/tutor/...",
+        "Views and contact-click stats in your dashboard",
+        "Verified-by-platform badge",
+        "7-days-a-week support"
+      ]
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "How much does it cost?",
+          "a": "Listing is completely free. No subscriptions, hidden fees, or commissions on lessons."
+        },
+        {
+          "q": "How does verification work?",
+          "a": "We verify diplomas via photo and chat with you for 30 minutes about your experience."
+        },
+        {
+          "q": "Does Repka take a cut of lesson payments?",
+          "a": "No. All payments are agreed and handled directly between you and the student."
+        },
+        {
+          "q": "What do I need to register?",
+          "a": "An education document or certificate, a photo, and 15 minutes."
+        },
+        {
+          "q": "Can I teach online only?",
+          "a": "Yes. You can pick any combination of online, at-tutor or at-student."
+        },
+        {
+          "q": "How long does moderation take?",
+          "a": "Usually 24 hours. Up to 72 hours for complex cases."
+        }
+      ]
+    },
+    "cta_block": {
+      "title": "Ready to start?",
+      "subtitle": "Sign up now and get your first student this week",
+      "button": "Become a tutor"
+    }
+  },
+  "register": {
+    "title": "Tutor sign-up",
+    "step_label": "Step {current} of {total}",
+    "back": "Back",
+    "next": "Next",
+    "skip": "Skip",
+    "submit": "Submit for review",
+    "saving": "Saving...",
+    "step1": {
+      "title": "Contact details",
+      "subtitle": "Creating your account so you can resume later",
+      "name": "First name",
+      "surname": "Last name",
+      "email": "Email",
+      "phone_placeholder": "+996 555 12 34 56",
+      "agree": "I agree to the Terms and Privacy Policy",
+      "agree_link_offer": "Terms",
+      "agree_link_privacy": "Privacy Policy"
+    },
+    "step2": {
+      "title": "About you",
+      "birth_date": "Date of birth",
+      "gender": "Gender",
+      "gender_male": "Male",
+      "gender_female": "Female",
+      "city": "City",
+      "photo": "Profile photo",
+      "photo_hint": "JPG/PNG, up to 5 MB",
+      "photo_uploaded": "Photo uploaded",
+      "short_bio": "Short bio",
+      "short_bio_hint": "200–500 characters. The first thing students see"
+    },
+    "step3": {
+      "title": "Education",
+      "institution": "Institution",
+      "specialty": "Major",
+      "year_start": "Year started",
+      "year_end": "Year ended",
+      "add": "+ Add another",
+      "remove": "Remove",
+      "empty": "Add at least one entry"
+    },
+    "step4": {
+      "title": "What you teach",
+      "experience_label": "Years of teaching experience",
+      "subjects_title": "Subjects",
+      "goals_title": "Learning goals",
+      "ages_title": "Student ages",
+      "languages_title": "Teaching languages",
+      "is_native": "I'm a native speaker"
+    },
+    "step5": {
+      "title": "Certificates & documents",
+      "subtitle": "Optional. Helps speed up verification",
+      "drag_hint": "Drop files here or",
+      "browse": "browse",
+      "format_hint": "PDF, JPG, PNG up to 10 MB",
+      "title_label": "Caption",
+      "title_placeholder": "e.g. KSU Diploma"
+    },
+    "step6": {
+      "title": "Intro video",
+      "subtitle": "Optional but builds a lot of trust",
+      "tip": "Tell us who you are, what you teach, how lessons go. 1–3 minutes.",
+      "upload_label": "Upload video",
+      "format_hint": "MP4, MOV, WebM up to 100 MB",
+      "skip_note": "You can record this later from the dashboard"
+    },
+    "step7": {
+      "title": "Pricing & format",
+      "price_60_label": "60-minute lesson price",
+      "price_90_label": "90-minute price (optional)",
+      "currency_suffix": "KGS",
+      "trial_enabled": "30-minute free trial lesson",
+      "formats_title": "Where you teach",
+      "address": "Address for at-your-place lessons",
+      "districts": "Districts for at-student lessons (comma-separated)"
+    },
+    "step8": {
+      "title": "How students reach you",
+      "subtitle": "Provide at least one channel",
+      "phone": "Phone for calls",
+      "whatsapp": "WhatsApp",
+      "whatsapp_same": "Same as phone",
+      "telegram": "Telegram",
+      "telegram_placeholder": "@username",
+      "instagram": "Instagram",
+      "email": "Email for students"
+    },
+    "step9": {
+      "title": "Schedule & description",
+      "schedule_label": "Free time",
+      "schedule_placeholder": "Weekdays 4–9 pm, weekends 10 am–6 pm",
+      "description_label": "Detailed methodology",
+      "description_hint": "3–5 paragraphs. Tell us more about your approach and student results"
+    },
+    "step10": {
+      "title": "Review your details",
+      "section_about": "About you",
+      "section_pro": "Professional",
+      "section_prices": "Pricing",
+      "section_contacts": "Contacts",
+      "field_full_name": "Name",
+      "field_email": "Email",
+      "field_phone": "Phone",
+      "field_city": "City",
+      "field_experience": "Experience",
+      "field_subjects": "Subjects",
+      "field_price_60": "60 min",
+      "field_price_90": "90 min",
+      "field_trial": "Trial lesson",
+      "field_trial_yes": "Free"
+    },
+    "success": {
+      "title": "Submitted!",
+      "subtitle": "We'll get back to you within 24 hours for verification",
+      "step_check": "Documents review",
+      "step_call": "Short call (30 min)",
+      "step_publish": "Profile goes live",
+      "note": "We've emailed you a confirmation. You can sign in to your dashboard, but the public profile will be visible only after verification.",
+      "to_cabinet": "Open dashboard",
+      "to_home": "Back to home"
+    }
+  },
+  "footer": {
+    "tagline": "Tutor marketplace in Kyrgyzstan",
+    "for_students": "For students",
+    "for_tutors": "For tutors",
+    "company": "Company",
+    "legal": "Legal",
+    "rights": "© 2026 Repka. All rights reserved.",
+    "links": {
+      "catalog": "Tutor catalog",
+      "exam_prep": "Exam preparation",
+      "become_tutor": "Become a tutor",
+      "about": "About",
+      "blog": "Blog",
+      "contacts": "Contact us",
+      "offer": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "cookie": "Cookies",
+      "rules": "Community guidelines",
+      "for_students": "Students and parents",
+      "for_tutors": "For tutors",
+      "support": "Support and FAQ"
+    }
+  },
+  "goals": {
+    "school": "School curriculum",
+    "exam_ort": "ORT preparation",
+    "exam_ege": "EGE preparation",
+    "exam_ielts": "IELTS preparation",
+    "exam_toefl": "TOEFL preparation",
+    "exam_sat": "SAT preparation",
+    "olympiad": "Olympiads",
+    "beginner": "From scratch",
+    "improve_grades": "Improve grades",
+    "self": "For myself / general development",
+    "business": "Business & career",
+    "other": "Other"
+  },
+  "age_groups": {
+    "preschool": "Preschool (4–6)",
+    "primary": "Primary (grades 1–4)",
+    "middle": "Middle school (grades 5–9)",
+    "high": "High school (grades 10–11)",
+    "student": "University students",
+    "adult": "Adults"
+  },
+  "languages": {
+    "ru": "Russian",
+    "kg": "Kyrgyz",
+    "en": "English"
+  },
+  "formats": {
+    "online": "Online",
+    "at_tutor": "At tutor's place",
+    "at_student": "At student's place"
+  },
+  "badges": {
+    "top": "Top tutor",
+    "native": "Native speaker",
+    "verified": "Verified",
+    "experienced": "Experienced",
+    "popular": "Popular",
+    "exam_ort": "ORT prep",
+    "exam_ielts": "IELTS prep",
+    "exam_toefl": "TOEFL prep",
+    "exam_sat": "SAT prep",
+    "new": "New"
+  },
+  "tutor_card": {
+    "experience_years": "{years, plural, one {# year} other {# years}}",
+    "price_from": "from {price} / hour",
+    "no_price": "Price on request"
+  },
+  "tutor_profile": {
+    "subtitle": "{subject} tutor",
+    "share": "Share",
+    "experience_label": "{years, plural, one {# year of experience} other {# years of experience}}",
+    "subjects_count": "{count, plural, one {# subject} other {# subjects}}",
+    "tabs": {
+      "about": "About",
+      "prices": "Pricing",
+      "video": "Intro video"
+    },
+    "sections": {
+      "about": "About the tutor",
+      "education": "Education",
+      "experience": "Work experience",
+      "documents": "Certificates & documents",
+      "languages": "Languages",
+      "specializations": "Specialization",
+      "age_groups": "Works with",
+      "video": "Intro video"
+    },
+    "expand": "Show more",
+    "collapse": "Show less",
+    "video_open": "Open intro video",
+    "verified_doc": "Verified by platform",
+    "until_now": "present",
+    "lesson_60": "60-minute lesson",
+    "lesson_90": "90-minute lesson",
+    "lesson_trial": "30-minute trial lesson",
+    "lesson_trial_free": "Free",
+    "prices_disclaimer": "All terms are agreed directly with the tutor. Repka does not handle payments.",
+    "similar_title": "Similar tutors",
+    "free_trial_short": "Free trial"
+  },
+  "tutor_contacts": {
+    "card_title": "Contacts",
+    "price_label": "Price",
+    "show_button": "Show contacts",
+    "loading": "Revealing...",
+    "hint_protected": "Contacts are available to humans only, not bots",
+    "trust_docs": "Documents verified",
+    "schedule_label": "Available",
+    "rate_limit_error": "Too many attempts. Try again in a minute.",
+    "generic_error": "Could not load contacts. Try again later.",
+    "channels": {
+      "phone": "Call",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "email": "Email",
+      "instagram": "Instagram"
+    },
+    "mobile_cta": "Contact",
+    "modal_title": "Tutor contacts"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "catalog": "Catalog"
+  },
+  "cabinet": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "profile": "My profile",
+      "settings": "Settings",
+      "support": "Support",
+      "view_public": "View public profile",
+      "logout": "Log out"
+    },
+    "verification": {
+      "pending_title": "Profile under review",
+      "pending_text": "We'll get back to you in 24h. The profile is hidden from students for now.",
+      "rejected_title": "Profile rejected",
+      "rejected_text": "Reason: {reason}. Fix and resubmit.",
+      "active_title": "Profile published",
+      "active_text": "Students can find you in the catalog."
+    },
+    "dashboard": {
+      "greeting": "Hi, {name}!",
+      "subtitle_views": "Your profile was viewed {count} times this week",
+      "subtitle_pending": "Your profile is under review",
+      "subtitle_empty": "Statistics will appear here soon",
+      "stats": {
+        "views_label": "Views",
+        "clicks_label": "Contact clicks",
+        "conversion_label": "Conversion",
+        "position_label": "Catalog position",
+        "no_position": "Complete your profile",
+        "rank_value": "{rank} of {total}"
+      },
+      "checklist_title": "Profile completeness",
+      "checklist_hint": "A complete profile gets 3× more views",
+      "checklist_done": "Profile is complete ✓",
+      "views_chart_title": "Views this month",
+      "views_chart_total": "Total this month: {count}",
+      "channels_title": "Clicks by channel",
+      "channels_empty": "No clicks yet",
+      "sources_title": "Traffic sources",
+      "sources_empty": "Sources will appear when you have views",
+      "events_title": "What's happening",
+      "events_empty": "Nothing new yet",
+      "empty_title": "Your profile is live",
+      "empty_text": "Statistics will appear here soon. First students usually arrive within a week.",
+      "tips_title": "Things to do now:",
+      "tip_video": "Upload an intro video",
+      "tip_share": "Copy link and share",
+      "tip_view": "See how students see your profile",
+      "open_profile": "Open public profile ↗"
+    },
+    "profile_edit": {
+      "title": "Edit profile",
+      "preview_title": "Student's view",
+      "open_full": "Open full profile ↗",
+      "section_basic": "Basic",
+      "section_education": "Education",
+      "section_experience": "Work experience",
+      "section_prices": "Pricing",
+      "section_contacts": "Contacts",
+      "section_documents": "Documents",
+      "section_video": "Intro video",
+      "section_photo": "Photo",
+      "save": "Save",
+      "saving": "Saving...",
+      "saved": "Saved",
+      "save_error": "Could not save",
+      "name": "First name",
+      "surname": "Last name",
+      "city": "City",
+      "city_placeholder": "Pick a city",
+      "short_bio": "Short bio (for the catalog)",
+      "short_bio_hint": "Up to 500 characters",
+      "bio": "Detailed bio",
+      "bio_hint": "Tell more about your methodology",
+      "schedule": "Schedule",
+      "schedule_hint": "Free time for lessons",
+      "experience_years": "Experience (years)",
+      "is_native": "I'm a native speaker",
+      "specializations": "Specializations (comma-separated)",
+      "address": "Address",
+      "address_hint": "Where you teach at your place",
+      "districts": "At-student districts (comma-separated)",
+      "photo_upload": "Upload photo",
+      "photo_change": "Change photo",
+      "photo_remove": "Remove",
+      "photo_uploading": "Uploading...",
+      "photo_format": "JPG/PNG/WEBP, up to 5 MB",
+      "education_add": "+ Add",
+      "experience_add": "+ Add",
+      "remove": "Remove",
+      "year_start": "Year started",
+      "year_end": "Year ended (empty = present)",
+      "institution": "Institution",
+      "specialty": "Major",
+      "position": "Position",
+      "company": "Company",
+      "price_60": "60 min lesson price",
+      "price_90": "90 min lesson price",
+      "currency_suffix": "KGS",
+      "trial_enabled": "30-min free trial",
+      "documents_title": "Documents",
+      "doc_pending": "Pending review",
+      "doc_verified": "✓ Verified",
+      "doc_upload": "+ Upload document",
+      "doc_format": "PDF, JPG, PNG up to 10 MB",
+      "phone": "Phone for calls",
+      "whatsapp": "WhatsApp",
+      "telegram": "Telegram",
+      "instagram": "Instagram",
+      "email": "Email",
+      "submit_for_review": "Submit for review",
+      "submitted_ok": "Submitted",
+      "preview_no_contacts": "No contacts yet"
+    },
+    "settings": {
+      "title": "Settings",
+      "tab_security": "Security",
+      "tab_notifications": "Notifications",
+      "tab_privacy": "Privacy",
+      "tab_account": "Account",
+      "security": {
+        "change_password_title": "Change password",
+        "old_password": "Current password",
+        "new_password": "New password",
+        "confirm_password": "Confirm new password",
+        "submit": "Update password",
+        "mismatch": "Passwords don't match",
+        "success": "Password updated",
+        "wrong_old": "Wrong current password",
+        "weak": "At least 8 characters",
+        "sessions_title": "Active sessions",
+        "sessions_empty": "No active sessions",
+        "sessions_loading": "Loading sessions...",
+        "sessions_current": "Current",
+        "sessions_revoke": "Revoke",
+        "sessions_unknown_device": "Unknown device",
+        "sessions_started": "Started {date}",
+        "sessions_ip": "IP {ip}",
+        "sessions_revoked_ok": "Session revoked",
+        "sessions_revoke_failed": "Could not revoke session"
+      },
+      "notifications": {
+        "note": "Notification settings are coming in the next release."
+      },
+      "privacy": {
+        "note": "Privacy settings are coming in the next release."
+      },
+      "account": {
+        "info_title": "Account info",
+        "id": "ID",
+        "registered": "Registered",
+        "verification": "Verification status",
+        "delete_title": "Delete account",
+        "delete_text": "Your data will be wiped after 90 days. You can restore the account during this period.",
+        "delete_button": "Delete account",
+        "delete_modal_title": "Delete account?",
+        "delete_modal_warning": "Your data will be wiped after 90 days. This cannot be undone after the grace period.",
+        "delete_confirm_email_label": "Type your email to confirm",
+        "delete_password_label": "Enter password",
+        "delete_reason_label": "Why are you leaving? (optional)",
+        "delete_confirm_check": "I understand the data will be deleted",
+        "delete_cancel": "Cancel",
+        "delete_submit": "Delete account",
+        "delete_email_mismatch": "Email doesn't match",
+        "delete_wrong_password": "Wrong password",
+        "delete_generic_error": "Could not delete account",
+        "delete_success": "Account deleted. Redirecting..."
+      }
+    },
+    "support": {
+      "title": "Support",
+      "subtitle": "FAQ and Repka team contacts",
+      "faq_title": "Frequently asked",
+      "faq_items": [
+        {
+          "q": "How does verification work?",
+          "a": "After you complete the form we receive your application and call you for 30 minutes within 24 hours. We verify diplomas via photo and discuss your experience, then publish the profile."
+        },
+        {
+          "q": "How do I update my contacts or prices?",
+          "a": "Cabinet → My profile. Each section is saved independently — click Save inside the section after editing."
+        },
+        {
+          "q": "Does Repka take a cut?",
+          "a": "Zero. All lesson money stays with you. Repka is a marketplace; we only connect you to students."
+        },
+        {
+          "q": "How do students find me?",
+          "a": "Via the catalog, subject/goal/city filters, and exam pages. The more complete your profile and reviews, the higher you rank."
+        },
+        {
+          "q": "What if my profile is rejected?",
+          "a": "Open Settings — you'll see the rejection reason. Fix the issue and click Submit for review in the profile editor."
+        },
+        {
+          "q": "Can I teach online only?",
+          "a": "Yes. In Pricing & format pick only Online — you don't have to fill the address or districts."
+        }
+      ],
+      "contacts_title": "Team contacts",
+      "contacts_subtitle": "If FAQ doesn't cover your question, drop us a line",
+      "contact_email_label": "Email",
+      "contact_email_value": "support@repka.kg",
+      "contact_telegram_label": "Telegram",
+      "contact_telegram_value": "@repka_support",
+      "contact_phone_label": "Phone",
+      "contact_phone_value": "+996 555 00 00 00",
+      "contact_hours_label": "Hours",
+      "contact_hours_value": "Mon–Fri 9:00–18:00 (UTC+6)"
+    }
+  },
+  "exams": {
+    "ort_title": "ORT",
+    "ort_subtitle": "All ORT subjects",
+    "ege_title": "EGE",
+    "ege_subtitle": "Russian state exam",
+    "ielts_toefl_title": "IELTS / TOEFL",
+    "ielts_toefl_subtitle": "English for university",
+    "sat_title": "SAT",
+    "sat_subtitle": "Admissions to US colleges"
+  },
+  "how_it_works": {
+    "step1_title": "Find a tutor",
+    "step1_desc": "Pick a subject, goal, and convenient format",
+    "step2_title": "Reach out directly",
+    "step2_desc": "WhatsApp, Telegram or phone — your choice",
+    "step3_title": "Agree and learn",
+    "step3_desc": "No commissions, no middlemen"
+  },
+  "blog": {
+    "title": "Repka Blog",
+    "subtitle": "Study tips, exam breakdowns, and student stories",
+    "all": "All articles",
+    "categories_label": "Categories",
+    "search_placeholder": "Search articles",
+    "search_submit": "Search",
+    "empty": "No articles found",
+    "reading_time": "{count} min read",
+    "toc": "Contents",
+    "translation_missing": "This article is not yet translated — showing the Russian version.",
+    "related_title": "Related articles",
+    "share": "Share",
+    "breadcrumb_home": "Home",
+    "breadcrumb_blog": "Blog"
+  }
+}

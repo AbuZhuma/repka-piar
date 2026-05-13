@@ -1,0 +1,50 @@
+@use 'styles/abstracts' as *;
+
+.section {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(5);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+
+  @include media-up('md') {
+    padding: spacing(6);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  @include text-lg;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(3);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+}
+
+.savedBadge {
+  @include text-sm;
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+.error {
+  @include text-sm;
+  color: var(--color-danger);
+}

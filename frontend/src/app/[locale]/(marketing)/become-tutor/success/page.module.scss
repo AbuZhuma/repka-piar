@@ -1,0 +1,86 @@
+@use 'styles/abstracts' as *;
+
+.wrap {
+  padding-block: spacing(16);
+}
+
+.card {
+  max-width: 560px;
+  margin-inline: auto;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(8);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.iconBig {
+  color: var(--color-success);
+  display: inline-flex;
+}
+
+.title {
+  @include text-3xl;
+  font-weight: 700;
+}
+
+.subtitle {
+  @include text-md;
+  color: var(--color-text-secondary);
+}
+
+.steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+  width: 100%;
+}
+
+.step,
+.stepActive {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  padding: spacing(3);
+  background: var(--color-bg-secondary);
+  border-radius: $radius-md;
+  text-align: left;
+
+  .stepIcon {
+    color: var(--color-text-tertiary);
+    display: inline-flex;
+  }
+}
+
+.stepActive {
+  background: var(--color-primary-light);
+
+  .stepIcon {
+    color: var(--color-primary);
+  }
+}
+
+.stepLabel {
+  @include text-base;
+  color: var(--color-text-primary);
+}
+
+.note {
+  @include text-sm;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(2);
+  justify-content: center;
+  margin-top: spacing(2);
+}

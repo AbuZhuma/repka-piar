@@ -1,0 +1,11 @@
+pub mod analytics;
+pub mod authors;
+pub mod categories;
+pub mod dashboard;
+pub mod dictionaries;
+pub mod feedback;
+pub mod media;
+pub mod posts;
+pub mod settings;
+pub mod tutors;
+pub mod users;
