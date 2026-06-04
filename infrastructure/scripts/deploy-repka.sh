@@ -17,7 +17,7 @@ COMPOSE_FILE="$APP_DIR/infrastructure/docker-compose.prod.yml"
 ENV_FILE="$APP_DIR/.env.production"
 TAG_HISTORY="$APP_DIR/.deploy-tags"   # keeps last N successful tags
 KEEP_TAGS=5
-HEALTH_URL="${HEALTH_URL:-https://repka.school/api/health}"
+HEALTH_URL="${HEALTH_URL:-https://repka.school/health}"
 
 cd "$APP_DIR"
 
