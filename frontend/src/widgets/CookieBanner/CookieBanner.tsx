@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 
 import styles from './CookieBanner.module.scss';
 
@@ -49,7 +50,7 @@ export function CookieBanner() {
         <p className={styles.text}>
           Мы используем cookies, чтобы сайт работал стабильно и стал удобнее. Подробнее —
           в{' '}
-          <Link href="/legal/cookies" className={styles.link}>
+          <Link href={ROUTES.legal.cookie} className={styles.link}>
             политике cookies
           </Link>
           .

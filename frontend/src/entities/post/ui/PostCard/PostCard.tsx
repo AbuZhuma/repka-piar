@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useLocale } from 'next-intl';
 
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { assetUrl } from '@/shared/lib/format';
 
 import type { PostListItem } from '../../model/types';
@@ -44,7 +45,7 @@ export function PostCard({ post, variant = 'default' }: PostCardProps) {
 
   if (variant === 'featured') {
     return (
-      <Link href={`/blog/${post.slug}`} className={styles.featured}>
+      <Link href={ROUTES.blogPost(post.slug)} className={styles.featured}>
         <div className={styles.featuredImage}>
           {cover ? (
             <Image
@@ -97,7 +98,7 @@ export function PostCard({ post, variant = 'default' }: PostCardProps) {
 
   return (
     <article className={styles.card}>
-      <Link href={`/blog/${post.slug}`} className={styles.link}>
+      <Link href={ROUTES.blogPost(post.slug)} className={styles.link}>
         <div className={styles.cover}>
           {cover ? (
             <Image

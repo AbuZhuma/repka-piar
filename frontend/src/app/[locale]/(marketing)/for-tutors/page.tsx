@@ -22,6 +22,7 @@ import {
 import { setRequestLocale } from 'next-intl/server';
 
 import { Link } from '@/i18n/routing';
+import { getPlatformStats, type PlatformStats } from '@/shared/api/stats';
 import { ROUTES } from '@/shared/config/routes';
 import { Container } from '@/shared/ui/Container';
 
@@ -188,6 +189,17 @@ export default async function ForTutorsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
+  let stats: PlatformStats | null = null;
+  try {
+    stats = await getPlatformStats();
+  } catch {
+    /* swallow — fall back to neutral copy */
+  }
+  const tutorsLine =
+    stats && stats.tutors_total > 0
+      ? `Уже ${stats.tutors_total} проверенных педагогов работают через нас. `
+      : '';
+
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
@@ -199,9 +211,9 @@ export default async function ForTutorsPage({ params }: Props) {
                 Размещайтесь бесплатно. Ученики приходят сами.
               </h1>
               <p className={styles.heroSubtitle}>
-                Repka — площадка для проверенных репетиторов Кыргызстана. Без комиссии с
-                уроков, без подписок и платного продвижения. Только ваши деньги, ваше
-                расписание, ваши ученики.
+                {tutorsLine}Repka — площадка для проверенных репетиторов Кыргызстана. Без
+                комиссии с уроков, без подписок и платного продвижения. Только ваши деньги,
+                ваше расписание, ваши ученики.
               </p>
               <div className={styles.heroActions}>
                 <Link href={ROUTES.becomeTutor} className={styles.btnPrimary}>

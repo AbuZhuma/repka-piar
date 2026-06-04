@@ -1,7 +1,7 @@
 import { apiDelete, apiGet, apiPatch, apiPost } from '@/shared/lib/api';
 import { auth } from '@/shared/lib/auth';
 import { env } from '@/shared/config/env';
-import type { Block, PostCategory, PostAuthor } from '@/entities/post';
+import type { Block, PostAuthor, PostCategory } from '@/shared/types/post';
 
 export interface DashboardStats {
   tutors: {

@@ -3,7 +3,14 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 import { getSimilarTutors, getTutorBySlug } from '@/entities/tutor';
+import { ROUTES } from '@/shared/config/routes';
+import { SITE, absoluteUrl, buildAlternates } from '@/shared/config/site';
 import { ApiError } from '@/shared/lib/api';
+import {
+  generateBreadcrumbSchema,
+  generatePersonSchema,
+  jsonLdScript,
+} from '@/shared/lib/seo';
 import { Container } from '@/shared/ui/Container';
 import { Breadcrumbs } from '@/widgets/Breadcrumbs';
 import { SimilarTutors } from '@/widgets/SimilarTutors';
@@ -21,22 +28,62 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   try {
     const tutor = await getTutorBySlug(slug);
-    const subject = tutor.subjects[0]?.name_ru?.toLowerCase() ?? 'предмет';
-    const desc = tutor.short_bio ?? tutor.bio?.slice(0, 160) ?? '';
+    const fullName = `${tutor.name} ${tutor.surname}`.trim();
+    const subject = tutor.subjects[0]?.name_ru ?? 'предмет';
+    const city = tutor.city?.name_ru;
+    const formats = tutor.formats?.map((f) => f).join(', ');
+    void formats;
+    const price = tutor.price?.per_60
+      ? ` от ${tutor.price.per_60} ${tutor.price.currency ?? 'KGS'}/час`
+      : '';
+
+    const title = `${fullName} — репетитор ${subject.toLowerCase()}${
+      city ? ` в ${city}` : ''
+    }${price ? ` ·${price}` : ''}`;
+
+    const baseDesc =
+      tutor.short_bio?.trim() ||
+      tutor.bio?.slice(0, 200).trim() ||
+      `Репетитор ${subject.toLowerCase()}${city ? ` из ${city}` : ''}. ${tutor.experience_years} лет опыта.`;
+    const description = `${baseDesc}${price ? ` Стоимость${price}.` : ''} Свяжитесь напрямую через ${SITE.name}.`;
+
+    const ogImage = tutor.photo_url ?? SITE.ogImage;
+
     return {
-      title: `${tutor.name} ${tutor.surname} — репетитор ${subject}`,
-      description: desc,
-      openGraph: tutor.photo_url
-        ? { images: [{ url: tutor.photo_url }] }
-        : undefined,
+      title: { absolute: title },
+      description,
+      alternates: buildAlternates(locale, `/tutor/${slug}`),
+      openGraph: {
+        type: 'profile',
+        title: fullName,
+        description,
+        url: `${SITE.url}/${locale}/tutor/${slug}`,
+        firstName: tutor.name,
+        lastName: tutor.surname,
+        images: [
+          {
+            url: ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage),
+            alt: fullName,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: fullName,
+        description,
+        images: [ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage)],
+      },
     };
   } catch {
-    return { title: 'Профиль репетитора' };
+    return {
+      title: 'Профиль репетитора',
+      robots: { index: false, follow: true },
+    };
   }
 }
 
@@ -67,33 +114,34 @@ export default async function TutorPage({
   const primarySubject = tutor.subjects[0];
   const fullName = `${tutor.name} ${tutor.surname}`.trim();
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: fullName,
-    jobTitle: primarySubject ? `Репетитор ${primarySubject.name_ru.toLowerCase()}` : 'Репетитор',
-    image: tutor.photo_url ?? undefined,
-    address: tutor.city
-      ? { '@type': 'PostalAddress', addressLocality: tutor.city.name_ru }
-      : undefined,
-    aggregateRating:
-      typeof tutor.rating === 'number' && tutor.reviews_count > 0
-        ? {
-            '@type': 'AggregateRating',
-            ratingValue: tutor.rating.toFixed(1),
-            reviewCount: tutor.reviews_count,
-          }
-        : undefined,
-  };
+  const personSchema = generatePersonSchema(tutor);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { label: tCrumbs('home'), url: `/${locale}` },
+    { label: tCrumbs('catalog'), url: `/${locale}/catalog` },
+    ...(primarySubject
+      ? [
+          {
+            label: primarySubject.name_ru,
+            url: `/${locale}/catalog?subject=${primarySubject.slug}`,
+          },
+        ]
+      : []),
+    { label: fullName },
+  ]);
 
   return (
     <Container>
       <Breadcrumbs
         items={[
-          { label: tCrumbs('home'), href: '/' },
-          { label: tCrumbs('catalog'), href: '/catalog' },
+          { label: tCrumbs('home'), href: ROUTES.home },
+          { label: tCrumbs('catalog'), href: ROUTES.catalog },
           ...(primarySubject
-            ? [{ label: primarySubject.name_ru, href: `/catalog/${primarySubject.slug}` }]
+            ? [
+                {
+                  label: primarySubject.name_ru,
+                  href: ROUTES.catalogBy({ subject: primarySubject.slug }),
+                },
+              ]
             : []),
           { label: fullName },
         ]}
@@ -118,7 +166,11 @@ export default async function TutorPage({
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(personSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbSchema) }}
       />
     </Container>
   );

@@ -5,6 +5,7 @@ import type { PostFull } from '@/entities/post';
 import { PostCard } from '@/entities/post';
 import { BlockRenderer } from '@/features/blog-renderer';
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { cn } from '@/shared/lib/cn';
 import { Container } from '@/shared/ui/Container';
 import { assetUrl } from '@/shared/lib/format';
@@ -55,10 +56,10 @@ export function BlogArticle({ post, baseUrl }: BlogArticleProps) {
             <header className={styles.header}>
               <Breadcrumbs
                 items={[
-                  { label: t('breadcrumb_home'), href: '/' },
-                  { label: t('breadcrumb_blog'), href: '/blog' },
+                  { label: t('breadcrumb_home'), href: ROUTES.home },
+                  { label: t('breadcrumb_blog'), href: ROUTES.blog },
                   ...(post.category
-                    ? [{ label: post.category.name, href: `/blog?category=${post.category.slug}` }]
+                    ? [{ label: post.category.name, href: ROUTES.blogByCategory(post.category.slug) }]
                     : []),
                   { label: post.title },
                 ]}
@@ -66,7 +67,7 @@ export function BlogArticle({ post, baseUrl }: BlogArticleProps) {
 
               {post.category && (
                 <Link
-                  href={`/blog?category=${post.category.slug}`}
+                  href={ROUTES.blogByCategory(post.category.slug)}
                   className={styles.category}
                 >
                   {post.category.name}

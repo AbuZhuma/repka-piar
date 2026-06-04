@@ -36,3 +36,17 @@ export type Badge = (typeof BADGES)[number];
 
 export const CONTACT_CHANNELS = ['phone', 'whatsapp', 'telegram', 'email', 'instagram'] as const;
 export type ContactChannel = (typeof CONTACT_CHANNELS)[number];
+
+const MB = 1024 * 1024;
+
+export const FILE_LIMITS_MB = {
+  photo: 5,
+  document: 10,
+  video: 100,
+} as const;
+
+export const FILE_LIMITS = {
+  photo: FILE_LIMITS_MB.photo * MB,
+  document: FILE_LIMITS_MB.document * MB,
+  video: FILE_LIMITS_MB.video * MB,
+} as const;

@@ -134,9 +134,10 @@ export const useRegistrationStore = create<RegistrationData & Actions>()(
     {
       name: 'repka-tutor-registration',
       partialize: (state) => {
-        // Don't persist sensitive/heavy fields
-        const { password, ...rest } = state;
+        // Don't persist sensitive/session-only fields (passwords, blob: URLs)
+        const { password, videoUrl, ...rest } = state;
         void password;
+        void videoUrl;
         return rest;
       },
     },

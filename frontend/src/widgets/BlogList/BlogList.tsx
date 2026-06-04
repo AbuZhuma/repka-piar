@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import type { PostCategory, PostListItem } from '@/entities/post';
 import { PostCard } from '@/entities/post';
+import { ROUTES } from '@/shared/config/routes';
 import { Container } from '@/shared/ui/Container';
 import { cn } from '@/shared/lib/cn';
 
@@ -35,7 +36,7 @@ export function BlogList({
           <h1 className={styles.title}>{t('title')}</h1>
           <p className={styles.subtitle}>{t('subtitle')}</p>
 
-          <form className={styles.searchForm} action="/blog" method="GET" role="search">
+          <form className={styles.searchForm} action={ROUTES.blog} method="GET" role="search">
             <Search size={20} className={styles.searchIcon} aria-hidden />
             <input
               type="search"

@@ -14,6 +14,7 @@ import {
   type AdminTutorFull,
 } from '@/shared/api/admin';
 import { Link, useRouter } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { Button } from '@/shared/ui/Button';
 import { Textarea } from '@/shared/ui/Textarea';
 import { assetUrl } from '@/shared/lib/format';
@@ -96,7 +97,7 @@ export default function AdminTutorPage({ params }: Props) {
 
   return (
     <div>
-      <Link href="/admin/tutors" className={styles.back}>
+      <Link href={ROUTES.admin.tutors} className={styles.back}>
         <ArrowLeft size={14} /> К списку
       </Link>
 
@@ -252,56 +253,70 @@ export default function AdminTutorPage({ params }: Props) {
 
         <aside className={styles.right}>
           <div className={styles.card}>
-            <h3 className={styles.sectionTitle}>Решение по заявке</h3>
+            <h3 className={styles.sectionTitle}>
+              {status === 'active' ? 'Действия' : 'Решение по заявке'}
+            </h3>
 
-            <label className={styles.label}>Причина (для отклонения / правок)</label>
-            <Textarea
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              rows={3}
-              placeholder="Видна репетитору"
-            />
+            {status !== 'active' && (
+              <>
+                <label className={styles.label}>Причина (для отклонения / правок)</label>
+                <Textarea
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  rows={3}
+                  placeholder="Видна репетитору"
+                />
 
-            <label className={styles.label}>Внутренние заметки</label>
-            <Textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={3}
-              placeholder="Не видно репетитору"
-            />
+                <label className={styles.label}>Внутренние заметки</label>
+                <Textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  rows={3}
+                  placeholder="Не видно репетитору"
+                />
+              </>
+            )}
 
             {msg && <p className={styles.msg}>{msg}</p>}
 
             <div className={styles.actions}>
-              <Button
-                variant="primary"
-                size="md"
-                disabled={busy}
-                onClick={() => action(() => adminApproveTutor(id, notes || undefined), 'Одобрено')}
-              >
-                <Check size={14} /> Одобрить
-              </Button>
-              <Button
-                variant="secondary"
-                size="md"
-                disabled={busy || !reason.trim()}
-                onClick={() =>
-                  action(
-                    () => adminRequestTutorChanges(id, reason, notes || undefined),
-                    'Запрошены изменения',
-                  )
-                }
-              >
-                <RotateCcw size={14} /> Запросить правки
-              </Button>
-              <Button
-                variant="danger"
-                size="md"
-                disabled={busy || !reason.trim()}
-                onClick={() => action(() => adminRejectTutor(id, reason, notes || undefined), 'Отклонено')}
-              >
-                <X size={14} /> Отклонить
-              </Button>
+              {status !== 'active' && (
+                <>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    disabled={busy}
+                    onClick={() =>
+                      action(() => adminApproveTutor(id, notes || undefined), 'Одобрено')
+                    }
+                  >
+                    <Check size={14} /> Одобрить
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    disabled={busy || !reason.trim()}
+                    onClick={() =>
+                      action(
+                        () => adminRequestTutorChanges(id, reason, notes || undefined),
+                        'Запрошены изменения',
+                      )
+                    }
+                  >
+                    <RotateCcw size={14} /> Запросить правки
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="md"
+                    disabled={busy || !reason.trim()}
+                    onClick={() =>
+                      action(() => adminRejectTutor(id, reason, notes || undefined), 'Отклонено')
+                    }
+                  >
+                    <X size={14} /> Отклонить
+                  </Button>
+                </>
+              )}
 
               {status === 'inactive' ? (
                 <Button
@@ -337,7 +352,7 @@ export default function AdminTutorPage({ params }: Props) {
                   setBusy(true);
                   try {
                     await adminDeleteTutor(id);
-                    router.push('/admin/tutors');
+                    router.push(ROUTES.admin.tutors);
                   } catch (e: unknown) {
                     setMsg(e instanceof Error ? e.message : 'Не удалось удалить');
                     setBusy(false);

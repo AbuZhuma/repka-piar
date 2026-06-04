@@ -4,4 +4,5 @@ pub mod auth;
 pub mod dictionaries;
 pub mod health;
 pub mod posts;
+pub mod stats;
 pub mod tutors;

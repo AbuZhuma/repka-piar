@@ -100,6 +100,7 @@ export interface AuthUser {
   locale: string;
   timezone: string;
   email_verified: boolean;
+  avatar_url?: string | null;
   created_at: string;
 }
 

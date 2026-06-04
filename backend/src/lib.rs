@@ -13,10 +13,12 @@ pub mod services;
 pub mod utils;
 
 use config::Config;
+use services::cache_service::Cache;
 
 #[derive(Clone, FromRef)]
 pub struct AppState {
     pub pool: PgPool,
     pub config: Arc<Config>,
     pub upload_dir: Arc<std::path::PathBuf>,
+    pub cache: Cache,
 }

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 import { useRouter } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 
 import { useAuth } from './useAuth';
 
@@ -13,7 +14,11 @@ interface ProtectedRouteProps {
   redirectTo?: string;
 }
 
-export function ProtectedRoute({ children, fallback, redirectTo = '/login' }: ProtectedRouteProps) {
+export function ProtectedRoute({
+  children,
+  fallback,
+  redirectTo = ROUTES.login,
+}: ProtectedRouteProps) {
   const { user, loading } = useAuth();
   const router = useRouter();
 

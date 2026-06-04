@@ -54,7 +54,7 @@
     "tutors_title": "Top tutors",
     "exams_title": "Exam prep",
     "how_it_works_title": "How it works",
-    "trust_strip": "{tutors}+ tutors · {rating} average rating · Verified educators"
+    "trust_strip": "{tutors}+ tutors · {cities} cities · Verified educators"
   },
   "catalog": {
     "title": "All tutors",
@@ -104,7 +104,8 @@
       "weak_password": "Password must be at least 8 characters",
       "invalid_phone": "Use international format, e.g. +996...",
       "invalid_email": "Invalid email",
-      "must_agree": "You must agree to continue"
+      "must_agree": "You must agree to continue",
+      "file_too_large": "File is too large (max {mb} MB)"
     },
     "forgot": {
       "title": "Reset password",
@@ -231,7 +232,9 @@
       "photo_hint": "JPG/PNG, up to 5 MB",
       "photo_uploaded": "Photo uploaded",
       "short_bio": "Short bio",
-      "short_bio_hint": "200–500 characters. The first thing students see"
+      "short_bio_hint": "200–500 characters. The first thing students see",
+      "photo_upload": "Upload photo",
+      "photo_replace": "Replace photo"
     },
     "step3": {
       "title": "Education",
@@ -395,7 +398,9 @@
   "tutor_card": {
     "experience_years": "{years, plural, one {# year} other {# years}}",
     "price_from": "from {price} / hour",
-    "no_price": "Price on request"
+    "no_price": "Price on request",
+    "trial_badge": "Free trial",
+    "verified": "Verified"
   },
   "tutor_profile": {
     "subtitle": "{subject} tutor",
@@ -452,7 +457,10 @@
   },
   "breadcrumbs": {
     "home": "Home",
-    "catalog": "Catalog"
+    "catalog": "Catalog",
+    "blog": "Blog",
+    "tutor": "Tutor",
+    "post": "Article"
   },
   "cabinet": {
     "nav": {
@@ -501,7 +509,8 @@
       "tip_video": "Upload an intro video",
       "tip_share": "Copy link and share",
       "tip_view": "See how students see your profile",
-      "open_profile": "Open public profile ↗"
+      "open_profile": "Open public profile ↗",
+      "sources_total_label": "total"
     },
     "profile_edit": {
       "title": "Edit profile",
@@ -565,7 +574,8 @@
       "email": "Email",
       "submit_for_review": "Submit for review",
       "submitted_ok": "Submitted",
-      "preview_no_contacts": "No contacts yet"
+      "preview_no_contacts": "No contacts yet",
+      "file_too_large": "File is too large (max {mb} MB)"
     },
     "settings": {
       "title": "Settings",

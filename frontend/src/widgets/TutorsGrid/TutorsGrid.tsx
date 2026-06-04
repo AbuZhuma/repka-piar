@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { TutorCard } from '@/entities/tutor';
 import type { TutorPublic } from '@/entities/tutor/model/types';
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { cn } from '@/shared/lib/cn';
 import { Container } from '@/shared/ui/Container';
 
@@ -37,7 +38,7 @@ export function TutorsGrid({
         <header className={styles.header}>
           {title && <h2 className={styles.title}>{title}</h2>}
           {showAllLink && (
-            <Link href="/catalog" className={styles.allLink}>
+            <Link href={ROUTES.catalog} className={styles.allLink}>
               {t('common.all_filters')} <ChevronRight size={16} />
             </Link>
           )}

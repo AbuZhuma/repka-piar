@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
+import { SITE } from '@/shared/config/site';
 import { LegalDocLayout } from '@/widgets/LegalDocLayout';
 
 export const metadata: Metadata = {
-  title: 'Оферта для репетиторов',
-  description: 'Условия размещения профиля репетитора на платформе Repka.',
-  robots: { index: false, follow: true },
+  title: 'Публичная оферта для репетиторов',
+  description:
+    'Условия размещения профиля репетитора на платформе Repka: обязанности сторон, стоимость размещения, ответственность, прекращение договора.',
+  alternates: { canonical: `${SITE.url}/ru/legal/tutor-offer` },
+  // Юридический текст оферты для репетиторов — публичный, но индексировать не критично
+  robots: { index: true, follow: true },
 };
 
 const TOC = [

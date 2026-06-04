@@ -17,7 +17,7 @@ export function Footer() {
       links: [
         { href: ROUTES.catalog, label: t('links.catalog') },
         { href: ROUTES.forStudents, label: t('links.for_students') },
-        { href: '/catalog?goal=exam_ort', label: t('links.exam_prep') },
+        { href: ROUTES.catalogBy({ goal: 'exam_ort' }), label: t('links.exam_prep') },
       ],
     },
     {

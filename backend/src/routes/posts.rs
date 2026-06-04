@@ -6,11 +6,17 @@ use axum::{
     Json,
 };
 use serde_json::{json, Value};
+use uuid::Uuid;
 
-use crate::error::AppResult;
-use crate::models::post::{PostCategoryView, PostFilters, PostFull, PostListItem};
+use crate::error::{AppError, AppResult};
+use crate::models::post::{PostCategoryView, PostFilters, PostListItem};
+use crate::services::cache_keys;
 use crate::services::post_service::{PostListResponse, PostService};
 use crate::AppState;
+
+fn to_value<T: serde::Serialize>(v: &T) -> AppResult<Value> {
+    serde_json::to_value(v).map_err(|e| AppError::Internal(format!("serialize: {e}")))
+}
 
 fn extract_locale(headers: &HeaderMap, q: Option<&str>) -> Option<String> {
     if let Some(loc) = q {
@@ -66,12 +72,22 @@ pub async fn list(
     State(state): State<AppState>,
     headers: HeaderMap,
     Query(mut filters): Query<PostFilters>,
-) -> AppResult<Json<PostListResponse>> {
+) -> AppResult<Json<Value>> {
     if filters.locale.is_none() {
         filters.locale = extract_locale(&headers, None);
     }
+    let cache_key = cache_keys::post_list(&serde_json::to_string(&filters).unwrap_or_default());
+    if let Some(cached) = state.cache.get::<Value>(&cache_key).await {
+        return Ok(Json(cached));
+    }
     let svc = PostService::new(state.pool.clone(), state.config.clone());
-    Ok(Json(svc.search(filters).await?))
+    let res = svc.search(filters).await?;
+    let value = to_value(&res)?;
+    state
+        .cache
+        .set(&cache_key, &value, Some(cache_keys::TTL_POSTS))
+        .await;
+    Ok(Json(value))
 }
 
 pub async fn featured(
@@ -100,16 +116,37 @@ pub async fn get_by_slug(
     ConnectInfo(addr): ConnectInfo<SocketAddr>,
     Path(slug): Path<String>,
     Query(q): Query<LocaleQuery>,
-) -> AppResult<Json<PostFull>> {
+) -> AppResult<Json<Value>> {
     let loc = extract_locale(&headers, q.locale.as_deref());
-    let svc = PostService::new(state.pool.clone(), state.config.clone());
-    let post = svc.get_by_slug(&slug, loc.as_deref()).await?;
+    let loc_key = loc.as_deref().unwrap_or("ru");
+    let cache_key = cache_keys::post_by_slug(&slug, loc_key);
+    let (post_id, value) =
+        if let Some(cached) = state.cache.get::<Value>(&cache_key).await {
+            let id = cached
+                .get("id")
+                .and_then(|v| v.as_str())
+                .and_then(|s| Uuid::parse_str(s).ok());
+            (id, cached)
+        } else {
+            let svc = PostService::new(state.pool.clone(), state.config.clone());
+            let post = svc.get_by_slug(&slug, loc.as_deref()).await?;
+            let id = post.id;
+            let value = to_value(&post)?;
+            state
+                .cache
+                .set(&cache_key, &value, Some(cache_keys::TTL_POSTS))
+                .await;
+            (Some(id), value)
+        };
 
-    let ip = extract_ip(&headers, &addr);
-    svc.track_view(post.id, None, Some(ip_hash(&ip)), extract_referrer(&headers))
-        .await;
+    if let Some(id) = post_id {
+        let svc = PostService::new(state.pool.clone(), state.config.clone());
+        let ip = extract_ip(&headers, &addr);
+        svc.track_view(id, None, Some(ip_hash(&ip)), extract_referrer(&headers))
+            .await;
+    }
 
-    Ok(Json(post))
+    Ok(Json(value))
 }
 
 pub async fn related(

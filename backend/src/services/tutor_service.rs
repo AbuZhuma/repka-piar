@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use rust_decimal::prelude::ToPrimitive;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use sqlx::{PgPool, Postgres, QueryBuilder};
 use uuid::Uuid;
 
@@ -19,7 +19,7 @@ use crate::utils::slugify::{generate_slug, unique_tutor_slug};
 const MAX_LIMIT: i64 = 50;
 const DEFAULT_LIMIT: i64 = 12;
 
-#[derive(Debug, Default, Deserialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct TutorFilters {
     pub subject: Option<String>,
     pub goal: Option<String>,

@@ -1,21 +1,33 @@
 @use 'styles/abstracts' as *;
 
 .section {
-  padding-block: spacing(12);
+  padding-block: spacing(8);
   background: var(--color-bg-tertiary);
+
+  @include media-up('md') {
+    padding-block: spacing(12);
+  }
 }
 
 .title {
-  @include text-2xl;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
   font-weight: 700;
   color: var(--color-text-primary);
-  margin-bottom: spacing(5);
+  margin: 0 0 spacing(4);
+
+  @include media-up('md') {
+    margin-bottom: spacing(5);
+  }
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: spacing(3);
+
+  @include media-up('sm') {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
   @include media-up('lg') {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -27,15 +39,23 @@
   display: flex;
   align-items: center;
   gap: spacing(3);
-  padding: spacing(5);
+  padding: spacing(4);
   border-radius: $radius-lg;
   color: white;
+  text-decoration: none;
   transition:
     transform $transition-base,
     box-shadow $transition-base;
-  min-height: 120px;
+  min-height: 96px;
 
-  &:hover {
+  @include media-up('md') {
+    padding: spacing(5);
+    min-height: 120px;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     color: white;
@@ -43,9 +63,13 @@
 }
 
 .emoji {
-  font-size: 36px;
+  font-size: 30px;
   line-height: 1;
   flex-shrink: 0;
+
+  @include media-up('md') {
+    font-size: 36px;
+  }
 }
 
 .tileBody {

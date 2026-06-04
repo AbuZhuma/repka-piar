@@ -1,7 +1,11 @@
 @use 'styles/abstracts' as *;
 
 .section {
-  padding-block: spacing(8) spacing(12);
+  padding-block: spacing(6) spacing(10);
+
+  @include media-up('md') {
+    padding-block: spacing(8) spacing(12);
+  }
 }
 
 .header {
@@ -9,13 +13,18 @@
   align-items: center;
   justify-content: space-between;
   gap: spacing(2);
-  margin-bottom: spacing(5);
+  margin-bottom: spacing(4);
+
+  @include media-up('md') {
+    margin-bottom: spacing(5);
+  }
 }
 
 .title {
-  @include text-2xl;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
   font-weight: 700;
   color: var(--color-text-primary);
+  margin: 0;
 }
 
 .allLink {
@@ -37,8 +46,12 @@
 }
 
 .variant_home {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: spacing(3);
+
+  @include media-up('sm') {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
   @include media-up('md') {
     grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
 
@@ -41,10 +42,10 @@ export default function ErrorPage({
             <Button variant="primary" size="md" onClick={reset}>
               Обновить
             </Button>
-            <Link href="/" className={styles.btnSecondary}>
+            <Link href={ROUTES.home} className={styles.btnSecondary}>
               На главную
             </Link>
-            <Link href="/contacts" className={styles.btnGhost}>
+            <Link href={ROUTES.contacts} className={styles.btnGhost}>
               Связаться с поддержкой
             </Link>
           </div>

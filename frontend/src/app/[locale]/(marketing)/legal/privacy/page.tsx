@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
+import { SITE } from '@/shared/config/site';
 import { LegalDocLayout } from '@/widgets/LegalDocLayout';
 
 export const metadata: Metadata = {
   title: 'Политика конфиденциальности',
-  description: 'Как Repka обрабатывает и хранит персональные данные пользователей.',
+  description:
+    'Как Repka собирает, обрабатывает и защищает персональные данные пользователей. Цели обработки, сроки хранения, права пользователя и условия передачи третьим лицам.',
+  alternates: { canonical: `${SITE.url}/ru/legal/privacy` },
+  robots: { index: true, follow: true },
 };
 
 const TOC = [

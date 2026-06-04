@@ -2266,24 +2266,36 @@ impl AdminService {
             .fetch_optional(&self.pool)
             .await?;
 
+        let hash = hash_password(password)
+            .map_err(|e| AppError::Internal(format!("argon2 hash failed: {e}")))?;
+
         match row {
             Some(r) => {
                 let roles: Vec<String> = r.try_get("roles").unwrap_or_default();
+                let id: Uuid = r.try_get("id")?;
+                let mut new_roles = roles.clone();
                 if !roles.iter().any(|x| x == "admin") {
-                    let mut new_roles = roles.clone();
                     new_roles.push("admin".to_string());
-                    let id: Uuid = r.try_get("id")?;
-                    sqlx::query("UPDATE users SET roles = $2::text[] WHERE id = $1")
-                        .bind(id)
-                        .bind(&new_roles)
-                        .execute(&self.pool)
-                        .await?;
-                    tracing::info!(email, "promoted existing user to admin");
                 }
+                // Re-sync the default admin: clear soft-delete, unblock, re-hash password,
+                // ensure admin role. This makes ADMIN_EMAIL/ADMIN_PASSWORD env vars the
+                // source of truth for the seeded administrator.
+                sqlx::query(
+                    "UPDATE users \
+                     SET roles = $2::text[], \
+                         password_hash = $3, \
+                         deleted_at = NULL, \
+                         is_blocked = FALSE \
+                     WHERE id = $1",
+                )
+                .bind(id)
+                .bind(&new_roles)
+                .bind(&hash)
+                .execute(&self.pool)
+                .await?;
+                tracing::info!(email, "ensured default admin user (revived + password synced)");
             }
             None => {
-                let hash = hash_password(password)
-                    .map_err(|e| AppError::Internal(format!("argon2 hash failed: {e}")))?;
                 sqlx::query(
                     "INSERT INTO users (email, phone, password_hash, name, surname, roles, locale, timezone, email_verified) \
                      VALUES ($1, $2, $3, 'Admin', 'Repka', ARRAY['admin']::TEXT[], 'ru', 'Asia/Bishkek', TRUE)",

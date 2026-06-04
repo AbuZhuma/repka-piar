@@ -13,6 +13,7 @@ import {
   type Paginated,
 } from '@/shared/api/admin';
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { Button } from '@/shared/ui/Button';
 import { cn } from '@/shared/lib/cn';
 
@@ -70,7 +71,7 @@ export default function AdminPostsPage() {
     <div>
       <header className={styles.header}>
         <h1 className={styles.title}>Статьи блога</h1>
-        <Link href="/admin/posts/new">
+        <Link href={ROUTES.admin.postNew}>
           <Button variant="primary" size="md">
             <Plus size={14} /> Новая статья
           </Button>
@@ -121,7 +122,7 @@ export default function AdminPostsPage() {
               {data.data.map((p) => (
                 <tr key={p.id}>
                   <td>
-                    <Link href={`/admin/posts/${p.id}/edit`} className={styles.titleCell}>
+                    <Link href={ROUTES.admin.postEdit(p.id)} className={styles.titleCell}>
                       <strong>{p.title_ru}</strong>
                       <small>{p.slug}</small>
                     </Link>
@@ -139,7 +140,7 @@ export default function AdminPostsPage() {
                   </td>
                   <td>
                     <div className={styles.rowActions}>
-                      <Link href={`/admin/posts/${p.id}/edit`} className={styles.openBtn}>
+                      <Link href={ROUTES.admin.postEdit(p.id)} className={styles.openBtn}>
                         Редактировать
                       </Link>
                       <button

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { Container } from '@/shared/ui/Container';
 
 import styles from './page.module.scss';
@@ -89,7 +90,7 @@ export default async function AboutPage({
           <p className={styles.ctaText}>
             Пишите нам — для прессы, партнёрств и общих вопросов.
           </p>
-          <Link href="/contacts" className={styles.ctaButton}>
+          <Link href={ROUTES.contacts} className={styles.ctaButton}>
             Связаться с нами
           </Link>
         </footer>

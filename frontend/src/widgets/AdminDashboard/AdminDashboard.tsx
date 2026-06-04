@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { Link } from '@/i18n/routing';
 import type { DashboardStats } from '@/shared/api/admin';
 import { getDashboard } from '@/shared/api/admin';
+import { ROUTES } from '@/shared/config/routes';
 import { cn } from '@/shared/lib/cn';
 
 import styles from './AdminDashboard.module.scss';
@@ -50,7 +51,7 @@ export function AdminDashboard() {
           label="На проверке"
           value={stats.tutors.pending_verification}
           highlight={stats.tutors.pending_verification > 0}
-          href="/admin/tutors?status=pending"
+          href={ROUTES.admin.tutorsPending}
         />
         <StatCard
           icon={<Eye size={20} />}
@@ -72,14 +73,14 @@ export function AdminDashboard() {
           label="Опубликованных статей"
           value={stats.posts.published}
           sub={`Черновиков: ${stats.posts.drafts}`}
-          href="/admin/posts"
+          href={ROUTES.admin.posts}
         />
         <StatCard
           icon={<MessageSquare size={20} />}
           label="Новые обращения"
           value={stats.feedback.new}
           highlight={stats.feedback.new > 0}
-          href="/admin/feedback?status=new"
+          href={ROUTES.admin.feedbackNew}
         />
       </div>
 
@@ -88,7 +89,7 @@ export function AdminDashboard() {
         <ul className={styles.actionList}>
           {stats.tutors.pending_verification > 0 && (
             <li>
-              <Link href="/admin/tutors?status=pending" className={styles.actionLink}>
+              <Link href={ROUTES.admin.tutorsPending} className={styles.actionLink}>
                 <Clock size={16} />
                 <span>{stats.tutors.pending_verification} репетиторов на верификации</span>
               </Link>
@@ -96,7 +97,7 @@ export function AdminDashboard() {
           )}
           {stats.feedback.unread > 0 && (
             <li>
-              <Link href="/admin/feedback" className={styles.actionLink}>
+              <Link href={ROUTES.admin.feedback} className={styles.actionLink}>
                 <MessageSquare size={16} />
                 <span>{stats.feedback.unread} необработанных обращений</span>
               </Link>
@@ -104,7 +105,7 @@ export function AdminDashboard() {
           )}
           {stats.posts.drafts > 0 && (
             <li>
-              <Link href="/admin/posts?status=draft" className={styles.actionLink}>
+              <Link href={ROUTES.admin.postsDrafts} className={styles.actionLink}>
                 <FileText size={16} />
                 <span>{stats.posts.drafts} черновиков статей</span>
               </Link>
@@ -123,7 +124,7 @@ export function AdminDashboard() {
             {stats.recent_pending_tutors.map((t) => (
               <Link
                 key={t.id}
-                href={`/admin/tutors/${t.id}`}
+                href={ROUTES.admin.tutor(t.id)}
                 className={styles.tutorCard}
               >
                 <strong>

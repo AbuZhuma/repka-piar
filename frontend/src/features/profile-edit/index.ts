@@ -5,3 +5,4 @@ export { EditEducationSection } from './EditEducationSection';
 export { EditPricesSection } from './EditPricesSection';
 export { EditContactsSection } from './EditContactsSection';
 export { EditDocumentsSection } from './EditDocumentsSection';
+export { ProfileEditorProvider, useEditor } from './model/EditorContext';

@@ -34,6 +34,7 @@ pub struct UserPublic {
     pub locale: String,
     pub timezone: String,
     pub email_verified: bool,
+    pub avatar_url: Option<String>,
     pub created_at: DateTime<Utc>,
 }
 
@@ -49,6 +50,7 @@ impl From<User> for UserPublic {
             locale: u.locale,
             timezone: u.timezone,
             email_verified: u.email_verified,
+            avatar_url: None,
             created_at: u.created_at,
         }
     }

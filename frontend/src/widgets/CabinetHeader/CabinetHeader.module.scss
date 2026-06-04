@@ -26,6 +26,32 @@
   }
 }
 
+.left {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+}
+
+.menuBtn {
+  @include button-reset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: $radius-md;
+  color: var(--color-text-primary);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-bg-secondary);
+  }
+
+  @include media-up('lg') {
+    display: none;
+  }
+}
+
 .right {
   display: flex;
   align-items: center;
@@ -46,11 +72,18 @@
   @include text-sm;
   text-transform: uppercase;
   cursor: pointer;
+  overflow: hidden;
   @include focus-ring;
 
   &:hover {
     filter: brightness(0.95);
   }
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .menu {
@@ -66,17 +99,51 @@
 .menuHead {
   padding: spacing(2) spacing(3);
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: spacing(3);
+  min-width: 240px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+  }
 
   strong {
     @include text-sm;
     color: var(--color-text-primary);
+    line-height: 1.2;
+    word-break: break-word;
   }
 
-  span {
+  > div > span {
     @include text-xs;
     color: var(--color-text-tertiary);
+    word-break: break-word;
+  }
+}
+
+.menuAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-full;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 

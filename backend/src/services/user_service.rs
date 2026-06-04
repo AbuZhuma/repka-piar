@@ -442,10 +442,25 @@ impl UserService {
         .execute(&self.pool)
         .await?;
 
+        let mut public: UserPublic = user.into();
+        public.avatar_url = fetch_avatar_url(&self.pool, public.id).await;
+
         Ok(AuthResponse {
-            user: user.into(),
+            user: public,
             access_token: access,
             refresh_token: refresh,
         })
     }
+}
+
+pub async fn fetch_avatar_url(pool: &sqlx::PgPool, user_id: Uuid) -> Option<String> {
+    sqlx::query_scalar::<_, Option<String>>(
+        "SELECT photo_url FROM tutor_profiles WHERE user_id = $1 AND photo_url IS NOT NULL LIMIT 1",
+    )
+    .bind(user_id)
+    .fetch_optional(pool)
+    .await
+    .ok()
+    .flatten()
+    .flatten()
 }

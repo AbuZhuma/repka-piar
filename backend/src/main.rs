@@ -50,10 +50,29 @@ async fn main() -> anyhow::Result<()> {
     tokio::fs::create_dir_all(&upload_dir).await?;
     tracing::info!(upload_dir = %upload_dir.display(), "upload directory ready");
 
+    let cache_ttl_secs = std::env::var("CACHE_TTL_SECONDS")
+        .ok()
+        .and_then(|s| s.parse::<u64>().ok())
+        .unwrap_or(60);
+    let cache = match std::env::var("REDIS_URL") {
+        Ok(url) if !url.is_empty() => {
+            backend::services::cache_service::Cache::connect(
+                &url,
+                std::time::Duration::from_secs(cache_ttl_secs),
+            )
+            .await
+        }
+        _ => {
+            tracing::info!("REDIS_URL not set; cache disabled");
+            backend::services::cache_service::Cache::disabled()
+        }
+    };
+
     let state = AppState {
         pool,
         config: Arc::new(cfg.clone()),
         upload_dir: Arc::new(upload_dir.clone()),
+        cache,
     };
 
     let origins: Vec<http::HeaderValue> = cfg
@@ -305,6 +324,7 @@ async fn main() -> anyhow::Result<()> {
         .nest("/dictionaries", dict_routes)
         .nest("/posts", post_routes)
         .nest("/admin", admin_routes)
+        .route("/stats", get(routes::stats::platform_stats))
         .route("/feedback", post(routes::admin::feedback::create_public));
 
     let app = Router::new()

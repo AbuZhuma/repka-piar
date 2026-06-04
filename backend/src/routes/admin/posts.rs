@@ -11,6 +11,7 @@ use crate::services::admin_service::{
     AdminPost, AdminPostListItem, AdminService, CreatePostRequest, Paginated, PostFilters,
     UpdatePostRequest,
 };
+use crate::services::cache_keys;
 use crate::AppState;
 
 pub async fn list(
@@ -39,6 +40,7 @@ pub async fn create(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let post = svc.create_post(payload).await?;
     svc.log_action(admin.0.sub, "post.created", Some("post"), Some(post.id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(post))
 }
 
@@ -51,6 +53,7 @@ pub async fn update(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let post = svc.update_post(id, payload).await?;
     svc.log_action(admin.0.sub, "post.updated", Some("post"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(post))
 }
 
@@ -62,6 +65,7 @@ pub async fn publish(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let post = svc.publish_post(id).await?;
     svc.log_action(admin.0.sub, "post.published", Some("post"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(post))
 }
 
@@ -73,6 +77,7 @@ pub async fn unpublish(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let post = svc.unpublish_post(id).await?;
     svc.log_action(admin.0.sub, "post.unpublished", Some("post"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(post))
 }
 
@@ -84,6 +89,7 @@ pub async fn delete_post(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.delete_post(id).await?;
     svc.log_action(admin.0.sub, "post.deleted", Some("post"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -95,5 +101,6 @@ pub async fn duplicate(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let post = svc.duplicate_post(id).await?;
     svc.log_action(admin.0.sub, "post.duplicated", Some("post"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(post))
 }

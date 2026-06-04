@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { redirect } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,5 +21,5 @@ export default async function ExamRedirect({
   const { exam } = await params;
   const goal = EXAM_TO_GOAL[exam];
   if (!goal) notFound();
-  redirect(`/catalog?goal=${goal}`);
+  redirect(ROUTES.catalogBy({ goal }));
 }

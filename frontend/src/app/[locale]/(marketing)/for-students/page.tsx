@@ -21,6 +21,7 @@ import {
 import { setRequestLocale } from 'next-intl/server';
 
 import { Link } from '@/i18n/routing';
+import { getPlatformStats, type PlatformStats } from '@/shared/api/stats';
 import { ROUTES } from '@/shared/config/routes';
 import { Container } from '@/shared/ui/Container';
 
@@ -32,12 +33,15 @@ export const metadata: Metadata = {
     'Найдите проверенного репетитора в Кыргызстане за пару минут. Без комиссий, без посредников, с понятными ценами.',
 };
 
-const STATS = [
-  { value: '500+', label: 'проверенных репетиторов' },
-  { value: '20+', label: 'предметов и направлений' },
-  { value: '4.8', label: 'средний рейтинг педагога' },
-  { value: '0%', label: 'комиссии с уроков' },
-];
+function buildStats(s: { tutors_total: number; subjects_total: number; cities_total: number }) {
+  const fmt = (n: number) => (n >= 100 ? `${Math.floor(n / 10) * 10}+` : `${n}`);
+  return [
+    { value: s.tutors_total > 0 ? fmt(s.tutors_total) : '—', label: 'проверенных репетиторов' },
+    { value: s.subjects_total > 0 ? fmt(s.subjects_total) : '—', label: 'предметов и направлений' },
+    { value: s.cities_total > 0 ? `${s.cities_total}` : '—', label: 'городов покрытия' },
+    { value: '0%', label: 'комиссии с уроков' },
+  ];
+}
 
 const STEPS = [
   {
@@ -193,6 +197,19 @@ export default async function ForStudentsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
+  let stats: PlatformStats | null = null;
+  try {
+    stats = await getPlatformStats();
+  } catch {
+    /* network error — fall back to neutral placeholders in buildStats */
+  }
+  const statRows = buildStats(
+    stats ?? { tutors_total: 0, subjects_total: 0, cities_total: 0 },
+  );
+  const subtitleStats = stats
+    ? `${stats.tutors_total} проверенных педагогов, ${stats.subjects_total} предметов`
+    : 'Проверенные педагоги, более 20 предметов';
+
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
@@ -202,8 +219,8 @@ export default async function ForStudentsPage({ params }: Props) {
             Найдите репетитора в Кыргызстане — без комиссий и посредников
           </h1>
           <p className={styles.heroSubtitle}>
-            500+ проверенных педагогов, 20+ предметов, прямые контакты и понятные цены.
-            Договариваетесь напрямую — мы не вмешиваемся в платежи и уроки.
+            {subtitleStats}, прямые контакты и понятные цены. Договариваетесь напрямую —
+            мы не вмешиваемся в платежи и уроки.
           </p>
           <div className={styles.heroActions}>
             <Link href={ROUTES.catalog} className={styles.btnPrimary}>
@@ -215,7 +232,7 @@ export default async function ForStudentsPage({ params }: Props) {
           </div>
 
           <ul className={styles.statsBar}>
-            {STATS.map((s) => (
+            {statRows.map((s) => (
               <li key={s.label} className={styles.statItem}>
                 <strong className={styles.statValue}>{s.value}</strong>
                 <span className={styles.statLabel}>{s.label}</span>

@@ -11,11 +11,10 @@ use uuid::Uuid;
 
 use crate::auth::middleware::AuthUser;
 use crate::error::{AppError, AppResult};
-use crate::models::tutor::{TutorProfileFull, TutorProfilePublic};
+use crate::services::cache_keys;
 use crate::services::tutor_service::{
     AddEducationRequest, AddExperienceRequest, CreateProfileRequest, MyProfileFull, TutorFilters,
-    TutorListResponse, TutorService, UpdateContactsRequest, UpdatePricesRequest,
-    UpdateProfileRequest,
+    TutorService, UpdateContactsRequest, UpdatePricesRequest, UpdateProfileRequest,
 };
 use crate::AppState;
 
@@ -64,12 +63,26 @@ fn ip_hash(ip: &str) -> String {
     base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(hasher.finish().to_le_bytes())
 }
 
+fn to_value<T: serde::Serialize>(v: &T) -> AppResult<Value> {
+    serde_json::to_value(v).map_err(|e| AppError::Internal(format!("serialize: {e}")))
+}
+
 pub async fn list(
     State(state): State<AppState>,
     Query(filters): Query<TutorFilters>,
-) -> AppResult<Json<TutorListResponse>> {
+) -> AppResult<Json<Value>> {
+    let cache_key = cache_keys::tutor_list(&serde_json::to_string(&filters).unwrap_or_default());
+    if let Some(cached) = state.cache.get::<Value>(&cache_key).await {
+        return Ok(Json(cached));
+    }
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
-    Ok(Json(svc.search(filters).await?))
+    let res = svc.search(filters).await?;
+    let value = to_value(&res)?;
+    state
+        .cache
+        .set(&cache_key, &value, Some(cache_keys::TTL_TUTORS))
+        .await;
+    Ok(Json(value))
 }
 
 pub async fn get_by_slug(
@@ -77,18 +90,41 @@ pub async fn get_by_slug(
     headers: HeaderMap,
     ConnectInfo(addr): ConnectInfo<SocketAddr>,
     Path(slug): Path<String>,
-) -> AppResult<Json<TutorProfileFull>> {
-    let svc = TutorService::new(state.pool.clone(), state.config.clone());
-    let full = svc.get_full_by_slug(&slug).await?;
-    let ip = extract_ip(&headers, &addr);
-    svc.track_profile_view(
-        full.profile.id,
-        None,
-        Some(ip_hash(&ip)),
-        extract_user_agent(&headers),
-        extract_referrer(&headers),
-    );
-    Ok(Json(full))
+) -> AppResult<Json<Value>> {
+    let cache_key = cache_keys::tutor_by_slug(&slug);
+    let (tutor_id, value) =
+        if let Some(cached) = state.cache.get::<Value>(&cache_key).await {
+            let id = cached
+                .get("profile")
+                .and_then(|p| p.get("id"))
+                .and_then(|v| v.as_str())
+                .and_then(|s| Uuid::parse_str(s).ok());
+            (id, cached)
+        } else {
+            let svc = TutorService::new(state.pool.clone(), state.config.clone());
+            let full = svc.get_full_by_slug(&slug).await?;
+            let id = full.profile.id;
+            let value = to_value(&full)?;
+            state
+                .cache
+                .set(&cache_key, &value, Some(cache_keys::TTL_TUTORS))
+                .await;
+            (Some(id), value)
+        };
+
+    // Fire-and-forget view tracking — counted even on cache hits.
+    if let Some(id) = tutor_id {
+        let svc = TutorService::new(state.pool.clone(), state.config.clone());
+        let ip = extract_ip(&headers, &addr);
+        svc.track_profile_view(
+            id,
+            None,
+            Some(ip_hash(&ip)),
+            extract_user_agent(&headers),
+            extract_referrer(&headers),
+        );
+    }
+    Ok(Json(value))
 }
 
 #[derive(serde::Deserialize)]
@@ -100,9 +136,20 @@ pub async fn similar(
     State(state): State<AppState>,
     Path(slug): Path<String>,
     Query(q): Query<SimilarQuery>,
-) -> AppResult<Json<Vec<TutorProfilePublic>>> {
+) -> AppResult<Json<Value>> {
+    let limit = q.limit.unwrap_or(6);
+    let cache_key = cache_keys::tutor_similar(&slug, limit as u32);
+    if let Some(cached) = state.cache.get::<Value>(&cache_key).await {
+        return Ok(Json(cached));
+    }
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
-    Ok(Json(svc.similar(&slug, q.limit.unwrap_or(6)).await?))
+    let res = svc.similar(&slug, limit).await?;
+    let value = to_value(&res)?;
+    state
+        .cache
+        .set(&cache_key, &value, Some(cache_keys::TTL_TUTORS))
+        .await;
+    Ok(Json(value))
 }
 
 pub async fn create_me(
@@ -112,7 +159,9 @@ pub async fn create_me(
 ) -> AppResult<Json<MyProfileFull>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     svc.create_my_profile(auth.0.sub, payload).await?;
-    Ok(Json(svc.get_my_profile_full(auth.0.sub).await?))
+    let profile = svc.get_my_profile_full(auth.0.sub).await?;
+    cache_keys::purge_tutors(&state.cache).await;
+    Ok(Json(profile))
 }
 
 pub async fn get_me(
@@ -130,7 +179,9 @@ pub async fn update_me(
 ) -> AppResult<Json<MyProfileFull>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     svc.update_my_profile(auth.0.sub, payload).await?;
-    Ok(Json(svc.get_my_profile_full(auth.0.sub).await?))
+    let profile = svc.get_my_profile_full(auth.0.sub).await?;
+    cache_keys::purge_tutors(&state.cache).await;
+    Ok(Json(profile))
 }
 
 pub async fn update_contacts(
@@ -140,7 +191,9 @@ pub async fn update_contacts(
 ) -> AppResult<Json<MyProfileFull>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     svc.update_my_contacts(auth.0.sub, payload).await?;
-    Ok(Json(svc.get_my_profile_full(auth.0.sub).await?))
+    let profile = svc.get_my_profile_full(auth.0.sub).await?;
+    cache_keys::purge_tutors(&state.cache).await;
+    Ok(Json(profile))
 }
 
 pub async fn update_prices(
@@ -150,7 +203,9 @@ pub async fn update_prices(
 ) -> AppResult<Json<MyProfileFull>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     svc.update_my_prices(auth.0.sub, payload).await?;
-    Ok(Json(svc.get_my_profile_full(auth.0.sub).await?))
+    let profile = svc.get_my_profile_full(auth.0.sub).await?;
+    cache_keys::purge_tutors(&state.cache).await;
+    Ok(Json(profile))
 }
 
 pub async fn add_education(
@@ -160,6 +215,7 @@ pub async fn add_education(
 ) -> AppResult<Json<Value>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     let row = svc.add_education(auth.0.sub, payload).await?;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!(row)))
 }
 
@@ -170,6 +226,7 @@ pub async fn delete_education(
 ) -> AppResult<Json<Value>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     svc.delete_education(auth.0.sub, id).await?;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -180,6 +237,7 @@ pub async fn add_experience(
 ) -> AppResult<Json<Value>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     let row = svc.add_experience(auth.0.sub, payload).await?;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!(row)))
 }
 
@@ -190,6 +248,7 @@ pub async fn delete_experience(
 ) -> AppResult<Json<Value>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     svc.delete_experience(auth.0.sub, id).await?;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -199,6 +258,7 @@ pub async fn submit_for_review(
 ) -> AppResult<Json<Value>> {
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     let updated = svc.submit_for_review(auth.0.sub).await?;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true, "status": updated.status })))
 }
 
@@ -226,6 +286,7 @@ pub async fn upload_photo(
 
     let svc = TutorService::new(state.pool.clone(), state.config.clone());
     svc.set_photo(auth.0.sub, &url).await?;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "url": url })))
 }
 

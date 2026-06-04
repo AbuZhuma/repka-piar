@@ -54,7 +54,7 @@
     "tutors_title": "Лучшие репетиторы",
     "exams_title": "Готовимся к экзаменам",
     "how_it_works_title": "Как это работает",
-    "trust_strip": "{tutors}+ репетиторов · {rating} средняя оценка · Проверенные педагоги"
+    "trust_strip": "{tutors}+ репетиторов · {cities} городов · Проверенные педагоги"
   },
   "catalog": {
     "title": "Все репетиторы",
@@ -104,7 +104,8 @@
       "weak_password": "Пароль должен содержать минимум 8 символов",
       "invalid_phone": "Введите номер в формате +996...",
       "invalid_email": "Некорректный email",
-      "must_agree": "Необходимо согласие"
+      "must_agree": "Необходимо согласие",
+      "file_too_large": "Файл слишком большой (макс. {mb} МБ)"
     },
     "forgot": {
       "title": "Восстановление пароля",
@@ -231,7 +232,9 @@
       "photo_hint": "JPG/PNG, до 5 МБ",
       "photo_uploaded": "Фото загружено",
       "short_bio": "Короткое описание",
-      "short_bio_hint": "200–500 символов. Это первое, что увидят ученики"
+      "short_bio_hint": "200–500 символов. Это первое, что увидят ученики",
+      "photo_upload": "Загрузить фото",
+      "photo_replace": "Заменить фото"
     },
     "step3": {
       "title": "Образование",
@@ -395,7 +398,9 @@
   "tutor_card": {
     "experience_years": "{years, plural, one {# год} few {# года} other {# лет}}",
     "price_from": "от {price} / час",
-    "no_price": "Цена по запросу"
+    "no_price": "Цена по запросу",
+    "trial_badge": "Бесплатный пробный",
+    "verified": "Проверен"
   },
   "tutor_profile": {
     "subtitle": "Репетитор {subject}",
@@ -452,7 +457,10 @@
   },
   "breadcrumbs": {
     "home": "Главная",
-    "catalog": "Каталог"
+    "catalog": "Каталог",
+    "blog": "Блог",
+    "tutor": "Репетитор",
+    "post": "Статья"
   },
   "cabinet": {
     "nav": {
@@ -501,7 +509,8 @@
       "tip_video": "Загрузить видео-визитку",
       "tip_share": "Скопировать ссылку и поделиться",
       "tip_view": "Посмотреть, как видят ученики",
-      "open_profile": "Открыть публичный профиль ↗"
+      "open_profile": "Открыть публичный профиль ↗",
+      "sources_total_label": "всего"
     },
     "profile_edit": {
       "title": "Редактирование профиля",
@@ -565,7 +574,8 @@
       "email": "Email",
       "submit_for_review": "Отправить на верификацию",
       "submitted_ok": "Отправлено на проверку",
-      "preview_no_contacts": "Контакты не указаны"
+      "preview_no_contacts": "Контакты не указаны",
+      "file_too_large": "Файл слишком большой (макс. {mb} МБ)"
     },
     "settings": {
       "title": "Настройки",

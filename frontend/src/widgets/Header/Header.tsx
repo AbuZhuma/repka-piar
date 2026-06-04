@@ -4,6 +4,8 @@ import { Menu } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { useAuth } from '@/features/auth';
+import { FavoritesIndicator } from '@/features/favorites';
 import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/shared/config/routes';
 import { cn } from '@/shared/lib/cn';
@@ -14,9 +16,11 @@ import { Logo } from '@/shared/ui/Logo';
 import { CityPicker } from './CityPicker';
 import styles from './Header.module.scss';
 import { LangSwitcher } from './LangSwitcher';
+import { ProfileMenu } from './ProfileMenu/ProfileMenu';
 
 export function Header() {
   const t = useTranslations('navigation');
+  const { isAuthenticated, user } = useAuth();
   const [open, setOpen] = useState(false);
 
   const navLinks = [
@@ -47,19 +51,26 @@ export function Header() {
         </nav>
 
         <div className={styles.right}>
+          <FavoritesIndicator />
           <div className={styles.langDesktop}>
             <LangSwitcher />
           </div>
-          <Link href={ROUTES.becomeTutor} className={styles.ctaDesktop}>
-            <Button variant="ghost" size="sm">
-              {t('become_tutor')}
-            </Button>
-          </Link>
-          <Link href={ROUTES.login}>
-            <Button variant="primary" size="sm">
-              {t('login')}
-            </Button>
-          </Link>
+          {isAuthenticated && user ? (
+            <ProfileMenu />
+          ) : (
+            <>
+              <Link href={ROUTES.becomeTutor} className={styles.ctaDesktop}>
+                <Button variant="ghost" size="sm">
+                  {t('become_tutor')}
+                </Button>
+              </Link>
+              <Link href={ROUTES.login}>
+                <Button variant="primary" size="sm">
+                  {t('login')}
+                </Button>
+              </Link>
+            </>
+          )}
           <button
             type="button"
             className={styles.burger}

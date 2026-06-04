@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { ROUTES } from '@/shared/config/routes';
 import { Container } from '@/shared/ui/Container';
 import { Breadcrumbs } from '@/widgets/Breadcrumbs';
 
@@ -19,8 +20,8 @@ export function LegalDocLayout({ title, lastUpdated, toc, children }: Props) {
         <div className={styles.inner}>
           <Breadcrumbs
             items={[
-              { label: 'Главная', href: '/' },
-              { label: 'Юридические документы', href: '/contacts' },
+              { label: 'Главная', href: ROUTES.home },
+              { label: 'Юридические документы', href: ROUTES.contacts },
               { label: title },
             ]}
           />

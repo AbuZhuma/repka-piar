@@ -1,7 +1,11 @@
 @use 'styles/abstracts' as *;
 
 .section {
-  padding-block: spacing(12);
+  padding-block: spacing(8);
+
+  @include media-up('md') {
+    padding-block: spacing(12);
+  }
 }
 
 .header {
@@ -9,13 +13,18 @@
   align-items: center;
   justify-content: space-between;
   gap: spacing(2);
-  margin-bottom: spacing(5);
+  margin-bottom: spacing(4);
+
+  @include media-up('md') {
+    margin-bottom: spacing(5);
+  }
 }
 
 .title {
-  @include text-2xl;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
   font-weight: 700;
   color: var(--color-text-primary);
+  margin: 0;
 }
 
 .allLink {
@@ -34,17 +43,30 @@
 .lane {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 140px;
-  gap: spacing(3);
+  grid-auto-columns: 120px;
+  gap: spacing(2);
   overflow-x: auto;
   padding-block: spacing(1);
-  scrollbar-width: thin;
+  padding-inline: 2px;
+  margin-inline: -2px;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include media-up('sm') {
+    grid-auto-columns: 140px;
+    gap: spacing(3);
+  }
 
   @include media-up('md') {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     grid-auto-flow: row;
     grid-auto-columns: auto;
     overflow: visible;
+    scroll-snap-type: none;
   }
 }
 
@@ -54,15 +76,21 @@
   align-items: center;
   justify-content: center;
   gap: spacing(2);
-  padding: spacing(4);
+  padding: spacing(3);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border-primary);
   border-radius: $radius-lg;
   text-align: center;
+  scroll-snap-align: start;
+  text-decoration: none;
   transition:
     transform $transition-base,
     border-color $transition-base,
     box-shadow $transition-base;
+
+  @include media-up('md') {
+    padding: spacing(4);
+  }
 
   &:hover {
     transform: translateY(-2px);

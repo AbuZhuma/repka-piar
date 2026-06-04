@@ -8,6 +8,7 @@ use uuid::Uuid;
 use crate::auth::admin_middleware::AdminUser;
 use crate::error::AppResult;
 use crate::services::admin_service::{AdminCategory, AdminService, CategoryRequest};
+use crate::services::cache_keys;
 use crate::AppState;
 
 pub async fn list(
@@ -26,6 +27,7 @@ pub async fn create(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let cat = svc.create_category(payload).await?;
     svc.log_action(admin.0.sub, "category.created", Some("category"), Some(cat.id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(cat))
 }
 
@@ -38,6 +40,7 @@ pub async fn update(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let cat = svc.update_category(id, payload).await?;
     svc.log_action(admin.0.sub, "category.updated", Some("category"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(cat))
 }
 
@@ -49,5 +52,6 @@ pub async fn delete_category(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.delete_category(id).await?;
     svc.log_action(admin.0.sub, "category.deleted", Some("category"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }

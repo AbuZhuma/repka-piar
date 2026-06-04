@@ -141,7 +141,7 @@ pub struct PostFull {
     pub is_translation_missing: bool,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct PostFilters {
     pub category: Option<String>,
     pub tag: Option<String>,

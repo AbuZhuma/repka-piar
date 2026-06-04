@@ -1,8 +1,10 @@
-import { Play, Star } from 'lucide-react';
+import { BadgeCheck, Gift, Play, Star } from 'lucide-react';
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 
+import { FavoriteButton } from '@/features/favorites';
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { assetUrl, formatPrice } from '@/shared/lib/format';
 
 import { TutorBadges } from '../TutorBadges';
@@ -21,7 +23,25 @@ export function TutorCard({ tutor }: TutorCardProps) {
 
   return (
     <article className={styles.card}>
-      <Link href={`/tutor/${tutor.slug}`} className={styles.link} aria-label={fullName}>
+      <div className={styles.favorite}>
+        <FavoriteButton
+          size="sm"
+          tutor={{
+            id: tutor.id,
+            slug: tutor.slug,
+            name: tutor.name,
+            surname: tutor.surname,
+            photo_url: tutor.photo_url,
+            price_per_60: tutor.price.per_60,
+            currency: tutor.price.currency,
+            specializations: tutor.specializations,
+            rating: tutor.rating,
+            reviews_count: tutor.reviews_count,
+            trial_enabled: tutor.price.trial_enabled,
+          }}
+        />
+      </div>
+      <Link href={ROUTES.tutor(tutor.slug)} className={styles.link} aria-label={fullName}>
         <div className={styles.photoWrapper}>
           {tutor.photo_url ? (
             <Image
@@ -37,6 +57,27 @@ export function TutorCard({ tutor }: TutorCardProps) {
               {tutor.name.slice(0, 1)}
             </div>
           )}
+
+          <div className={styles.photoBadges}>
+            {tutor.price.trial_enabled && (
+              <span
+                className={`${styles.photoBadge} ${styles.photoBadgeTrial}`}
+                title={t('tutor_card.trial_badge')}
+              >
+                <Gift size={12} />
+                <span>{t('tutor_card.trial_badge')}</span>
+              </span>
+            )}
+            {tutor.verified && (
+              <span
+                className={`${styles.photoBadge} ${styles.photoBadgeVerified}`}
+                title={t('tutor_card.verified')}
+              >
+                <BadgeCheck size={12} />
+              </span>
+            )}
+          </div>
+
           {tutor.video_url && (
             <span className={styles.videoIndicator} aria-label="video">
               <Play size={14} fill="currentColor" />
@@ -57,8 +98,8 @@ export function TutorCard({ tutor }: TutorCardProps) {
             <p className={styles.specializations}>{tutor.short_bio}</p>
           ) : null}
 
-          <div className={styles.meta}>
-            {typeof tutor.rating === 'number' && (
+          {typeof tutor.rating === 'number' && (
+            <div className={styles.meta}>
               <span className={styles.rating}>
                 <Star size={14} fill="currentColor" />
                 {tutor.rating.toFixed(1)}
@@ -66,11 +107,8 @@ export function TutorCard({ tutor }: TutorCardProps) {
                   <span className={styles.reviews}> ({tutor.reviews_count})</span>
                 )}
               </span>
-            )}
-            <span className={styles.experience}>
-              {t('tutor_card.experience_years', { years: tutor.experience_years })}
-            </span>
-          </div>
+            </div>
+          )}
 
           <p className={styles.price}>
             {tutor.price.per_60 != null

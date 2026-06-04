@@ -4,10 +4,11 @@ import { Camera, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 
-import { useEditor } from '@/widgets/ProfileEditor/EditorContext';
-import { Button } from '@/shared/ui/Button';
+import { useEditor } from './model/EditorContext';
+import { uploadMyTutorPhoto } from '@/shared/api/tutors';
+import { FILE_LIMITS, FILE_LIMITS_MB } from '@/shared/config/constants';
 import { env } from '@/shared/config/env';
-import { auth } from '@/shared/lib/auth';
+import { Button } from '@/shared/ui/Button';
 
 import { SectionShell } from './SectionShell';
 import styles from './EditPhotoSection.module.scss';
@@ -24,24 +25,16 @@ export function EditPhotoSection() {
     const file = e.target.files?.[0];
     e.target.value = '';
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      setError('5 МБ max');
+    if (file.size > FILE_LIMITS.photo) {
+      setError(t('file_too_large', { mb: FILE_LIMITS_MB.photo }));
       return;
     }
     setUploading(true);
     setError(null);
     setSaved(false);
     try {
-      const fd = new FormData();
-      fd.append('file', file);
-      const resp = await fetch(`${env.apiUrl}/api/tutors/me/photo`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${auth.getAccess() ?? ''}` },
-        body: fd,
-      });
-      if (!resp.ok) throw new Error('upload failed');
-      const json: { url: string } = await resp.json();
-      setProfile((prev) => ({ ...prev, photo_url: json.url }));
+      const { url } = await uploadMyTutorPhoto(file);
+      setProfile((prev) => ({ ...prev, photo_url: url }));
       setSaved(true);
     } catch {
       setError(t('save_error'));

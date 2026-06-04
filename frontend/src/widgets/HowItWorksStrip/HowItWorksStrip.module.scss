@@ -1,14 +1,22 @@
 @use 'styles/abstracts' as *;
 
 .section {
-  padding-block: spacing(12);
+  padding-block: spacing(8);
+
+  @include media-up('md') {
+    padding-block: spacing(12);
+  }
 }
 
 .title {
-  @include text-2xl;
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
   font-weight: 700;
   color: var(--color-text-primary);
-  margin-bottom: spacing(5);
+  margin: 0 0 spacing(4);
+
+  @include media-up('md') {
+    margin-bottom: spacing(5);
+  }
 }
 
 .steps {

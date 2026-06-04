@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-import { useEditor } from '@/widgets/ProfileEditor/EditorContext';
+import { useEditor } from './model/EditorContext';
 import { getDictionaries } from '@/shared/api/dictionaries';
 import { ApiError, apiPatch } from '@/shared/lib/api';
 import { Checkbox } from '@/shared/ui/Checkbox';

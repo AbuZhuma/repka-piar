@@ -16,6 +16,7 @@ import {
 import { usePathname } from 'next/navigation';
 
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { cn } from '@/shared/lib/cn';
 
 import styles from './AdminSidebar.module.scss';
@@ -46,29 +47,29 @@ export function AdminSidebar({ pendingTutors = 0, newFeedback = 0 }: Props) {
     {
       title: 'Обзор',
       items: [
-        { href: '/admin', label: 'Дашборд', icon: <Home size={16} /> },
-        { href: '/admin/users', label: 'Пользователи', icon: <Users size={16} /> },
+        { href: ROUTES.admin.root, label: 'Дашборд', icon: <Home size={16} /> },
+        { href: ROUTES.admin.users, label: 'Пользователи', icon: <Users size={16} /> },
       ],
     },
     {
       title: 'Контент',
       items: [
         {
-          href: '/admin/tutors',
+          href: ROUTES.admin.tutors,
           label: 'Репетиторы',
           icon: <UserCog size={16} />,
           badge: pendingTutors > 0 ? pendingTutors : undefined,
         },
-        { href: '/admin/posts', label: 'Статьи блога', icon: <FileText size={16} /> },
-        { href: '/admin/categories', label: 'Категории', icon: <FolderTree size={16} /> },
-        { href: '/admin/authors', label: 'Авторы', icon: <BookOpen size={16} /> },
+        { href: ROUTES.admin.posts, label: 'Статьи блога', icon: <FileText size={16} /> },
+        { href: ROUTES.admin.categories, label: 'Категории', icon: <FolderTree size={16} /> },
+        { href: ROUTES.admin.authors, label: 'Авторы', icon: <BookOpen size={16} /> },
       ],
     },
     {
       title: 'Общение',
       items: [
         {
-          href: '/admin/feedback',
+          href: ROUTES.admin.feedback,
           label: 'Обращения',
           icon: <MessageSquare size={16} />,
           badge: newFeedback > 0 ? newFeedback : undefined,
@@ -78,24 +79,24 @@ export function AdminSidebar({ pendingTutors = 0, newFeedback = 0 }: Props) {
     {
       title: 'Управление',
       items: [
-        { href: '/admin/settings', label: 'Настройки', icon: <Settings size={16} /> },
+        { href: ROUTES.admin.settings, label: 'Настройки', icon: <Settings size={16} /> },
         {
-          href: '/admin/dictionaries/cities',
+          href: ROUTES.admin.cities,
           label: 'Города',
           icon: <Building2 size={16} />,
         },
         {
-          href: '/admin/dictionaries/subjects',
+          href: ROUTES.admin.subjects,
           label: 'Предметы',
           icon: <GraduationCap size={16} />,
         },
-        { href: '/admin/analytics', label: 'Аналитика', icon: <BarChart3 size={16} /> },
+        { href: ROUTES.admin.analytics, label: 'Аналитика', icon: <BarChart3 size={16} /> },
       ],
     },
   ];
 
   const isActive = (href: string) => {
-    if (href === '/admin') return current === '/admin';
+    if (href === ROUTES.admin.root) return current === ROUTES.admin.root;
     return current === href || current.startsWith(`${href}/`);
   };
 

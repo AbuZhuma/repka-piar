@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { CheckCircle, FileCheck, Phone, Sparkles } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
@@ -7,6 +8,12 @@ import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
 
 import styles from './page.module.scss';
+
+export const metadata: Metadata = {
+  title: 'Заявка отправлена — Repka',
+  description: 'Спасибо за регистрацию! Мы свяжемся в течение 1–3 рабочих дней.',
+  robots: { index: false, follow: true },
+};
 
 export default async function SuccessPage({
   params,

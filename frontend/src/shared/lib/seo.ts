@@ -1,26 +1,34 @@
+import { SITE, absoluteUrl } from '@/shared/config/site';
 import type { TutorPublic } from '@/shared/types';
 
-export function generatePersonSchema(tutor: TutorPublic, baseUrl: string) {
+function ensureAbsolute(maybeUrl: string | null | undefined): string | undefined {
+  if (!maybeUrl) return undefined;
+  if (maybeUrl.startsWith('http://') || maybeUrl.startsWith('https://')) return maybeUrl;
+  return absoluteUrl(maybeUrl);
+}
+
+/* ------------------------------------------------------------- Person  */
+
+export function generatePersonSchema(tutor: TutorPublic) {
   const fullName = `${tutor.name} ${tutor.surname}`.trim();
-  const photo = tutor.photo_url
-    ? tutor.photo_url.startsWith('http')
-      ? tutor.photo_url
-      : `${baseUrl}${tutor.photo_url}`
-    : undefined;
+  const photo = ensureAbsolute(tutor.photo_url);
+  const tutorUrl = absoluteUrl(`/tutor/${tutor.slug}`);
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: fullName,
-    url: `${baseUrl}/tutor/${tutor.slug}`,
+    url: tutorUrl,
     jobTitle: 'Репетитор',
+    knowsAbout: tutor.specializations ?? [],
     ...(photo ? { image: photo } : {}),
+    ...(tutor.bio || tutor.short_bio ? { description: tutor.bio ?? tutor.short_bio } : {}),
     ...(tutor.city
       ? {
           address: {
             '@type': 'PostalAddress',
             addressLocality: tutor.city.name_ru,
-            addressCountry: 'KG',
+            addressCountry: SITE.country,
           },
         }
       : {}),
@@ -30,26 +38,48 @@ export function generatePersonSchema(tutor: TutorPublic, baseUrl: string) {
             '@type': 'AggregateRating',
             ratingValue: tutor.rating,
             reviewCount: tutor.reviews_count,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {}),
+    ...(tutor.price?.per_60
+      ? {
+          makesOffer: {
+            '@type': 'Offer',
+            priceCurrency: tutor.price.currency || 'KGS',
+            price: tutor.price.per_60,
+            priceSpecification: {
+              '@type': 'UnitPriceSpecification',
+              price: tutor.price.per_60,
+              priceCurrency: tutor.price.currency || 'KGS',
+              unitText: 'HUR',
+            },
           },
         }
       : {}),
   };
 }
 
-export function generateItemListSchema(tutors: TutorPublic[], baseUrl: string) {
+/* ------------------------------------------------------------- ItemList */
+
+export function generateItemListSchema(tutors: TutorPublic[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
+    numberOfItems: tutors.length,
     itemListElement: tutors.map((tutor, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      item: generatePersonSchema(tutor, baseUrl),
+      item: generatePersonSchema(tutor),
     })),
   };
 }
 
+/* --------------------------------------------------------- Breadcrumbs  */
+
 export function generateBreadcrumbSchema(
-  items: Array<{ label: string; url?: string }>,
+  items: Array<{ label: string; url?: string | null }>,
 ) {
   return {
     '@context': 'https://schema.org',
@@ -58,10 +88,12 @@ export function generateBreadcrumbSchema(
       '@type': 'ListItem',
       position: index + 1,
       name: item.label,
-      ...(item.url ? { item: item.url } : {}),
+      ...(item.url ? { item: ensureAbsolute(item.url) } : {}),
     })),
   };
 }
+
+/* ------------------------------------------------------------------- FAQ */
 
 export function generateFAQSchema(faq: Array<{ q: string; a: string }>) {
   return {
@@ -78,24 +110,100 @@ export function generateFAQSchema(faq: Array<{ q: string; a: string }>) {
   };
 }
 
-export function generateOrganizationSchema(baseUrl: string) {
+/* --------------------------------------------------------- Organization */
+
+export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Repka',
-    url: baseUrl,
-    logo: `${baseUrl}/logo.png`,
-    sameAs: ['https://t.me/repka_kg'],
-    contactPoint: {
-      '@type': 'ContactPoint',
-      email: 'support@repka.kg',
-      contactType: 'customer support',
-      areaServed: 'KG',
-      availableLanguage: ['ru', 'kg', 'en'],
+    '@id': `${SITE.url}/#organization`,
+    name: SITE.name,
+    legalName: SITE.legalName,
+    url: SITE.url,
+    logo: absoluteUrl('/icon.svg'),
+    image: absoluteUrl(SITE.ogImage),
+    description: SITE.shortDescription,
+    sameAs: [SITE.telegram],
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        email: SITE.email,
+        telephone: SITE.phone,
+        contactType: 'customer support',
+        areaServed: SITE.country,
+        availableLanguage: SITE.locale.supported as unknown as string[],
+      },
+    ],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: SITE.city,
+      addressCountry: SITE.country,
     },
   };
 }
 
-export function jsonLdScript(schema: object): string {
-  return JSON.stringify(schema);
+/* -------------------------------------------------------------- WebSite */
+
+export function generateWebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE.url}/#website`,
+    name: SITE.name,
+    url: SITE.url,
+    description: SITE.shortDescription,
+    inLanguage: SITE.locale.supported as unknown as string[],
+    publisher: { '@id': `${SITE.url}/#organization` },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${SITE.url}/ru/catalog?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
+/* ---------------------------------------------------------- BlogPosting */
+
+export interface PostSchemaInput {
+  title: string;
+  description?: string | null;
+  slug: string;
+  cover_url?: string | null;
+  author?: { name: string } | null;
+  published_at?: string | null;
+  updated_at?: string | null;
+  tags?: string[];
+  locale: string;
+}
+
+export function generateBlogPostingSchema(post: PostSchemaInput) {
+  const url = absoluteUrl(`/${post.locale}/blog/${post.slug}`);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description ?? undefined,
+    image: post.cover_url ? ensureAbsolute(post.cover_url) : absoluteUrl(SITE.ogImage),
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    url,
+    datePublished: post.published_at ?? undefined,
+    dateModified: post.updated_at ?? post.published_at ?? undefined,
+    inLanguage: post.locale,
+    author: {
+      '@type': 'Person',
+      name: post.author?.name ?? SITE.name,
+    },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    keywords: post.tags?.join(', '),
+  };
+}
+
+/* ----------------------------------------------------------- Serialize  */
+
+export function jsonLdScript(schema: object | object[]): string {
+  // Strip undefined to keep JSON minimal — schema.org tolerates missing fields.
+  return JSON.stringify(schema, (_k, v) => (v === undefined ? undefined : v));
 }

@@ -4,11 +4,14 @@ import { Video } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { FILE_LIMITS, FILE_LIMITS_MB } from '@/shared/config/constants';
+
 import { StepShell } from '../StepShell';
 import { useRegistrationStore } from '../useRegistrationStore';
 
 export function Step6Video() {
   const t = useTranslations('register.step6');
+  const tErrors = useTranslations('auth.errors');
   const update = useRegistrationStore((s) => s.update);
   const next = useRegistrationStore((s) => s.next);
   const stored = useRegistrationStore((s) => s.videoUrl);
@@ -19,8 +22,8 @@ export function Step6Video() {
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 100 * 1024 * 1024) {
-      setError('Файл слишком большой (макс 100 МБ)');
+    if (file.size > FILE_LIMITS.video) {
+      setError(tErrors('file_too_large', { mb: FILE_LIMITS_MB.video }));
       return;
     }
     // Phase 1: keep an in-memory blob URL — no backend endpoint yet
@@ -83,11 +86,12 @@ export function Step6Video() {
         />
       </label>
 
-      {videoUrl && (
+      {videoUrl && /^(blob:|https?:|data:)/.test(videoUrl) && (
         <video
           src={videoUrl}
           controls
           style={{ width: '100%', borderRadius: 8, background: 'black' }}
+          onError={() => setVideoUrl(undefined)}
         />
       )}
 

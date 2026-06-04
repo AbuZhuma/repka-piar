@@ -1,0 +1,200 @@
+@use 'styles/abstracts' as *;
+
+.page {
+  padding-block: spacing(8) spacing(14);
+  background: var(--color-bg-secondary);
+  min-height: 60vh;
+}
+
+.head {
+  margin-bottom: spacing(8);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+  max-width: 760px;
+}
+
+.title {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.titleIcon {
+  color: #ef4444;
+}
+
+.subtitle {
+  @include text-base;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.55;
+}
+
+.clearBtn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(1);
+  margin-top: spacing(2);
+  padding: spacing(2) spacing(3);
+  border: 1px solid var(--color-border-primary);
+  background: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  border-radius: $radius-full;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+}
+
+.empty {
+  background: var(--color-bg-primary);
+  border: 1px dashed var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(12) spacing(6);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing(2);
+  color: var(--color-text-secondary);
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.55;
+  }
+}
+
+.emptyIcon {
+  color: var(--color-text-tertiary);
+  margin-bottom: spacing(2);
+}
+
+.emptyLink {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(4);
+
+  @include media-up('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-up('lg') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media-up('xl') {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  position: relative;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.cardFav {
+  position: absolute;
+  top: spacing(2);
+  right: spacing(2);
+  z-index: 2;
+}
+
+.cardLink {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+.cardPhoto {
+  position: relative;
+  aspect-ratio: 1;
+  background: var(--color-bg-secondary);
+  overflow: hidden;
+}
+
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.cardBody {
+  padding: spacing(3);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(1);
+  flex: 1;
+}
+
+.cardName {
+  @include text-md;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.cardSpec {
+  @include text-sm;
+  color: var(--color-text-secondary);
+  margin: 0;
+  @include line-clamp(2);
+}
+
+.cardPrice {
+  @include text-base;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  padding-top: spacing(2);
+  border-top: 1px solid var(--color-border-secondary);
+  margin: spacing(2) 0 0;
+}

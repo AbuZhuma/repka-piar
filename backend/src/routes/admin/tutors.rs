@@ -11,6 +11,7 @@ use crate::services::admin_service::{
     AdminService, AdminTutorFull, AdminTutorFilters, AdminTutorListItem, ModerationActionRequest,
     Paginated,
 };
+use crate::services::cache_keys;
 use crate::AppState;
 
 pub async fn list(
@@ -74,6 +75,7 @@ pub async fn approve(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.approve_tutor(id, admin.0.sub, payload.notes.as_deref()).await?;
     svc.log_action(admin.0.sub, "tutor.approved", Some("tutor"), Some(id), None).await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -97,6 +99,7 @@ pub async fn reject(
         Some(json!({ "reason": reason })),
     )
     .await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -120,6 +123,7 @@ pub async fn request_changes(
         Some(json!({ "reason": reason })),
     )
     .await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -132,6 +136,7 @@ pub async fn block(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.block_tutor(id, admin.0.sub, payload.reason.as_deref()).await?;
     svc.log_action(admin.0.sub, "tutor.blocked", Some("tutor"), Some(id), None).await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -143,6 +148,7 @@ pub async fn unblock(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.unblock_tutor(id, admin.0.sub).await?;
     svc.log_action(admin.0.sub, "tutor.unblocked", Some("tutor"), Some(id), None).await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -154,5 +160,6 @@ pub async fn delete_tutor(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.delete_tutor(id).await?;
     svc.log_action(admin.0.sub, "tutor.deleted", Some("tutor"), Some(id), None).await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }

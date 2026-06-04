@@ -1,5 +1,7 @@
 import { redirect } from '@/i18n/routing';
 
+import { ROUTES } from '@/shared/config/routes';
+
 export const dynamic = 'force-dynamic';
 
 export default async function SubjectRedirect({
@@ -8,5 +10,5 @@ export default async function SubjectRedirect({
   params: Promise<{ locale: string; subject: string }>;
 }) {
   const { subject } = await params;
-  redirect(`/catalog?subject=${encodeURIComponent(subject)}`);
+  redirect(ROUTES.catalogBy({ subject }));
 }

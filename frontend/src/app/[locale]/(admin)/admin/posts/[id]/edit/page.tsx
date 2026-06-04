@@ -18,6 +18,7 @@ import {
 import { Link } from '@/i18n/routing';
 import type { Block } from '@/entities/post';
 import { PostEditor } from '@/features/post-editor';
+import { ROUTES } from '@/shared/config/routes';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 import { Textarea } from '@/shared/ui/Textarea';
@@ -142,7 +143,7 @@ export default function EditPostPage({ params }: Props) {
     <div className={styles.editor}>
       <header className={styles.editorHeader}>
         <div className={styles.headerLeft}>
-          <Link href="/admin/posts" className={styles.back}>
+          <Link href={ROUTES.admin.posts} className={styles.back}>
             <ArrowLeft size={14} /> К списку
           </Link>
           <div>
@@ -156,7 +157,7 @@ export default function EditPostPage({ params }: Props) {
         </div>
         <div className={styles.headerActions}>
           <a
-            href={`/blog/${draft.slug}`}
+            href={ROUTES.blogPost(draft.slug)}
             target="_blank"
             rel="noreferrer"
             className={styles.previewBtn}

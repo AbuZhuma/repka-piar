@@ -54,7 +54,7 @@
     "tutors_title": "Эң мыкты репетиторлор",
     "exams_title": "Экзамендерге даярдоо",
     "how_it_works_title": "Кантип иштейт",
-    "trust_strip": "{tutors}+ репетитор · {rating} орточо баа · Текшерилген педагогтор"
+    "trust_strip": "{tutors}+ репетитор · {cities} шаар · Текшерилген педагогтор"
   },
   "catalog": {
     "title": "Бардык репетиторлор",
@@ -104,7 +104,8 @@
       "weak_password": "Сырсөз кеминде 8 символ болушу керек",
       "invalid_phone": "+996... форматында киргизиңиз",
       "invalid_email": "Туура эмес email",
-      "must_agree": "Макулдук керек"
+      "must_agree": "Макулдук керек",
+      "file_too_large": "Файл өтө чоң (максимум {mb} МБ)"
     },
     "forgot": {
       "title": "Сырсөздү калыбына келтирүү",
@@ -231,7 +232,9 @@
       "photo_hint": "JPG/PNG, 5 МБ чейин",
       "photo_uploaded": "Сүрөт жүктөлдү",
       "short_bio": "Кыска маалымат",
-      "short_bio_hint": "200–500 символ. Окуучулар биринчи көрөт"
+      "short_bio_hint": "200–500 символ. Окуучулар биринчи көрөт",
+      "photo_upload": "Сүрөт жүктөө",
+      "photo_replace": "Сүрөттү алмаштыруу"
     },
     "step3": {
       "title": "Билим",
@@ -395,7 +398,9 @@
   "tutor_card": {
     "experience_years": "{years} жыл",
     "price_from": "{price} / саат",
-    "no_price": "Нарк суроо боюнча"
+    "no_price": "Нарк суроо боюнча",
+    "trial_badge": "Акысыз сыноо",
+    "verified": "Текшерилген"
   },
   "tutor_profile": {
     "subtitle": "{subject} репетитору",
@@ -452,7 +457,10 @@
   },
   "breadcrumbs": {
     "home": "Башкы бет",
-    "catalog": "Каталог"
+    "catalog": "Каталог",
+    "blog": "Блог",
+    "tutor": "Репетитор",
+    "post": "Макала"
   },
   "cabinet": {
     "nav": {
@@ -501,7 +509,8 @@
       "tip_video": "Видео жүктөө",
       "tip_share": "Шилтемени бөлүшүү",
       "tip_view": "Окуучулардын көзү менен көрүү",
-      "open_profile": "Ачык профилге ↗"
+      "open_profile": "Ачык профилге ↗",
+      "sources_total_label": "баары"
     },
     "profile_edit": {
       "title": "Профилди оңдоо",
@@ -565,7 +574,8 @@
       "email": "Email",
       "submit_for_review": "Текшерүүгө жөнөтүү",
       "submitted_ok": "Жөнөтүлдү",
-      "preview_no_contacts": "Байланыштар жок"
+      "preview_no_contacts": "Байланыштар жок",
+      "file_too_large": "Файл өтө чоң (максимум {mb} МБ)"
     },
     "settings": {
       "title": "Жөндөөлөр",

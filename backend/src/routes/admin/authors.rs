@@ -8,6 +8,7 @@ use uuid::Uuid;
 use crate::auth::admin_middleware::AdminUser;
 use crate::error::AppResult;
 use crate::services::admin_service::{AdminAuthor, AdminService, AuthorRequest};
+use crate::services::cache_keys;
 use crate::AppState;
 
 pub async fn list(
@@ -26,6 +27,7 @@ pub async fn create(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let a = svc.create_author(payload).await?;
     svc.log_action(admin.0.sub, "author.created", Some("author"), Some(a.id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(a))
 }
 
@@ -38,6 +40,7 @@ pub async fn update(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let a = svc.update_author(id, payload).await?;
     svc.log_action(admin.0.sub, "author.updated", Some("author"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(a))
 }
 
@@ -49,5 +52,6 @@ pub async fn delete_author(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.delete_author(id).await?;
     svc.log_action(admin.0.sub, "author.deleted", Some("author"), Some(id), None).await;
+    cache_keys::purge_posts(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }

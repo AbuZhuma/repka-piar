@@ -10,6 +10,7 @@ import {
   type Paginated,
 } from '@/shared/api/admin';
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { assetUrl } from '@/shared/lib/format';
 import { cn } from '@/shared/lib/cn';
 
@@ -140,7 +141,7 @@ export default function AdminTutorsPage() {
                   <td>{new Date(t.created_at).toLocaleDateString('ru-RU')}</td>
                   <td>
                     <div className={styles.rowActions}>
-                      <Link href={`/admin/tutors/${t.id}`} className={styles.openBtn}>
+                      <Link href={ROUTES.admin.tutor(t.id)} className={styles.openBtn}>
                         Открыть
                       </Link>
                       <button

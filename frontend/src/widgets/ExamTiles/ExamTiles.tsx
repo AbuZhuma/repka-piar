@@ -1,15 +1,16 @@
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { Container } from '@/shared/ui/Container';
 
 import styles from './ExamTiles.module.scss';
 
 const TILES = [
-  { key: 'ort', href: '/catalog?goal=exam_ort', tone: 'green', emoji: '🎓' },
-  { key: 'ege', href: '/catalog?goal=exam_ege', tone: 'blue', emoji: '📘' },
-  { key: 'ielts_toefl', href: '/catalog?goal=exam_ielts', tone: 'purple', emoji: '🌍' },
-  { key: 'sat', href: '/catalog?goal=exam_sat', tone: 'orange', emoji: '🇺🇸' },
+  { key: 'ort', href: ROUTES.catalogBy({ goal: 'exam_ort' }), tone: 'green', emoji: '🎓' },
+  { key: 'ege', href: ROUTES.catalogBy({ goal: 'exam_ege' }), tone: 'blue', emoji: '📘' },
+  { key: 'ielts_toefl', href: ROUTES.catalogBy({ goal: 'exam_ielts' }), tone: 'purple', emoji: '🌍' },
+  { key: 'sat', href: ROUTES.catalogBy({ goal: 'exam_sat' }), tone: 'orange', emoji: '🇺🇸' },
 ] as const;
 
 export function ExamTiles() {

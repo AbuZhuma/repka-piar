@@ -10,6 +10,7 @@ use crate::error::AppResult;
 use crate::services::admin_service::{
     AdminCity, AdminService, AdminSubject, CityRequest, SubjectRequest,
 };
+use crate::services::cache_keys;
 use crate::AppState;
 
 // Cities
@@ -29,6 +30,7 @@ pub async fn create_city(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let c = svc.create_city(payload).await?;
     svc.log_action(admin.0.sub, "city.created", Some("city"), Some(c.id), None).await;
+    cache_keys::purge_dictionaries(&state.cache).await;
     Ok(Json(c))
 }
 
@@ -41,6 +43,8 @@ pub async fn update_city(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let c = svc.update_city(id, payload).await?;
     svc.log_action(admin.0.sub, "city.updated", Some("city"), Some(id), None).await;
+    cache_keys::purge_dictionaries(&state.cache).await;
+    cache_keys::purge_tutors(&state.cache).await; // tutor list embeds city info
     Ok(Json(c))
 }
 
@@ -52,6 +56,8 @@ pub async fn delete_city(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.delete_city(id).await?;
     svc.log_action(admin.0.sub, "city.deleted", Some("city"), Some(id), None).await;
+    cache_keys::purge_dictionaries(&state.cache).await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }
 
@@ -72,6 +78,7 @@ pub async fn create_subject(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let s = svc.create_subject(payload).await?;
     svc.log_action(admin.0.sub, "subject.created", Some("subject"), Some(s.id), None).await;
+    cache_keys::purge_dictionaries(&state.cache).await;
     Ok(Json(s))
 }
 
@@ -84,6 +91,8 @@ pub async fn update_subject(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     let s = svc.update_subject(id, payload).await?;
     svc.log_action(admin.0.sub, "subject.updated", Some("subject"), Some(id), None).await;
+    cache_keys::purge_dictionaries(&state.cache).await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(s))
 }
 
@@ -95,5 +104,7 @@ pub async fn delete_subject(
     let svc = AdminService::new(state.pool.clone(), state.config.clone());
     svc.delete_subject(id).await?;
     svc.log_action(admin.0.sub, "subject.deleted", Some("subject"), Some(id), None).await;
+    cache_keys::purge_dictionaries(&state.cache).await;
+    cache_keys::purge_tutors(&state.cache).await;
     Ok(Json(json!({ "ok": true })))
 }

@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 
 import { useRouter } from '@/i18n/routing';
 import { useAuth } from '@/features/auth';
+import { ROUTES } from '@/shared/config/routes';
 
 interface Props {
   children: ReactNode;
@@ -19,11 +20,11 @@ export function ProtectedAdminRoute({ children }: Props) {
   useEffect(() => {
     if (loading) return;
     if (!user) {
-      router.push('/admin/login');
+      router.push(ROUTES.admin.login);
       return;
     }
     if (!isAdmin) {
-      router.push('/');
+      router.push(ROUTES.home);
     }
   }, [loading, user, isAdmin, router]);
 

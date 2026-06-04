@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { loginUser, useAuthStore } from '@/features/auth';
 import { useRouter } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { ApiError } from '@/shared/lib/api';
 import { auth } from '@/shared/lib/auth';
 import { Button } from '@/shared/ui/Button';
@@ -47,7 +48,7 @@ export default function AdminLoginPage() {
       }
       auth.setTokens(resp.access_token, resp.refresh_token);
       setUser(resp.user);
-      router.push('/admin');
+      router.push(ROUTES.admin.root);
     } catch (e) {
       if (e instanceof ApiError && e.status === 401) {
         setError('Неверный email или пароль');

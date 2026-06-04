@@ -3,7 +3,7 @@
 import { Mail, MapPin, MessageCircle, Phone, Send, User } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { useEditor } from '@/widgets/ProfileEditor/EditorContext';
+import { useEditor } from '@/features/profile-edit';
 import { env } from '@/shared/config/env';
 import { formatPrice } from '@/shared/lib/format';
 

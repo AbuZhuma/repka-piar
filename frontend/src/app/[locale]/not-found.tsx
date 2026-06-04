@@ -1,4 +1,5 @@
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { Container } from '@/shared/ui/Container';
 
 import styles from './not-found.module.scss';
@@ -16,13 +17,13 @@ export default function NotFound() {
           </p>
 
           <div className={styles.actions}>
-            <Link href="/" className={styles.btnPrimary}>
+            <Link href={ROUTES.home} className={styles.btnPrimary}>
               На главную
             </Link>
-            <Link href="/catalog" className={styles.btnSecondary}>
+            <Link href={ROUTES.catalog} className={styles.btnSecondary}>
               Найти репетитора
             </Link>
-            <Link href="/contacts" className={styles.btnGhost}>
+            <Link href={ROUTES.contacts} className={styles.btnGhost}>
               Связаться с поддержкой
             </Link>
           </div>
@@ -31,25 +32,25 @@ export default function NotFound() {
             <h3 className={styles.popularTitle}>Популярные разделы</h3>
             <ul className={styles.popularList}>
               <li>
-                <Link href="/catalog">Каталог репетиторов</Link>
+                <Link href={ROUTES.catalog}>Каталог репетиторов</Link>
               </li>
               <li>
-                <Link href="/catalog?goal=exam_ort">Подготовка к ОРТ</Link>
+                <Link href={ROUTES.catalogBy({ goal: 'exam_ort' })}>Подготовка к ОРТ</Link>
               </li>
               <li>
-                <Link href="/catalog?subject=english">Английский язык</Link>
+                <Link href={ROUTES.catalogBy({ subject: 'english' })}>Английский язык</Link>
               </li>
               <li>
-                <Link href="/blog">Блог</Link>
+                <Link href={ROUTES.blog}>Блог</Link>
               </li>
               <li>
-                <Link href="/for-students">Ученикам и родителям</Link>
+                <Link href={ROUTES.forStudents}>Ученикам и родителям</Link>
               </li>
               <li>
-                <Link href="/for-tutors">Репетиторам</Link>
+                <Link href={ROUTES.forTutors}>Репетиторам</Link>
               </li>
               <li>
-                <Link href="/support">Поддержка и FAQ</Link>
+                <Link href={ROUTES.support}>Поддержка и FAQ</Link>
               </li>
             </ul>
           </div>

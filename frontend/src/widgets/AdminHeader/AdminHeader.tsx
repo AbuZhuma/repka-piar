@@ -4,6 +4,7 @@ import { ExternalLink, LogOut, Shield } from 'lucide-react';
 
 import { useAuth } from '@/features/auth';
 import { Link, useRouter } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 
 import styles from './AdminHeader.module.scss';
 
@@ -13,19 +14,19 @@ export function AdminHeader() {
 
   const onLogout = async () => {
     await logout();
-    router.push('/admin/login');
+    router.push(ROUTES.admin.login);
   };
 
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        <Link href="/admin" className={styles.brand}>
+        <Link href={ROUTES.admin.root} className={styles.brand}>
           <Shield size={18} />
           <span>Repka Admin</span>
         </Link>
       </div>
       <div className={styles.right}>
-        <a href="/" target="_blank" rel="noreferrer" className={styles.actionLink}>
+        <a href={ROUTES.home} target="_blank" rel="noreferrer" className={styles.actionLink}>
           <ExternalLink size={14} />
           На сайт
         </a>

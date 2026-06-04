@@ -47,7 +47,7 @@ export function TutorAbout({ tutor }: TutorAboutProps) {
       {tutor.education.length > 0 && (
         <div>
           <h2 className={styles.heading}>
-            <GraduationCap size={20} /> {t('sections.education')}
+            {t('sections.education')}
           </h2>
           <ul className={styles.list}>
             {tutor.education.map((e) => (

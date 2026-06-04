@@ -4,9 +4,10 @@ import { FileText, Trash2, Upload } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
+import { uploadMyTutorDocument } from '@/shared/api/tutors';
+import { FILE_LIMITS, FILE_LIMITS_MB } from '@/shared/config/constants';
 import { env } from '@/shared/config/env';
 import { ApiError, apiDelete, apiGet } from '@/shared/lib/api';
-import { auth } from '@/shared/lib/auth';
 import { Button } from '@/shared/ui/Button';
 
 import { SectionShell } from './SectionShell';
@@ -43,24 +44,15 @@ export function EditDocumentsSection() {
     const file = e.target.files?.[0];
     e.target.value = '';
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      setError('10 МБ max');
+    if (file.size > FILE_LIMITS.document) {
+      setError(t('file_too_large', { mb: FILE_LIMITS_MB.document }));
       return;
     }
     setUploading(true);
     setError(null);
     try {
-      const fd = new FormData();
-      fd.append('file', file);
-      fd.append('title', file.name);
-      const resp = await fetch(`${env.apiUrl}/api/tutors/me/documents`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${auth.getAccess() ?? ''}` },
-        body: fd,
-      });
-      if (!resp.ok) throw new Error('upload failed');
-      const json: Doc = await resp.json();
-      setDocs((prev) => [...prev, json]);
+      const doc = await uploadMyTutorDocument(file);
+      setDocs((prev) => [...prev, doc]);
     } catch {
       setError(t('save_error'));
     } finally {

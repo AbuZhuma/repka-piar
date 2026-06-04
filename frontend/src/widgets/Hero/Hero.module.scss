@@ -2,7 +2,7 @@
 
 .hero {
   background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-bg-primary) 100%);
-  padding-block: spacing(10) spacing(16);
+  padding-block: spacing(8) spacing(10);
 
   @include media-up('md') {
     padding-block: spacing(16) spacing(20);
@@ -12,32 +12,45 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: spacing(8);
+  gap: spacing(6);
+
+  @include media-up('md') {
+    gap: spacing(8);
+  }
 }
 
 .intro {
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: spacing(3);
+  gap: spacing(2);
   max-width: 720px;
   margin-inline: auto;
+
+  @include media-up('md') {
+    gap: spacing(3);
+  }
 }
 
 .heading {
-  @include text-3xl;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
+  font-size: clamp(1.6rem, 5.5vw, 2.5rem);
+  line-height: 1.15;
+  margin: 0;
 
   @include media-up('md') {
     @include text-4xl;
+    line-height: 1.1;
   }
 }
 
 .subtitle {
-  @include text-md;
+  font-size: clamp(0.95rem, 3vw, 1.1rem);
   color: var(--color-text-secondary);
+  line-height: 1.45;
+  margin: 0;
 }
 
 .quick {
@@ -78,17 +91,20 @@
   background: var(--color-bg-primary);
   border: 1px solid var(--color-border-primary);
   border-radius: $radius-full;
-  @include text-sm;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--color-text-primary);
   white-space: nowrap;
   flex-shrink: 0;
+  text-decoration: none;
   transition:
     background-color $transition-fast,
     border-color $transition-fast,
     color $transition-fast;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     background: var(--color-primary);
     border-color: var(--color-primary);
     color: var(--color-text-inverse);
@@ -97,6 +113,7 @@
 
 .trust {
   text-align: center;
-  @include text-sm;
+  font-size: 0.85rem;
   color: var(--color-text-secondary);
+  line-height: 1.5;
 }

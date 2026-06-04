@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
+import { SITE } from '@/shared/config/site';
 import { LegalDocLayout } from '@/widgets/LegalDocLayout';
 
 export const metadata: Metadata = {
   title: 'Политика cookies',
-  description: 'Какие cookies использует Repka и как ими управлять.',
+  description:
+    'Что такое cookies, какие из них использует Repka, для чего они нужны и как ими управлять в браузере. Cookies третьих сторон и их назначение.',
+  alternates: { canonical: `${SITE.url}/ru/legal/cookies` },
+  robots: { index: true, follow: true },
 };
 
 const TOC = [

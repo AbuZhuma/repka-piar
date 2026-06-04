@@ -4,6 +4,8 @@ import { FileText, Trash2, Upload } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { uploadMyTutorDocument } from '@/shared/api/tutors';
+import { FILE_LIMITS, FILE_LIMITS_MB } from '@/shared/config/constants';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 
@@ -25,29 +27,18 @@ export function Step5Certificates() {
   const onUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      setError('Файл слишком большой (макс 10 МБ)');
+    if (file.size > FILE_LIMITS.document) {
+      setError(tErrors('file_too_large', { mb: FILE_LIMITS_MB.document }));
       return;
     }
     setError(null);
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append('file', file);
-      fd.append('title', file.name);
-      const resp = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/tutors/me/documents`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access_token') ?? ''}`,
-          },
-          body: fd,
-        },
-      );
-      if (!resp.ok) throw new Error('upload failed');
-      const json: { id: string; title?: string; file_url: string } = await resp.json();
-      setDocs((prev) => [...prev, { id: json.id, title: json.title ?? file.name, fileUrl: json.file_url }]);
+      const doc = await uploadMyTutorDocument(file);
+      setDocs((prev) => [
+        ...prev,
+        { id: doc.id, title: doc.title ?? file.name, fileUrl: doc.file_url },
+      ]);
     } catch {
       setError(tErrors('generic'));
     } finally {

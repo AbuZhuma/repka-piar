@@ -11,11 +11,12 @@ import {
   EditEducationSection,
   EditPhotoSection,
   EditPricesSection,
+  ProfileEditorProvider,
 } from '@/features/profile-edit';
+import { cn } from '@/shared/lib/cn';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { ProfilePreview } from '@/widgets/ProfilePreview';
 
-import { ProfileEditorProvider } from './EditorContext';
 import styles from './ProfileEditor.module.scss';
 
 const SECTION_LINKS = [
@@ -31,6 +32,7 @@ export function ProfileEditor() {
   const t = useTranslations('cabinet.profile_edit');
   const [profile, setProfile] = useState<MyTutorProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string>(SECTION_LINKS[0].id);
 
   useEffect(() => {
     let cancelled = false;
@@ -45,6 +47,51 @@ export function ProfileEditor() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (!profile) return;
+    const targets = SECTION_LINKS
+      .map((s) => document.getElementById(s.id))
+      .filter((el): el is HTMLElement => Boolean(el));
+    if (targets.length === 0) return;
+
+    const visibility = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          visibility.set(entry.target.id, entry.intersectionRatio);
+        }
+        let bestId = activeId;
+        let bestRatio = -1;
+        for (const [id, ratio] of visibility) {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestId = id;
+          }
+        }
+        if (bestRatio > 0) setActiveId(bestId);
+      },
+      {
+        rootMargin: '-96px 0px -55% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      },
+    );
+
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile]);
+
+  const onTocClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    setActiveId(id);
+    const el = document.getElementById(id);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 88;
+      window.scrollTo({ top, behavior: 'smooth' });
+      history.replaceState(null, '', `#${id}`);
+    }
+  };
 
   if (error) {
     return <div className={styles.error}>{error}</div>;
@@ -63,7 +110,13 @@ export function ProfileEditor() {
         <aside className={styles.tocAside}>
           <nav className={styles.toc} aria-label="Sections">
             {SECTION_LINKS.map((s) => (
-              <a key={s.id} href={`#${s.id}`} className={styles.tocItem}>
+              <a
+                key={s.id}
+                href={`#${s.id}`}
+                onClick={(e) => onTocClick(e, s.id)}
+                aria-current={activeId === s.id ? 'true' : undefined}
+                className={cn(styles.tocItem, activeId === s.id && styles.tocItemActive)}
+              >
                 {t(s.key)}
               </a>
             ))}

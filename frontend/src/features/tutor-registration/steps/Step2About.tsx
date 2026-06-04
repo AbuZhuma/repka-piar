@@ -4,7 +4,10 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { getDictionaries } from '@/shared/api/dictionaries';
+import { uploadMyTutorPhoto } from '@/shared/api/tutors';
+import { FILE_LIMITS, FILE_LIMITS_MB } from '@/shared/config/constants';
 import { ApiError, apiPatch } from '@/shared/lib/api';
+import { assetUrl } from '@/shared/lib/format';
 import { Input } from '@/shared/ui/Input';
 import { RadioGroup } from '@/shared/ui/RadioGroup';
 import { Select } from '@/shared/ui/Select';
@@ -46,28 +49,15 @@ export function Step2About() {
   const onPhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      setError('Файл слишком большой (макс 5 МБ)');
+    if (file.size > FILE_LIMITS.photo) {
+      setError(tErrors('file_too_large', { mb: FILE_LIMITS_MB.photo }));
       return;
     }
     setError(null);
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append('file', file);
-      const resp = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080'}/api/tutors/me/photo`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access_token') ?? ''}`,
-          },
-          body: fd,
-        },
-      );
-      if (!resp.ok) throw new Error('upload failed');
-      const json: { url: string } = await resp.json();
-      setPhotoUrl(json.url);
+      const { url } = await uploadMyTutorPhoto(file);
+      setPhotoUrl(url);
     } catch {
       setError(tErrors('generic'));
     } finally {
@@ -157,18 +147,60 @@ export function Step2About() {
         >
           {t('photo')}
         </label>
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={onPhotoChange}
-          disabled={uploading}
-        />
-        {uploading && (
-          <p style={{ fontSize: 12, color: 'var(--color-text-tertiary)', marginTop: 8 }}>
-            Загрузка...
-          </p>
-        )}
-        {photoUrl && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div
+            style={{
+              width: 96,
+              height: 96,
+              borderRadius: '50%',
+              overflow: 'hidden',
+              background: 'var(--color-bg-secondary)',
+              border: '1px solid var(--color-border-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--color-text-tertiary)',
+              flexShrink: 0,
+            }}
+          >
+            {photoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={assetUrl(photoUrl) ?? photoUrl}
+                alt=""
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <span style={{ fontSize: 28 }}>📷</span>
+            )}
+          </div>
+          <label
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '8px 14px',
+              border: '1px solid var(--color-border-primary)',
+              background: 'var(--color-bg-primary)',
+              color: 'var(--color-text-primary)',
+              borderRadius: 8,
+              cursor: uploading ? 'wait' : 'pointer',
+              fontSize: 14,
+              fontWeight: 600,
+              opacity: uploading ? 0.6 : 1,
+            }}
+          >
+            {uploading ? 'Загрузка…' : photoUrl ? t('photo_replace') : t('photo_upload')}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={onPhotoChange}
+              disabled={uploading}
+              style={{ display: 'none' }}
+            />
+          </label>
+        </div>
+        {photoUrl && !uploading && (
           <p style={{ fontSize: 12, color: 'var(--color-success)', marginTop: 8 }}>
             ✓ {t('photo_uploaded')}
           </p>

@@ -2,6 +2,7 @@ import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/routing';
+import { ROUTES } from '@/shared/config/routes';
 import { Container } from '@/shared/ui/Container';
 import type { Subject } from '@/shared/types';
 
@@ -18,7 +19,7 @@ export function SubjectsLane({ subjects }: SubjectsLaneProps) {
       <Container>
         <header className={styles.header}>
           <h2 className={styles.title}>{t('subjects_title')}</h2>
-          <Link href="/catalog" className={styles.allLink}>
+          <Link href={ROUTES.catalog} className={styles.allLink}>
             {t('all_subjects')} <ChevronRight size={16} />
           </Link>
         </header>
@@ -26,7 +27,7 @@ export function SubjectsLane({ subjects }: SubjectsLaneProps) {
           {subjects.map((s) => (
             <Link
               key={s.id}
-              href={`/catalog?subject=${encodeURIComponent(s.slug)}`}
+              href={ROUTES.catalogBy({ subject: s.slug })}
               className={styles.item}
               role="listitem"
             >

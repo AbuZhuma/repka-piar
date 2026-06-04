@@ -3,6 +3,7 @@
 import { CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 
+import { ROUTES } from '@/shared/config/routes';
 import { apiPost, ApiError } from '@/shared/lib/api';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
@@ -171,7 +172,7 @@ export function ContactsForm({
         />
         <span>
           Согласен на обработку персональных данных согласно{' '}
-          <a href="/legal/privacy" target="_blank" rel="noopener noreferrer">
+          <a href={ROUTES.legal.privacy} target="_blank" rel="noopener noreferrer">
             Политике конфиденциальности
           </a>
         </span>

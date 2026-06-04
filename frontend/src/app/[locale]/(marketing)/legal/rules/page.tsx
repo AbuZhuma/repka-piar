@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 
+import { SITE } from '@/shared/config/site';
 import { LegalDocLayout } from '@/widgets/LegalDocLayout';
 
 export const metadata: Metadata = {
   title: 'Правила платформы',
-  description: 'Правила использования каталога репетиторов Repka.',
+  description:
+    'Правила использования каталога репетиторов Repka: для репетиторов, учеников и родителей. Запрещённые действия, как подать жалобу, как мы рассматриваем споры.',
+  alternates: { canonical: `${SITE.url}/ru/legal/rules` },
+  robots: { index: true, follow: true },
 };
 
 const TOC = [

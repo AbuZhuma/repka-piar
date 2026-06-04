@@ -11,9 +11,9 @@ use crate::auth::middleware::AuthUser;
 use crate::error::AppResult;
 use crate::models::user::UserPublic;
 use crate::services::user_service::{
-    AccessTokenResponse, AuthResponse, ChangePasswordRequest, DeleteAccountRequest,
-    ForgotPasswordRequest, LoginRequest, LogoutRequest, RefreshRequest, RegisterRequest,
-    ResetPasswordRequest, SessionInfo, UserService,
+    fetch_avatar_url, AccessTokenResponse, AuthResponse, ChangePasswordRequest,
+    DeleteAccountRequest, ForgotPasswordRequest, LoginRequest, LogoutRequest, RefreshRequest,
+    RegisterRequest, ResetPasswordRequest, SessionInfo, UserService,
 };
 use crate::AppState;
 
@@ -94,7 +94,9 @@ pub async fn me(
 ) -> AppResult<Json<UserPublic>> {
     let svc = UserService::new(state.pool.clone(), state.config.clone());
     let user = svc.get_user_by_id(auth.0.sub).await?;
-    Ok(Json(user.into()))
+    let mut out: UserPublic = user.into();
+    out.avatar_url = fetch_avatar_url(&state.pool, out.id).await;
+    Ok(Json(out))
 }
 
 pub async fn change_password(
