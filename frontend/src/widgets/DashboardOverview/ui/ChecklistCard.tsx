@@ -1,3 +1,4 @@
+import { CheckCircle2, Circle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import type { DashboardResponse } from '@/features/cabinet-analytics';
@@ -29,7 +30,9 @@ export function ChecklistCard({ completeness }: Props) {
             key={item.id}
             className={cn(styles.checkItem, item.completed && styles.checkItemDone)}
           >
-            <span className={styles.checkBox}>{item.completed ? '✓' : '○'}</span>
+            <span className={styles.checkBox} aria-hidden>
+              {item.completed ? <CheckCircle2 size={18} /> : <Circle size={18} />}
+            </span>
             <Link href={getEditLink(item.id)} className={styles.checkLabel}>
               {item.label}
             </Link>
