@@ -1,0 +1,140 @@
+# Production stack for repka.school.
+#
+# Designed to run alongside other Docker projects on the same host (in particular
+# the AbuZhuma project). All host ports bind to 127.0.0.1 only — public traffic
+# arrives through the host's nginx, which terminates TLS and proxies to backend
+# (127.0.0.1:8086) and frontend (127.0.0.1:3006).
+#
+# Usage from server:
+#   cd /srv/repka
+#   docker compose -f infrastructure/docker-compose.prod.yml --env-file .env.production up -d --build
+#
+# The wrapper script `infrastructure/scripts/deploy-repka.sh` automates pull + up.
+
+name: repka
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: repka-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-repka}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:-repka}
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5436}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-repka} -d ${POSTGRES_DB:-repka}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - repka_internal
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  redis:
+    image: redis:7-alpine
+    container_name: repka-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory ${REDIS_MAXMEMORY:-128mb}
+      --maxmemory-policy allkeys-lru
+    ports:
+      - "127.0.0.1:${REDIS_HOST_PORT:-6382}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - repka_internal
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    image: repka-backend:${IMAGE_TAG:-latest}
+    container_name: repka-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-repka}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-repka}
+      REDIS_URL: redis://redis:6379
+      CACHE_TTL_SECONDS: "${CACHE_TTL_SECONDS:-60}"
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      IP_HASH_SALT: ${IP_HASH_SALT:?IP_HASH_SALT is required}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@repka.school}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD is required}
+      RUST_LOG: ${RUST_LOG:-info,backend=info}
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://repka.school}
+      UPLOAD_DIR: /app/uploads
+    ports:
+      - "127.0.0.1:${BACKEND_HOST_PORT:-8086}:8080"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - repka_internal
+    logging:
+      driver: json-file
+      options: { max-size: "20m", max-file: "5" }
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-https://repka.school}
+        NEXT_PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-https://repka.school}
+    image: repka-frontend:${IMAGE_TAG:-latest}
+    container_name: repka-frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-https://repka.school}
+      NEXT_PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-https://repka.school}
+      INTERNAL_API_URL: http://backend:8080
+      NODE_ENV: production
+    ports:
+      - "127.0.0.1:${FRONTEND_HOST_PORT:-3006}:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - repka_internal
+    logging:
+      driver: json-file
+      options: { max-size: "20m", max-file: "5" }
+
+volumes:
+  postgres_data:
+    name: repka_postgres_data
+  redis_data:
+    name: repka_redis_data
+  uploads_data:
+    name: repka_uploads_data
+
+networks:
+  repka_internal:
+    name: repka_internal
+    driver: bridge

@@ -10,7 +10,16 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED=1
+
+# Public Next.js env vars get baked into the bundle at build time — they must
+# be passed via --build-arg / compose `build.args`. Defaults keep `docker build`
+# working locally without an env file.
+ARG NEXT_PUBLIC_API_URL=http://localhost:8080
+ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} \
+    NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL} \
+    NEXT_TELEMETRY_DISABLED=1
+
 RUN pnpm build
 
 FROM node:22-alpine AS runner

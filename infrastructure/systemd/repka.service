@@ -1,0 +1,18 @@
+[Unit]
+Description=Repka stack (docker compose)
+Documentation=https://repka.school
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=@APP_USER@
+WorkingDirectory=@APP_DIR@
+TimeoutStartSec=180
+ExecStart=/usr/bin/docker compose -f @APP_DIR@/infrastructure/docker-compose.prod.yml --env-file @APP_DIR@/.env.production up -d
+ExecStop=/usr/bin/docker compose -f @APP_DIR@/infrastructure/docker-compose.prod.yml --env-file @APP_DIR@/.env.production down
+
+[Install]
+WantedBy=multi-user.target
