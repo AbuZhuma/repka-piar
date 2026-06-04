@@ -88,8 +88,12 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    # bash is in debian:bookworm-slim by default; wget/curl are not. Open a TCP
+    # connection to 8080 — succeeds only after the backend is fully bootstrapped
+    # (migrations + admin seed + redis connect) since axum doesn't bind to the
+    # port until then.
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080' 2>/dev/null"]
       interval: 10s
       timeout: 5s
       retries: 5
