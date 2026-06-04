@@ -17,7 +17,17 @@ COMPOSE_FILE="$APP_DIR/infrastructure/docker-compose.prod.yml"
 ENV_FILE="$APP_DIR/.env.production"
 TAG_HISTORY="$APP_DIR/.deploy-tags"   # keeps last N successful tags
 KEEP_TAGS=5
-HEALTH_URL="${HEALTH_URL:-https://repka.school/health}"
+
+# Pull BACKEND_HOST_PORT from env so the local health URL stays in sync if
+# someone changes the port mapping. The default 8086 matches the example env.
+# We deliberately probe localhost, not the public domain — going through CDN
+# (Cloudflare in our case) for a self-check just adds latency and false negatives.
+if [ -f "$APP_DIR/.env.production" ]; then
+    # shellcheck disable=SC1090
+    BACKEND_HOST_PORT="$(grep -E '^BACKEND_HOST_PORT=' "$APP_DIR/.env.production" | tail -1 | cut -d= -f2)"
+fi
+BACKEND_HOST_PORT="${BACKEND_HOST_PORT:-8086}"
+HEALTH_URL="${HEALTH_URL:-http://127.0.0.1:${BACKEND_HOST_PORT}/health}"
 
 cd "$APP_DIR"
 
@@ -89,9 +99,9 @@ log "Bringing the stack up"
 # the health check instead.
 
 # ---------------------------------------------------------------- health
-log "Waiting for health (max 60s)…"
+log "Waiting for health (max 60s) — probing $HEALTH_URL"
 for i in $(seq 1 30); do
-    if curl -fsS --max-time 3 "$HEALTH_URL" >/dev/null 2>&1; then
+    if curl -fsS --max-time 5 "$HEALTH_URL" >/dev/null 2>&1; then
         log "Healthy after ${i}× 2s"
         OK=1
         break
