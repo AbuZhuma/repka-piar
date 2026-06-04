@@ -21,7 +21,7 @@
 
 set -euo pipefail
 
-REPO_URL="${REPO_URL:-https://github.com/CHANGE_ME/repka-piar.git}"
+REPO_URL="${REPO_URL:-https://github.com/AbuZhuma/repka-piar.git}"
 APP_DIR="${APP_DIR:-/srv/repka}"
 APP_USER="${APP_USER:-${SUDO_USER:-$USER}}"
 DOMAIN="${DOMAIN:-repka.school}"

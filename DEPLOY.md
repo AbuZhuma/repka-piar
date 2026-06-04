@@ -27,15 +27,14 @@ to `127.0.0.1` only — public traffic comes through nginx by `server_name`.
 SSH in and run the install script. It is idempotent — safe to re-run.
 
 ```bash
-# As root (or via sudo). Adjust REPO_URL to your actual git URL.
-sudo REPO_URL=git@github.com:<owner>/<repo>.git \
-     bash <(curl -fsSL https://raw.githubusercontent.com/<owner>/<repo>/main/infrastructure/scripts/install-server.sh)
+# As root (or via sudo).
+sudo bash <(curl -fsSL https://raw.githubusercontent.com/AbuZhuma/repka-piar/main/infrastructure/scripts/install-server.sh)
 ```
 
 Or, after cloning manually:
 
 ```bash
-sudo git clone https://github.com/<owner>/<repo>.git /srv/repka
+sudo git clone https://github.com/AbuZhuma/repka-piar.git /srv/repka
 cd /srv/repka
 sudo bash infrastructure/scripts/install-server.sh
 ```
