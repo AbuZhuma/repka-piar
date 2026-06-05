@@ -13,6 +13,7 @@ import {
 } from '@/shared/lib/seo';
 import { Container } from '@/shared/ui/Container';
 import { Breadcrumbs } from '@/widgets/Breadcrumbs';
+import { ReviewsBlock } from '@/features/tutor-reviews';
 import { SimilarTutors } from '@/widgets/SimilarTutors';
 import { TutorAbout } from '@/widgets/TutorAbout';
 import { MobileContactBar, TutorContactsCard } from '@/widgets/TutorContactsCard';
@@ -154,6 +155,7 @@ export default async function TutorPage({
           <TutorAbout tutor={tutor} />
           <TutorPrices tutor={tutor} />
           {tutor.video_url && <TutorVideo url={tutor.video_url} />}
+          <ReviewsBlock slug={slug} fullName={fullName} />
         </main>
 
         <aside className={styles.sidebar}>

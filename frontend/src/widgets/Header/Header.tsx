@@ -2,10 +2,10 @@
 
 import { Menu } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAuth } from '@/features/auth';
-import { FavoritesIndicator } from '@/features/favorites';
+import { FavoritesIndicator, useFavoritesStore } from '@/features/favorites';
 import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/shared/config/routes';
 import { cn } from '@/shared/lib/cn';
@@ -21,7 +21,13 @@ import { ProfileMenu } from './ProfileMenu/ProfileMenu';
 export function Header() {
   const t = useTranslations('navigation');
   const { isAuthenticated, user } = useAuth();
+  const hydrateFavorites = useFavoritesStore((s) => s.hydrateForUser);
   const [open, setOpen] = useState(false);
+
+  // Reconcile guest favorites with the server every time the auth user changes.
+  useEffect(() => {
+    void hydrateFavorites(user?.id ?? null);
+  }, [user?.id, hydrateFavorites]);
 
   const navLinks = [
     { href: ROUTES.catalog, label: t('catalog') },

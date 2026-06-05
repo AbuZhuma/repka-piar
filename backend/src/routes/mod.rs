@@ -3,6 +3,8 @@ pub mod analytics;
 pub mod auth;
 pub mod dictionaries;
 pub mod health;
+pub mod me;
 pub mod posts;
+pub mod reviews;
 pub mod stats;
 pub mod tutors;

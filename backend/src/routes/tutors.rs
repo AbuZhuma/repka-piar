@@ -21,7 +21,7 @@ use crate::AppState;
 pub const MAX_PHOTO_SIZE: usize = 5 * 1024 * 1024;
 pub const MAX_DOC_SIZE: usize = 10 * 1024 * 1024;
 
-const PHOTO_MIMES: &[&str] = &["image/jpeg", "image/png", "image/webp"];
+pub const PHOTO_MIMES: &[&str] = &["image/jpeg", "image/png", "image/webp"];
 const DOC_MIMES: &[&str] = &[
     "application/pdf",
     "image/jpeg",
@@ -371,7 +371,7 @@ pub fn doc_body_limit() -> DefaultBodyLimit {
     DefaultBodyLimit::max(MAX_DOC_SIZE)
 }
 
-async fn take_file_field(
+pub async fn take_file_field(
     multipart: &mut Multipart,
     field_name: &str,
 ) -> AppResult<(Option<String>, Option<String>, bytes::Bytes)> {
@@ -395,7 +395,7 @@ async fn take_file_field(
     )))
 }
 
-fn detect_mime(content_type: Option<&str>, filename: Option<&str>) -> String {
+pub fn detect_mime(content_type: Option<&str>, filename: Option<&str>) -> String {
     if let Some(ct) = content_type {
         let ct = ct.split(';').next().unwrap_or(ct).trim().to_lowercase();
         if !ct.is_empty() && ct != "application/octet-stream" {
@@ -410,7 +410,7 @@ fn detect_mime(content_type: Option<&str>, filename: Option<&str>) -> String {
     "application/octet-stream".to_string()
 }
 
-fn mime_to_ext(mime: &str) -> Option<&'static str> {
+pub fn mime_to_ext(mime: &str) -> Option<&'static str> {
     match mime {
         "image/jpeg" => Some("jpg"),
         "image/png" => Some("png"),
@@ -420,7 +420,7 @@ fn mime_to_ext(mime: &str) -> Option<&'static str> {
     }
 }
 
-async fn save_upload(
+pub async fn save_upload(
     base: &PathBuf,
     user_id: Uuid,
     subdir: &str,

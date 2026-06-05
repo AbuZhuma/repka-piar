@@ -92,7 +92,7 @@ export default function LoginPage() {
         <Link href={ROUTES.forgotPassword} className={styles.link}>
           {t('forgot_password')}
         </Link>
-        <Link href={ROUTES.becomeTutor} className={styles.link}>
+        <Link href={ROUTES.register} className={styles.link}>
           {t('no_account')}
         </Link>
       </div>

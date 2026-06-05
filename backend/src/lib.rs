@@ -14,6 +14,7 @@ pub mod utils;
 
 use config::Config;
 use services::cache_service::Cache;
+use services::email_service::EmailService;
 
 #[derive(Clone, FromRef)]
 pub struct AppState {
@@ -21,4 +22,6 @@ pub struct AppState {
     pub config: Arc<Config>,
     pub upload_dir: Arc<std::path::PathBuf>,
     pub cache: Cache,
+    pub email: EmailService,
+    pub site_url: Arc<String>,
 }

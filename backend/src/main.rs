@@ -68,11 +68,16 @@ async fn main() -> anyhow::Result<()> {
         }
     };
 
+    let site_url = std::env::var("PUBLIC_SITE_URL").unwrap_or_else(|_| "http://localhost:3000".into());
+    let email = backend::services::email_service::EmailService::from_env(&site_url, "Repka");
+
     let state = AppState {
         pool,
         config: Arc::new(cfg.clone()),
         upload_dir: Arc::new(upload_dir.clone()),
         cache,
+        email,
+        site_url: Arc::new(site_url),
     };
 
     let origins: Vec<http::HeaderValue> = cfg
@@ -133,13 +138,24 @@ async fn main() -> anyhow::Result<()> {
         .route("/register", post(routes::auth::register))
         .route("/refresh", post(routes::auth::refresh))
         .route("/logout", post(routes::auth::logout))
-        .route("/me", get(routes::auth::me))
+        .route("/me", get(routes::auth::me).patch(routes::auth::update_me))
+        .route("/me/avatar", post(routes::me::upload_avatar))
+        .route("/verify-email", post(routes::auth::verify_email))
+        .route("/resend-verification", post(routes::auth::resend_verification))
         .route("/change-password", post(routes::auth::change_password))
         .route("/reset-password", post(routes::auth::reset_password))
         .route("/sessions", get(routes::auth::list_sessions))
         .route("/sessions/:id", delete(routes::auth::revoke_session))
         .route("/account/delete", post(routes::auth::delete_account))
         .merge(limited_auth);
+
+    let me_routes = Router::new()
+        .route("/favorites", get(routes::me::list_favorites))
+        .route("/favorites/sync", post(routes::me::sync_favorites))
+        .route(
+            "/favorites/:tutor_id",
+            post(routes::me::add_favorite).delete(routes::me::remove_favorite),
+        );
 
     let reveal_routes = Router::new()
         .route(
@@ -215,6 +231,12 @@ async fn main() -> anyhow::Result<()> {
         .route("/me/dashboard", get(routes::analytics::dashboard))
         .route("/:slug", get(routes::tutors::get_by_slug))
         .route("/:slug/similar", get(routes::tutors::similar))
+        .route(
+            "/:slug/reviews",
+            get(routes::reviews::list)
+                .post(routes::reviews::upsert)
+                .delete(routes::reviews::delete_mine),
+        )
         .merge(reveal_routes)
         .merge(click_routes);
 
@@ -320,6 +342,7 @@ async fn main() -> anyhow::Result<()> {
 
     let api = Router::new()
         .nest("/auth", auth_routes)
+        .nest("/me", me_routes)
         .nest("/tutors", tutor_routes)
         .nest("/dictionaries", dict_routes)
         .nest("/posts", post_routes)

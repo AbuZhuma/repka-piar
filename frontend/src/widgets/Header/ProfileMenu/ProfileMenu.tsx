@@ -107,6 +107,11 @@ export function ProfileMenu() {
           </div>
 
           <nav className={styles.menuNav} aria-label="Profile">
+            {/* Personal profile is available for everyone */}
+            <Link href="/me" className={styles.menuItem} onClick={() => setOpen(false)}>
+              <UserRound size={16} /> Мой профиль
+            </Link>
+
             {isAdmin && (
               <Link
                 href={ROUTES.admin.root}
@@ -122,7 +127,7 @@ export function ProfileMenu() {
                 className={styles.menuItem}
                 onClick={() => setOpen(false)}
               >
-                <LayoutDashboard size={16} /> Кабинет
+                <LayoutDashboard size={16} /> Кабинет репетитора
               </Link>
             )}
             {isTutor && (
@@ -131,18 +136,27 @@ export function ProfileMenu() {
                 className={styles.menuItem}
                 onClick={() => setOpen(false)}
               >
-                <UserRound size={16} /> Профиль
+                <UserRound size={16} /> Анкета репетитора
               </Link>
             )}
             <Link
-              href={ROUTES.cabinerSettings}
+              href={ROUTES.favorites}
               className={styles.menuItem}
               onClick={() => setOpen(false)}
             >
-              <Settings size={16} /> Настройки
+              <LifeBuoy size={16} /> Избранное
             </Link>
+            {isTutor && (
+              <Link
+                href={ROUTES.cabinerSettings}
+                className={styles.menuItem}
+                onClick={() => setOpen(false)}
+              >
+                <Settings size={16} /> Настройки
+              </Link>
+            )}
             <Link
-              href={ROUTES.cabinetSuport}
+              href={ROUTES.support}
               className={styles.menuItem}
               onClick={() => setOpen(false)}
             >

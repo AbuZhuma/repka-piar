@@ -3,11 +3,12 @@ import type { AuthResponse, AuthUser } from '@/shared/types';
 
 export interface RegisterPayload {
   email: string;
-  phone: string;
+  phone?: string;
   password: string;
   name: string;
-  surname: string;
+  surname?: string;
   locale?: string;
+  role?: 'student' | 'tutor';
 }
 
 export interface LoginPayload {

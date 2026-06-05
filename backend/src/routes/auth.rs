@@ -43,14 +43,67 @@ pub async fn register(
     Json(payload): Json<RegisterRequest>,
 ) -> AppResult<Json<AuthResponse>> {
     let svc = UserService::new(state.pool.clone(), state.config.clone());
-    let resp = svc
+    let (mut resp, token) = svc
         .register(
             payload,
             extract_user_agent(&headers),
             extract_ip(&headers, &addr),
         )
         .await?;
+    // Fire-and-forget verification email. Errors are logged, not fatal.
+    if let Some(token) = token {
+        let email_svc = state.email.clone();
+        let to_email = resp.user.email.clone();
+        tokio::spawn(async move {
+            if let Err(e) = email_svc.send_verification(&to_email, &token).await {
+                tracing::warn!(error = %e, "verification email failed");
+            }
+        });
+    }
+    resp.user.avatar_url = fetch_avatar_url(&state.pool, resp.user.id).await;
     Ok(Json(resp))
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct VerifyEmailQuery {
+    pub token: String,
+}
+
+pub async fn verify_email(
+    State(state): State<AppState>,
+    Json(payload): Json<VerifyEmailQuery>,
+) -> AppResult<Json<serde_json::Value>> {
+    crate::services::user_service::consume_email_verification_token(
+        &state.pool,
+        &payload.token,
+    )
+    .await?;
+    Ok(Json(serde_json::json!({ "ok": true })))
+}
+
+pub async fn resend_verification(
+    State(state): State<AppState>,
+    auth: AuthUser,
+) -> AppResult<Json<serde_json::Value>> {
+    let svc = UserService::new(state.pool.clone(), state.config.clone());
+    let user = svc.get_user_by_id(auth.0.sub).await?;
+    if user.email_verified {
+        return Ok(Json(serde_json::json!({ "ok": true, "already_verified": true })));
+    }
+    let token = crate::services::user_service::create_email_verification_token(
+        &state.pool,
+        user.id,
+        &user.email,
+    )
+    .await?;
+    let email_svc = state.email.clone();
+    let to_email = user.email.clone();
+    tokio::spawn(async move {
+        if let Err(e) = email_svc.send_verification(&to_email, &token).await {
+            tracing::warn!(error = %e, "verification email failed");
+        }
+    });
+    Ok(Json(serde_json::json!({ "ok": true })))
 }
 
 pub async fn login(
@@ -86,6 +139,46 @@ pub async fn logout(
     let svc = UserService::new(state.pool.clone(), state.config.clone());
     svc.logout(&payload.refresh_token).await?;
     Ok(Json(serde_json::json!({ "ok": true })))
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct UpdateMeRequest {
+    pub name: Option<String>,
+    pub surname: Option<String>,
+    pub phone: Option<String>,
+    pub locale: Option<String>,
+    pub avatar_url: Option<String>,
+}
+
+pub async fn update_me(
+    State(state): State<AppState>,
+    auth: AuthUser,
+    Json(payload): Json<UpdateMeRequest>,
+) -> AppResult<Json<UserPublic>> {
+    // Only update fields that are explicitly provided to allow partial PATCH.
+    sqlx::query(
+        "UPDATE users SET \
+           name       = COALESCE($2, name), \
+           surname    = COALESCE($3, surname), \
+           phone      = COALESCE(NULLIF($4, ''), phone), \
+           locale     = COALESCE($5, locale), \
+           avatar_url = CASE WHEN $6 IS NULL THEN avatar_url ELSE $6 END \
+         WHERE id = $1",
+    )
+    .bind(auth.0.sub)
+    .bind(payload.name.as_deref())
+    .bind(payload.surname.as_deref())
+    .bind(payload.phone.as_deref())
+    .bind(payload.locale.as_deref())
+    .bind(payload.avatar_url.as_deref())
+    .execute(&state.pool)
+    .await?;
+
+    let svc = UserService::new(state.pool.clone(), state.config.clone());
+    let user = svc.get_user_by_id(auth.0.sub).await?;
+    let mut out: UserPublic = user.into();
+    out.avatar_url = fetch_avatar_url(&state.pool, out.id).await;
+    Ok(Json(out))
 }
 
 pub async fn me(

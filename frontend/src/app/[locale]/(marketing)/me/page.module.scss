@@ -1,0 +1,216 @@
+@use 'styles/abstracts' as *;
+
+.page {
+  padding-block: spacing(8) spacing(14);
+  background: var(--color-bg-secondary);
+  min-height: 60vh;
+}
+
+.head {
+  max-width: 720px;
+  margin-bottom: spacing(6);
+}
+
+.title {
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  margin: 0 0 spacing(2);
+  color: var(--color-text-primary);
+}
+
+.subtitle {
+  @include text-base;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.notice {
+  background: rgba(238, 124, 78, 0.08);
+  border: 1px solid rgba(238, 124, 78, 0.4);
+  border-radius: $radius-lg;
+  padding: spacing(3) spacing(4);
+  margin-bottom: spacing(6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing(3);
+  flex-wrap: wrap;
+
+  strong {
+    display: block;
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+
+  span {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+}
+
+.noticeBody {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  color: var(--color-primary);
+}
+
+.noticeMsg {
+  width: 100%;
+  margin: spacing(2) 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(4);
+
+  @include media-up('md') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: $radius-lg;
+  padding: spacing(5);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+}
+
+.cardDanger {
+  @extend .card;
+  grid-column: 1 / -1;
+  align-items: stretch;
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  flex-wrap: wrap;
+}
+
+.savedHint {
+  @include text-sm;
+  color: #16a34a;
+}
+
+.avatarRow {
+  display: flex;
+  gap: spacing(4);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.initials {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.avatarActions {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(2);
+  align-items: flex-start;
+}
+
+.hint {
+  @include text-xs;
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(3);
+
+  @include media-up('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.shortcuts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(2);
+}
+
+.shortcut {
+  display: flex;
+  align-items: center;
+  gap: spacing(3);
+  padding: spacing(3) spacing(4);
+  border-radius: $radius-md;
+  background: var(--color-bg-secondary);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.15s ease;
+
+  strong {
+    display: block;
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  span {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+
+  &:hover {
+    background: var(--color-bg-tertiary);
+  }
+}
+
+.logoutBtn {
+  @include button-reset;
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+  color: #dc2626;
+  font-weight: 600;
+  cursor: pointer;
+  padding: spacing(2) spacing(3);
+  border-radius: $radius-md;
+
+  &:hover {
+    background: rgba(220, 38, 38, 0.08);
+  }
+}

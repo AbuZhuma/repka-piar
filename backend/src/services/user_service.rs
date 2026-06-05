@@ -20,15 +20,19 @@ pub static PHONE_REGEX: Lazy<Regex> =
 pub struct RegisterRequest {
     #[validate(email)]
     pub email: String,
-    #[validate(length(min = 1, max = 32))]
-    pub phone: String,
+    /// Phone is required for tutors but optional for regular students.
+    /// We don't validate length here — the regex check in code handles format
+    /// only when value is provided.
+    pub phone: Option<String>,
     #[validate(length(min = 1, max = 128))]
     pub name: String,
-    #[validate(length(min = 1, max = 128))]
-    pub surname: String,
+    #[validate(length(max = 128))]
+    pub surname: Option<String>,
     #[validate(length(min = 8, max = 128))]
     pub password: String,
     pub locale: Option<String>,
+    /// "student" (default) or "tutor". Tutors get extra role and must supply phone.
+    pub role: Option<String>,
 }
 
 #[derive(Debug, serde::Deserialize, Validate)]
@@ -113,23 +117,57 @@ impl UserService {
         payload: RegisterRequest,
         user_agent: Option<String>,
         ip_address: Option<String>,
-    ) -> AppResult<AuthResponse> {
+    ) -> AppResult<(AuthResponse, Option<String>)> {
         payload.validate()?;
-        if !PHONE_REGEX.is_match(&payload.phone) {
-            return Err(AppError::Validation(
-                "phone must be in international format, e.g. +996700000000".into(),
-            ));
-        }
 
-        let existing: Option<(Uuid,)> = sqlx::query_as(
-            "SELECT id FROM users \
-             WHERE (email = $1 OR phone = $2) AND deleted_at IS NULL \
-             LIMIT 1",
-        )
-        .bind(&payload.email)
-        .bind(&payload.phone)
-        .fetch_optional(&self.pool)
-        .await?;
+        let role = payload.role.as_deref().unwrap_or("student").to_lowercase();
+        if !matches!(role.as_str(), "student" | "tutor") {
+            return Err(AppError::Validation("role must be 'student' or 'tutor'".into()));
+        }
+        // Tutors must supply a real phone; for students we accept empty/missing.
+        let phone = payload
+            .phone
+            .as_deref()
+            .map(str::trim)
+            .filter(|s| !s.is_empty());
+        if role == "tutor" {
+            let phone_str = phone.ok_or_else(|| {
+                AppError::Validation("phone is required for tutors".into())
+            })?;
+            if !PHONE_REGEX.is_match(phone_str) {
+                return Err(AppError::Validation(
+                    "phone must be in international format, e.g. +996700000000".into(),
+                ));
+            }
+        } else if let Some(p) = phone {
+            // Students may pass a phone — validate it if so, but it's not required.
+            if !PHONE_REGEX.is_match(p) {
+                return Err(AppError::Validation(
+                    "phone must be in international format, e.g. +996700000000".into(),
+                ));
+            }
+        }
+        let phone_value = phone.unwrap_or("").to_string();
+
+        // Build the existence check: phone collisions only matter when a phone is set.
+        let existing: Option<(Uuid,)> = if phone_value.is_empty() {
+            sqlx::query_as(
+                "SELECT id FROM users WHERE email = $1 AND deleted_at IS NULL LIMIT 1",
+            )
+            .bind(&payload.email)
+            .fetch_optional(&self.pool)
+            .await?
+        } else {
+            sqlx::query_as(
+                "SELECT id FROM users \
+                 WHERE (email = $1 OR phone = $2) AND deleted_at IS NULL \
+                 LIMIT 1",
+            )
+            .bind(&payload.email)
+            .bind(&phone_value)
+            .fetch_optional(&self.pool)
+            .await?
+        };
 
         if existing.is_some() {
             return Err(AppError::Conflict(
@@ -140,22 +178,30 @@ impl UserService {
         let password_hash = hash_password(&payload.password)
             .map_err(|e| AppError::Internal(format!("password hash failed: {e}")))?;
         let locale = payload.locale.unwrap_or_else(|| "ru".to_string());
+        let surname = payload.surname.unwrap_or_default();
 
         let user: User = sqlx::query_as::<_, User>(
             "INSERT INTO users (email, phone, password_hash, name, surname, roles, locale) \
-             VALUES ($1, $2, $3, $4, $5, ARRAY['tutor']::TEXT[], $6) \
+             VALUES ($1, $2, $3, $4, $5, ARRAY[$6]::TEXT[], $7) \
              RETURNING *",
         )
         .bind(&payload.email)
-        .bind(&payload.phone)
+        .bind(&phone_value)
         .bind(&password_hash)
         .bind(&payload.name)
-        .bind(&payload.surname)
+        .bind(&surname)
+        .bind(&role)
         .bind(&locale)
         .fetch_one(&self.pool)
         .await?;
 
-        self.issue_tokens(user, user_agent, ip_address).await
+        // Generate verification token (24h). Caller is responsible for actually
+        // sending the email — kept that out of this service to avoid pulling
+        // the SMTP transport into UserService.
+        let token = create_email_verification_token(&self.pool, user.id, &user.email).await?;
+
+        let auth = self.issue_tokens(user, user_agent, ip_address).await?;
+        Ok((auth, Some(token)))
     }
 
     pub async fn login(
@@ -453,7 +499,25 @@ impl UserService {
     }
 }
 
+/// Returns the avatar URL for a user, preferring their dedicated `users.avatar_url`
+/// (uploaded via /api/auth/me/avatar) and falling back to the tutor-profile photo
+/// for tutors who didn't set a personal avatar.
 pub async fn fetch_avatar_url(pool: &sqlx::PgPool, user_id: Uuid) -> Option<String> {
+    let own: Option<Option<String>> = sqlx::query_scalar::<_, Option<String>>(
+        "SELECT avatar_url FROM users WHERE id = $1",
+    )
+    .bind(user_id)
+    .fetch_optional(pool)
+    .await
+    .ok()
+    .flatten();
+    if let Some(Some(url)) = own.map(Some) {
+        if let Some(s) = url {
+            if !s.is_empty() {
+                return Some(s);
+            }
+        }
+    }
     sqlx::query_scalar::<_, Option<String>>(
         "SELECT photo_url FROM tutor_profiles WHERE user_id = $1 AND photo_url IS NOT NULL LIMIT 1",
     )
@@ -463,4 +527,64 @@ pub async fn fetch_avatar_url(pool: &sqlx::PgPool, user_id: Uuid) -> Option<Stri
     .ok()
     .flatten()
     .flatten()
+}
+
+/// Generates a 48-char URL-safe token, stores it for 24h, and returns it.
+pub async fn create_email_verification_token(
+    pool: &sqlx::PgPool,
+    user_id: Uuid,
+    email: &str,
+) -> AppResult<String> {
+    use rand::distributions::Alphanumeric;
+    use rand::{thread_rng, Rng};
+    let token: String = thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(48)
+        .map(char::from)
+        .collect();
+    sqlx::query(
+        "INSERT INTO email_verification_tokens (token, user_id, email, expires_at) \
+         VALUES ($1, $2, $3, NOW() + INTERVAL '24 hours')",
+    )
+    .bind(&token)
+    .bind(user_id)
+    .bind(email)
+    .execute(pool)
+    .await?;
+    Ok(token)
+}
+
+/// Marks token as used and flips `email_verified=true` on the user, if not expired.
+pub async fn consume_email_verification_token(
+    pool: &sqlx::PgPool,
+    token: &str,
+) -> AppResult<Uuid> {
+    let row: Option<(Uuid, String, chrono::DateTime<chrono::Utc>, Option<chrono::DateTime<chrono::Utc>>)> =
+        sqlx::query_as(
+            "SELECT user_id, email, expires_at, used_at \
+             FROM email_verification_tokens WHERE token = $1",
+        )
+        .bind(token)
+        .fetch_optional(pool)
+        .await?;
+    let (user_id, email, expires, used_at) =
+        row.ok_or_else(|| AppError::Validation("invalid verification token".into()))?;
+    if used_at.is_some() {
+        return Err(AppError::Validation("verification token already used".into()));
+    }
+    if expires < chrono::Utc::now() {
+        return Err(AppError::Validation("verification token expired".into()));
+    }
+    let mut tx = pool.begin().await?;
+    sqlx::query("UPDATE email_verification_tokens SET used_at = NOW() WHERE token = $1")
+        .bind(token)
+        .execute(&mut *tx)
+        .await?;
+    sqlx::query("UPDATE users SET email_verified = TRUE WHERE id = $1 AND email = $2")
+        .bind(user_id)
+        .bind(email)
+        .execute(&mut *tx)
+        .await?;
+    tx.commit().await?;
+    Ok(user_id)
 }

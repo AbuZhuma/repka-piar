@@ -1,0 +1,39 @@
+@use 'styles/abstracts' as *;
+
+.row {
+  display: inline-flex;
+  gap: 2px;
+  color: #facc15;
+}
+
+.star {
+  background: none;
+  border: 0;
+  padding: 2px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.15);
+  transition: color 0.1s ease, transform 0.1s ease;
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    color: #facc15;
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 1;
+  }
+}
+
+.filled {
+  color: #facc15;
+}
+
+.readOnly .star {
+  cursor: default;
+
+  &:hover {
+    transform: none;
+  }
+}
