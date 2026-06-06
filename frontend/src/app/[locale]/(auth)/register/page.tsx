@@ -79,18 +79,20 @@ export default function RegisterPage() {
       <p className={styles.subtitle}>{t('register_subtitle')}</p>
 
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Input
-          label={t('first_name')}
-          autoComplete="given-name"
-          {...register('name')}
-          error={errors.name ? '—' : undefined}
-        />
-        <Input
-          label={t('last_name_optional')}
-          autoComplete="family-name"
-          {...register('surname')}
-          error={errors.surname ? '—' : undefined}
-        />
+        <div className={styles.formRow}>
+          <Input
+            label={t('first_name')}
+            autoComplete="given-name"
+            {...register('name')}
+            error={errors.name ? '—' : undefined}
+          />
+          <Input
+            label={t('last_name_optional')}
+            autoComplete="family-name"
+            {...register('surname')}
+            error={errors.surname ? '—' : undefined}
+          />
+        </div>
         <Input
           label={t('email')}
           type="email"
@@ -98,22 +100,24 @@ export default function RegisterPage() {
           {...register('email')}
           error={errors.email ? '—' : undefined}
         />
-        <Input
-          label={t('phone_optional')}
-          type="tel"
-          autoComplete="tel"
-          placeholder="+996700000000"
-          {...register('phone')}
-          error={errors.phone ? errors.phone.message ?? '—' : undefined}
-        />
-        <Input
-          label={t('password')}
-          type="password"
-          autoComplete="new-password"
-          {...register('password')}
-          error={errors.password ? t('errors.password_too_short') : undefined}
-          hint={t('password_hint')}
-        />
+        <div className={styles.formRow}>
+          <Input
+            label={t('phone_optional')}
+            type="tel"
+            autoComplete="tel"
+            placeholder="+996700000000"
+            {...register('phone')}
+            error={errors.phone ? errors.phone.message ?? '—' : undefined}
+          />
+          <Input
+            label={t('password')}
+            type="password"
+            autoComplete="new-password"
+            {...register('password')}
+            error={errors.password ? t('errors.password_too_short') : undefined}
+            hint={t('password_hint')}
+          />
+        </div>
 
         <label className={styles.checkboxRow}>
           <input type="checkbox" {...register('agree')} />
@@ -137,12 +141,12 @@ export default function RegisterPage() {
       </form>
 
       <div className={styles.links}>
-        <Link href={ROUTES.login} className={styles.link}>
-          {t('have_account')}
-        </Link>
-        <Link href={ROUTES.becomeTutor} className={styles.link}>
-          {t('be_tutor_instead')}
-        </Link>
+        <span className={styles.link}>
+          {t('have_account_q')}{' '}
+          <Link href={ROUTES.login} className={styles.linkAccent}>
+            {t('login_button')}
+          </Link>
+        </span>
       </div>
     </div>
   );

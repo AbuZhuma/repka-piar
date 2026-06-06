@@ -36,7 +36,8 @@
     "logout": "Log out",
     "for_students": "Students",
     "for_tutors": "Tutors",
-    "support": "Help"
+    "support": "Help",
+    "sign_up": "Sign up"
   },
   "homepage": {
     "h1": "Tutors for school, exams, and admissions",
@@ -148,18 +149,22 @@
       "failed": "The link is expired or already used. Request a new one from your profile.",
       "go_to_profile": "Go to my profile",
       "go_to_login": "Log in"
-    }
+    },
+    "no_account_q": "No account?",
+    "have_account_q": "Already have an account?"
   },
   "become_tutor": {
     "hero": {
       "h1": "Reach more students with Repka",
       "subtitle": "The #1 tutor marketplace in Kyrgyzstan. No commission per lesson, no middlemen.",
-      "cta": "Become a tutor"
+      "cta": "Become a tutor",
+      "login": "I already have an account"
     },
     "stats": {
       "tutors": "Tutors",
       "views": "Profile views",
-      "subjects": "Subjects"
+      "subjects": "Subjects",
+      "cities": "Cities"
     },
     "benefits": {
       "title": "Why Repka",

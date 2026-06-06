@@ -70,9 +70,9 @@ export function Header() {
                   {t('become_tutor')}
                 </Button>
               </Link>
-              <Link href={ROUTES.login}>
+              <Link href={ROUTES.register}>
                 <Button variant="primary" size="sm">
-                  {t('login')}
+                  {t('sign_up')}
                 </Button>
               </Link>
             </>
@@ -110,6 +110,24 @@ export function Header() {
               >
                 {t('become_tutor')}
               </Link>
+              {!isAuthenticated && (
+                <>
+                  <Link
+                    href={ROUTES.register}
+                    className={styles.mobileItem}
+                    onClick={() => setOpen(false)}
+                  >
+                    {t('sign_up')}
+                  </Link>
+                  <Link
+                    href={ROUTES.login}
+                    className={styles.mobileItem}
+                    onClick={() => setOpen(false)}
+                  >
+                    {t('login')}
+                  </Link>
+                </>
+              )}
             </nav>
             <div className={cn(styles.mobileBottom)}>
               <LangSwitcher />

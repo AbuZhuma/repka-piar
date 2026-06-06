@@ -30,6 +30,13 @@
   max-width: 600px;
 }
 
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing(2);
+  justify-content: center;
+}
+
 .stats {
   list-style: none;
   display: flex;

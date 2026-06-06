@@ -28,6 +28,16 @@
   gap: spacing(3);
 }
 
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(3);
+
+  @include media-up('sm') {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .error {
   @include text-sm;
   color: var(--color-danger);
@@ -61,5 +71,15 @@
 
   &:hover {
     color: var(--color-primary);
+  }
+}
+
+.linkAccent {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
   }
 }

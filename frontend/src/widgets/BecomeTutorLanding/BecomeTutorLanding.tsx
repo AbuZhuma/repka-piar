@@ -3,8 +3,10 @@
 import * as Accordion from '@radix-ui/react-accordion';
 import { CheckCircle, ChevronDown, MessageCircle, Sparkles, TrendingUp } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 
 import { Link } from '@/i18n/routing';
+import { getPlatformStats, type PlatformStats } from '@/shared/api/stats';
 import { ROUTES } from '@/shared/config/routes';
 import { Button } from '@/shared/ui/Button';
 import { Container } from '@/shared/ui/Container';
@@ -15,6 +17,17 @@ const FAQ_INDEXES = [0, 1, 2, 3, 4, 5];
 
 export function BecomeTutorLanding() {
   const t = useTranslations('become_tutor');
+  const [stats, setStats] = useState<PlatformStats | null>(null);
+
+  useEffect(() => {
+    getPlatformStats()
+      .then(setStats)
+      .catch(() => null);
+  }, []);
+
+  const tutorsCount = stats?.tutors_total ?? null;
+  const citiesCount = stats?.cities_total ?? null;
+  const subjectsCount = stats?.subjects_total ?? null;
 
   return (
     <>
@@ -23,22 +36,29 @@ export function BecomeTutorLanding() {
         <Container className={styles.heroInner}>
           <h1 className={styles.heroTitle}>{t('hero.h1')}</h1>
           <p className={styles.heroSubtitle}>{t('hero.subtitle')}</p>
-          <Link href={ROUTES.becomeTutorRegister}>
-            <Button variant="primary" size="lg">
-              {t('hero.cta')}
-            </Button>
-          </Link>
+          <div className={styles.heroActions}>
+            <Link href={ROUTES.becomeTutorRegister}>
+              <Button variant="primary" size="lg">
+                {t('hero.cta')}
+              </Button>
+            </Link>
+            <Link href={ROUTES.login}>
+              <Button variant="secondary" size="lg">
+                {t('hero.login')}
+              </Button>
+            </Link>
+          </div>
           <ul className={styles.stats}>
             <li>
-              <strong>1 200+</strong>
+              <strong>{tutorsCount != null ? tutorsCount : '—'}</strong>
               <span>{t('stats.tutors')}</span>
             </li>
             <li>
-              <strong>50 000+</strong>
-              <span>{t('stats.views')}</span>
+              <strong>{citiesCount != null ? citiesCount : '—'}</strong>
+              <span>{t('stats.cities')}</span>
             </li>
             <li>
-              <strong>30+</strong>
+              <strong>{subjectsCount != null ? subjectsCount : '—'}</strong>
               <span>{t('stats.subjects')}</span>
             </li>
           </ul>
